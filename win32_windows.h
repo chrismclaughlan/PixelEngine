@@ -12,9 +12,12 @@ struct Performance
 	LARGE_INTEGER end_time;
 };
 
-class MainWindow :public BaseWindow<MainWindow>
+template <class T>
+class MainWindow :public BaseWindow<MainWindow<T>>
 {
 private:
+    T* business_class;
+
 	PCWSTR class_name = L"MainWindow class";
 	HDC hdc;
 	Input input;
@@ -37,4 +40,6 @@ public:
 	void initFPS();
 	void updateFPS();
 	void render();
+    
+    void simulate() { business_class->simulate(); }
 };

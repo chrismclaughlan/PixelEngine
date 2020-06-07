@@ -10,7 +10,7 @@
 int32 WINAPI wWinMain
 (HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine, int32 nCmdShow)
 {
-	MainWindow main_window;
+	MainWindow<Render> main_window;
 
 	if (!main_window.Create(L"Window Name", NO_WINDOW_RESIZING))
 	{
@@ -34,7 +34,7 @@ int32 WINAPI wWinMain
 		}
 
 		// Simulate
-		// --> implement something here <--
+		main_window.simulate();
 
 		// Render
 		main_window.render();

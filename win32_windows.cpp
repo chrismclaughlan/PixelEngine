@@ -3,7 +3,7 @@
 #include "win32_windows.h"
 #include "types.h"
 
-LRESULT MainWindow::HandleMessage
+LRESULT MainWindow<class T>::HandleMessage
 (UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	switch (uMsg)
@@ -39,7 +39,7 @@ LRESULT MainWindow::HandleMessage
 	return DefWindowProc(m_hwnd, uMsg, wParam, lParam);
 }
 
-void MainWindow::handleKeyDown(WPARAM wParam, LPARAM lParam)
+void MainWindow<class T>::handleKeyDown(WPARAM wParam, LPARAM lParam)
 {
 	uint32 vk_code = (uint32)wParam;
 	bool is_down = ((lParam & (1 << 31)) == 0);
@@ -56,7 +56,7 @@ void MainWindow::handleKeyDown(WPARAM wParam, LPARAM lParam)
 	}
 }
 
-void MainWindow::resetButtons()
+void MainWindow<class T>::resetButtons()
 {
 	for (int32 i = 0; i < BUTTON_COUNT; i++)
 	{
@@ -64,18 +64,18 @@ void MainWindow::resetButtons()
 	}
 }
 
-bool MainWindow::isRunning()
+bool MainWindow<class T>::isRunning()
 {
 	return (hdc ? is_running : FALSE);
 }
-void MainWindow::setHDC()
+void MainWindow<class T>::setHDC()
 {
 	if (!hdc) hdc = GetDC(m_hwnd);
 }
 
 // Business methods //
 
-void MainWindow::initFPS()
+void MainWindow<class T>::initFPS()
 {
 	performance.delta_time = 0.016666f;
 	QueryPerformanceCounter(&performance.begin_time);
@@ -88,7 +88,7 @@ void MainWindow::initFPS()
 	}
 }
 
-void MainWindow::updateFPS()
+void MainWindow<class T>::updateFPS()
 {
 	QueryPerformanceCounter(&performance.end_time);
 	performance.delta_time = ((float)(performance.end_time.QuadPart -
@@ -96,7 +96,7 @@ void MainWindow::updateFPS()
 	performance.begin_time = performance.end_time;
 }
 
-void MainWindow::render()
+void MainWindow<class T>::render()
 {
 	RenderState* render_state = renderer.getRenderState();
 	StretchDIBits(hdc, 0, 0, render_state->width, render_state->height, 0, 0,

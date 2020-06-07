@@ -41,5 +41,13 @@
     <ClInclude Include="win32_windows.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="placeholder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="README.md">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

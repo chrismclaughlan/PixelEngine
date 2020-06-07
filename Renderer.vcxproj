@@ -145,10 +145,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="input.h" />
+    <ClInclude Include="placeholder.h" />
     <ClInclude Include="render.h" />
     <ClInclude Include="types.h" />
     <ClInclude Include="win32_basewindow.h" />
     <ClInclude Include="win32_windows.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="README.md" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
