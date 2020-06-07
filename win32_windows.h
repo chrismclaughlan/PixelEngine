@@ -36,6 +36,5 @@ public:
 
 	void initFPS();
 	void updateFPS();
-	void simulate();
 	void render();
 };

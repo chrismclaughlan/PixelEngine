@@ -96,10 +96,6 @@ void MainWindow::updateFPS()
 	performance.begin_time = performance.end_time;
 }
 
-void MainWindow::simulate()
-{
-}
-
 void MainWindow::render()
 {
 	RenderState* render_state = renderer.getRenderState();

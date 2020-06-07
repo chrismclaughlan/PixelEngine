@@ -1,3 +1,5 @@
+// Example of how to implement
+
 #include <windows.h>
 #include "win32_windows.h"
 #include "types.h"
@@ -32,7 +34,7 @@ int32 WINAPI wWinMain
 		}
 
 		// Simulate
-		main_window.simulate();
+		// --> implement something here <--
 
 		// Render
 		main_window.render();
