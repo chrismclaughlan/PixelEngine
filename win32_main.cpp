@@ -3,23 +3,22 @@
 #include "types.h"
 #include "input.h"
 
-//const int WINDOW_WIDTH = 600;
-//const int WINDOW_HEIGHT = 600;
+#define NO_WINDOW_RESIZING (WS_OVERLAPPEDWINDOW ^ WS_THICKFRAME)
 
 int32 WINAPI wWinMain
 (HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine, int32 nCmdShow)
 {
 	MainWindow main_window;
 
-	if (!main_window.Create(L"Window Name", WS_OVERLAPPEDWINDOW))
+	if (!main_window.Create(L"Window Name", NO_WINDOW_RESIZING))
 	{
 		return 0;
 	}
 
+	ShowWindow(main_window.Window(), nCmdShow);
+
 	main_window.setHDC();
 	main_window.initFPS();
-
-	ShowWindow(main_window.Window(), nCmdShow);
 
 	while (main_window.isRunning())
 	{

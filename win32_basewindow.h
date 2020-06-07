@@ -1,5 +1,9 @@
 #pragma once
 #include <windows.h>
+#include "types.h"
+
+const int32 DEFAULT_WINDOW_SIZE_X = 1280;
+const int32 DEFAULT_WINDOW_SIZE_Y = 768;
 
 template <class DERIVED_TYPE>
 class BaseWindow
@@ -39,8 +43,8 @@ public:
         DWORD dwExStyle = 0,
         int x = CW_USEDEFAULT,
         int y = CW_USEDEFAULT,
-        int nWidth = CW_USEDEFAULT,
-        int nHeight = CW_USEDEFAULT,
+        int nWidth = DEFAULT_WINDOW_SIZE_X,
+        int nHeight = DEFAULT_WINDOW_SIZE_Y,
         HWND hWndParent = 0,
         HMENU hMenu = 0
         )

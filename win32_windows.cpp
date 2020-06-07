@@ -98,9 +98,6 @@ void MainWindow::updateFPS()
 
 void MainWindow::simulate()
 {
-	renderer.ClearScreen(0xff0000);
-	renderer.DrawTriangle(10, 10, 50, 50, 0xffffff);
-	renderer.DrawGrid(8, 8);
 }
 
 void MainWindow::render()
