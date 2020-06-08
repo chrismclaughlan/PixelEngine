@@ -84,7 +84,7 @@ public:
 		BOOL result;
 		result = MainWindow::Create(lpWindowName, dwStyle, dwExStyle, x, y, nWidth, nHeight, hWndParent, hMenu);
 		MainWindow::init();
-		business_class = new T(&performance, &renderer, &input, &is_running);
+		business_class = new T(&is_running , &performance, &renderer, &input);
 		return result;
 	}
 
