@@ -6,19 +6,19 @@
 const float DEFAULT_SCALE_X = 16;
 const float DEFAULT_SCALE_Y = 9;
 
-struct Point
-{
-	int32 x;
-	int32 y;
-	//uint32 colour;
-};
-
-struct PolygonV3
-{
-	//int32 x[3];
-	//int32 y[3];
-	Point points[3];
-};
+//struct Point
+//{
+//	int32 x;
+//	int32 y;
+//	//uint32 colour;
+//};
+//
+//struct PolygonV3
+//{
+//	//int32 x[3];
+//	//int32 y[3];
+//	Point points[3];
+//};
 
 struct RenderState
 {
@@ -62,8 +62,8 @@ public:
 	// Line
 	void DrawLineP(int32, int32, int32, int32, uint32);
 	void DrawLine(float, float, float, float, uint32);
-	inline static std::vector<Point> ReturnLine(Point, Point);
-	static std::vector<Point> ReturnLine(int32, int32, int32, int32);
+	//inline static std::vector<Point> ReturnLine(Point, Point);
+	//static std::vector<Point> ReturnLine(int32, int32, int32, int32);
 	//void DrawPolygon(PolygonV3);
 
 	// Rectangle

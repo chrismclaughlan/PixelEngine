@@ -1,4 +1,14 @@
 #pragma once
+#define is_down(b) (input->buttons[b].is_down)
+#define pressed(b) (input->buttons[b].is_down && input->buttons[b].has_changed)
+#define released(b) (!input->buttons[b].is_down && input->buttons[b].has_changed)
+#define process_button(b, vk)\
+case vk:\
+{\
+input.buttons[b].has_changed = new_is_down != input.buttons[b].is_down;\
+input.buttons[b].is_down = new_is_down;\
+} break;\
+
 
 struct ButtonState
 {

@@ -2,9 +2,6 @@
 #include <windows.h>
 #include "types.h"
 
-//const int32 DEFAULT_WINDOW_SIZE_X = 1280;
-//const int32 DEFAULT_WINDOW_SIZE_Y = 768;
-
 template <class DERIVED_TYPE>
 class BaseWindow
 {

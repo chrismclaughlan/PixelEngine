@@ -192,54 +192,54 @@ void Render::DrawLine
 	DrawLineP(x1, y1, x2, y2, colour);
 }
 
-std::vector<Point> Render::ReturnLine
-(int32 x1, int32 y1, int32 x2, int32 y2)
-{
-	std::vector<Point> points;
-	int32 dx, sx, dy, sy, err, e2;
-	dx = abs(x2 - x1);
-	dy = -(abs(y2 - y1));
-	if (x1 < x2)
-		sx = 1;
-	else
-		sx = -1;
-	if (y1 < y2)
-		sy = 1;
-	else
-		sy = -1;
-	err = dx + dy;
-	while (true)
-	{
-		Point p{ x1, y1 };
-		points.push_back(p);
-		//DrawPointP(x1, y1, colour);
-		if (x1 == x2 && y1 == y2)
-			break;
-		e2 = 2 * err;
-		if (e2 >= dy)
-		{
-			err += dy;
-			x1 += sx;
-		}
-		if (e2 <= dx)
-		{
-			err += dx;
-			y1 += sy;
-		}
-	}
-	return points;
-}
-
-inline std::vector<Point> Render::ReturnLine
-(Point v1, Point v2)
-{
-	return Render::ReturnLine(v1.x, v1.y, v2.x, v2.y);
-}
-
-bool compareY(const Point& p1, const Point& p2)
-{
-	return p1.y < p2.y;
-}
+//std::vector<Point> Render::ReturnLine
+//(int32 x1, int32 y1, int32 x2, int32 y2)
+//{
+//	std::vector<Point> points;
+//	int32 dx, sx, dy, sy, err, e2;
+//	dx = abs(x2 - x1);
+//	dy = -(abs(y2 - y1));
+//	if (x1 < x2)
+//		sx = 1;
+//	else
+//		sx = -1;
+//	if (y1 < y2)
+//		sy = 1;
+//	else
+//		sy = -1;
+//	err = dx + dy;
+//	while (true)
+//	{
+//		Point p{ x1, y1 };
+//		points.push_back(p);
+//		//DrawPointP(x1, y1, colour);
+//		if (x1 == x2 && y1 == y2)
+//			break;
+//		e2 = 2 * err;
+//		if (e2 >= dy)
+//		{
+//			err += dy;
+//			x1 += sx;
+//		}
+//		if (e2 <= dx)
+//		{
+//			err += dx;
+//			y1 += sy;
+//		}
+//	}
+//	return points;
+//}
+//
+//inline std::vector<Point> Render::ReturnLine
+//(Point v1, Point v2)
+//{
+//	return Render::ReturnLine(v1.x, v1.y, v2.x, v2.y);
+//}
+//
+//bool compareY(const Point& p1, const Point& p2)
+//{
+//	return p1.y < p2.y;
+//}
 
 //// Done in pixels
 //void Render::DrawPolygon(PolygonV3 polygon)

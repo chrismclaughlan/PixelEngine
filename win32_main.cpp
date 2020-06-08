@@ -1,45 +1,39 @@
-// Example of how to implement
-
 #include <windows.h>
 #include "win32_windows.h"
 #include "types.h"
-#include "input.h"
+
+#include "placeholder.h"
 
 #define NO_WINDOW_RESIZING (WS_OVERLAPPEDWINDOW ^ WS_THICKFRAME)
+
+const wchar_t WINDOW_NAME[] = L"Primary Window";
 
 int32 WINAPI wWinMain
 (HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine, int32 nCmdShow)
 {
-	MainWindow<Render> main_window;
+	PrimaryWindow<Game> primary_window(WINDOW_NAME, L"Primary Window class");
 
-	if (!main_window.Create(L"Window Name", NO_WINDOW_RESIZING))
+	if (!primary_window.Create(WINDOW_NAME, NO_WINDOW_RESIZING))
 	{
 		return 0;
 	}
 
-	ShowWindow(main_window.Window(), nCmdShow);
+	ShowWindow(primary_window.Window(), nCmdShow);
 
-	main_window.setHDC();
-	main_window.initFPS();
-
-	while (main_window.isRunning())
+	while (primary_window.isRunning())
 	{
 		// Get user input
 		MSG msg = {};
-		main_window.resetButtons();
-		while (PeekMessage(&msg, main_window.Window(), NULL, NULL, PM_REMOVE))
+		primary_window.resetButtons();
+		while (PeekMessage(&msg, primary_window.Window(), NULL, NULL, PM_REMOVE))
 		{
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
 		}
 
-		// Simulate
-		main_window.simulate();
-
-		// Render
-		main_window.render();
-
-		main_window.updateFPS();
+		primary_window.simulate();
+		primary_window.render();
+		primary_window.updateFPS();
 
 	}  // while is_running
 
