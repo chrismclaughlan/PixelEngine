@@ -2,7 +2,7 @@
 #include "win32_windows.h"
 #include "types.h"
 
-#include "placeholder.h"
+#include "Instance.h"
 
 #define NO_WINDOW_RESIZING (WS_OVERLAPPEDWINDOW ^ WS_THICKFRAME)
 
@@ -11,7 +11,7 @@ const wchar_t WINDOW_NAME[] = L"Primary Window";
 int32 WINAPI wWinMain
 (HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine, int32 nCmdShow)
 {
-	PrimaryWindow<Placeholder> primary_window(WINDOW_NAME, L"Primary Window class");
+	PrimaryWindow<Instance> primary_window(WINDOW_NAME, L"Primary Window class");
 
 	if (!primary_window.Create(WINDOW_NAME, NO_WINDOW_RESIZING))
 	{

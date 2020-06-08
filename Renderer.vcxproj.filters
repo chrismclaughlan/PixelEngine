@@ -1,56 +1,65 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    <Filter Include="Win32">
+      <UniqueIdentifier>{4bf5a1fd-d39d-4019-b91f-62dbd82175bf}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    <Filter Include="Win32\include">
+      <UniqueIdentifier>{33475d3c-a69c-4572-b554-2f9c57c7a360}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    <Filter Include="Win32\source">
+      <UniqueIdentifier>{08b745d8-7794-45d5-91df-7202742709b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Render">
+      <UniqueIdentifier>{7ffa6a9b-f830-4ef1-947a-3b4b32ebb8b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Render\include">
+      <UniqueIdentifier>{f30ff6dc-50bb-4ddd-87ca-cbad87c1c664}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Render\source">
+      <UniqueIdentifier>{46ab8b6e-ad90-4063-9047-0d5c3fa0144c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Input">
+      <UniqueIdentifier>{f312f130-fbed-4fd1-9728-8dfb956af9ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Input\include">
+      <UniqueIdentifier>{aada6ce4-8710-4491-a956-fc2c28323779}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Input\source">
+      <UniqueIdentifier>{7ac49b5e-c272-4e94-90b6-6cc51558abec}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="render.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="win32_windows.cpp">
+      <Filter>Win32\source</Filter>
     </ClCompile>
     <ClCompile Include="win32_main.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Win32\source</Filter>
     </ClCompile>
-    <ClCompile Include="win32_windows.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="render.cpp">
+      <Filter>Render\source</Filter>
     </ClCompile>
     <ClCompile Include="input.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Input\source</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="types.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="input.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="render.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="win32_windows.h">
+      <Filter>Win32\include</Filter>
     </ClInclude>
     <ClInclude Include="win32_basewindow.h">
-      <Filter>Header Files</Filter>
+      <Filter>Win32\include</Filter>
     </ClInclude>
-    <ClInclude Include="win32_windows.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="render.h">
+      <Filter>Render\include</Filter>
     </ClInclude>
-    <ClInclude Include="placeholder.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="types.h" />
+    <ClInclude Include="input.h">
+      <Filter>Input\include</Filter>
     </ClInclude>
+    <ClInclude Include="instance.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="README.md">
-      <Filter>Resource Files</Filter>
-    </None>
+    <None Include="README.md" />
   </ItemGroup>
 </Project>

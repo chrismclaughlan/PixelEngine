@@ -23,7 +23,7 @@
     <ProjectGuid>{DD7D873C-ABDD-4501-B9EB-204E9FEEC433}</ProjectGuid>
     <RootNamespace>Renderer</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
-    <ProjectName>Base Windows</ProjectName>
+    <ProjectName>Win32 Application</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -151,7 +151,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="input.h" />
-    <ClInclude Include="placeholder.h" />
+    <ClInclude Include="instance.h" />
     <ClInclude Include="render.h" />
     <ClInclude Include="types.h" />
     <ClInclude Include="win32_basewindow.h" />

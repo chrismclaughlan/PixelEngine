@@ -3,7 +3,7 @@
 #include "render.h"
 #include "input.h"
 
-class Placeholder
+class Instance
 {
 private:
 	Input* input;
@@ -12,7 +12,7 @@ private:
 	bool* is_running;
 
 public:
-	Placeholder(Performance* nperformance, Render* nrenderer, Input* ninput, bool* nis_running)
+	Instance(Performance* nperformance, Render* nrenderer, Input* ninput, bool* nis_running)
 	{
 		performance = nperformance;
 		renderer = nrenderer;
