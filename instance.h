@@ -6,18 +6,19 @@
 class Instance
 {
 private:
-	Input* input;
-	Render* renderer;
-	Performance* performance;
-	bool* is_running;
+	// Window attributes
+	Input*			W_input;
+	Render*			W_renderer;
+	Performance*	W_performance;
+	bool*			W_is_running;
 
 public:
-	Instance(Performance* nperformance, Render* nrenderer, Input* ninput, bool* nis_running)
+	Instance(Performance* performance, Render* renderer, Input* input, bool* is_running)
 	{
-		performance = nperformance;
-		renderer = nrenderer;
-		input = ninput;
-		is_running = nis_running;
+		W_performance = performance;
+		W_renderer = renderer;
+		W_input = input;
+		W_is_running = is_running;
 	}
 
 	void simulate()
@@ -32,7 +33,7 @@ public:
 		if (is_down(BUTTON_RIGHT))
 			colour = 0x000ff0;
 
-		renderer->ClearScreen(colour);
-		renderer->DrawGridV2(100, 100);
+		W_renderer->ClearScreen(colour);
+		W_renderer->DrawGridV2(100, 100);
 	}
 };
