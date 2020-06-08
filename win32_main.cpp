@@ -11,7 +11,7 @@ const wchar_t WINDOW_NAME[] = L"Primary Window";
 int32 WINAPI wWinMain
 (HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine, int32 nCmdShow)
 {
-	PrimaryWindow<Instance> primary_window(WINDOW_NAME, L"Primary Window class");
+	win32::PrimaryWindow<Instance> primary_window(WINDOW_NAME, L"Primary Window class");
 
 	if (!primary_window.Create(WINDOW_NAME, NO_WINDOW_RESIZING))
 	{

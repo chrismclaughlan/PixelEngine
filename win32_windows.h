@@ -4,6 +4,8 @@
 #include "render.h"
 #include "input.h"
 
+namespace win32
+{
 struct Performance
 {
 	float frequency;
@@ -18,8 +20,8 @@ protected:
 	PCWSTR window_name = L"MainWindow";  // default name -> change
 	PCWSTR class_name = L"MainWindow class";
 	HDC hdc;
-	Input input;
-	Render renderer;
+	input::Input input;
+	render::Render renderer;
 	Performance performance;
 	bool is_running = true;
 
@@ -91,3 +93,4 @@ public:
 		business_class->simulate();
 	}
 };
+}  // namespace win32

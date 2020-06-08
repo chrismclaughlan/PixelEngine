@@ -3,6 +3,8 @@
 #include <vector>
 #include "types.h"
 
+namespace render
+{
 const float DEFAULT_SCALE_X = 16;
 const float DEFAULT_SCALE_Y = 9;
 
@@ -78,3 +80,4 @@ public:
 	//void DrawTriangleP(int32, int32, int32, int32, uint32);
 	//void DrawTriangle(float, float, float, float, uint32);
 };
+}  // namespace render

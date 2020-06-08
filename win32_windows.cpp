@@ -3,40 +3,42 @@
 #include "types.h"
 #include "input.h"
 
+namespace win32
+{
 LRESULT MainWindow::HandleMessage
 (UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	switch (uMsg)
 	{
-		case WM_DESTROY:
+	case WM_DESTROY:
+	{
+		handleDestory();
+		PostQuitMessage(0);
+		return 0;
+	}
+
+	case WM_CLOSE:
+	{
+		if (shouldClose())
 		{
-			handleDestory();
-			PostQuitMessage(0);
-			return 0;
+			DestroyWindow(m_hwnd);
 		}
+		else
+			return 0;
+	} break;
 
-		case WM_CLOSE:
-		{
-			if (shouldClose())
-			{
-				DestroyWindow(m_hwnd);
-			}
-			else
-				return 0;
-		} break;
+	case WM_SIZE:
+	{
+		RECT rect;
+		GetClientRect(m_hwnd, &rect);
+		renderer.sizeChangeWin32(&rect);
+	} break;
 
-		case WM_SIZE:
-		{
-			RECT rect;
-			GetClientRect(m_hwnd, &rect);
-			renderer.sizeChangeWin32(&rect);
-		} break;
-
-		case WM_KEYUP:  // nessessary
-		case WM_KEYDOWN:
-		{
-			handleKeyDown(wParam, lParam);
-		} break;
+	case WM_KEYUP:  // nessessary
+	case WM_KEYDOWN:
+	{
+		handleKeyDown(wParam, lParam);
+	} break;
 	}
 
 	return DefWindowProc(m_hwnd, uMsg, wParam, lParam);
@@ -96,7 +98,7 @@ void MainWindow::init()
 
 void MainWindow::render()
 {
-	RenderState* render_state = renderer.getRenderState();
+	render::RenderState* render_state = renderer.getRenderState();
 	StretchDIBits(hdc, 0, 0, render_state->width, render_state->height, 0, 0,
 		render_state->width, render_state->height, render_state->memory,
 		&render_state->bitmapinfo, DIB_RGB_COLORS, SRCCOPY);
@@ -117,8 +119,9 @@ bool MainWindow::isRunning()
 
 void MainWindow::resetButtons()
 {
-	for (int32 i = 0; i < BUTTON_COUNT; i++)
+	for (int32 i = 0; i < input::BUTTON_COUNT; i++)
 	{
 		input.buttons[i].has_changed = false;
 	}
 }
+}  // namespace win32

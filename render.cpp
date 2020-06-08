@@ -3,6 +3,8 @@
 #include <cmath>
 #include "render.h"
 
+namespace render
+{
 #define calculate_scales()\
 float ratio = 1080 / nscale_y;\
 scale_x = nscale_x * ratio;\
@@ -89,7 +91,7 @@ void Render::DrawGrid(float pwidth, float pheight)
 	{
 		for (int x = 0; x < state.width; x += pwidth)
 		{
-			DrawRectP(x, y, x+pwidth, y+ pheight, colour);
+			DrawRectP(x, y, x + pwidth, y + pheight, colour);
 			//DrawRectOutlineP(x, y, x + nwidth, y + nheight, colour, 0.2);
 			colour += 0xabcdef;
 		}
@@ -440,3 +442,4 @@ void Render::DrawRectOutlineCentre
 //
 //	DrawTriangleP((int32)x1, (int32)y1, (int32)x2, (int32)y2, colour);
 //}
+}  // namespace render

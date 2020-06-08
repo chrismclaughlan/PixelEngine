@@ -10,6 +10,8 @@ input.buttons[b].is_down = new_is_down;\
 #define pressed(b) (W_input->buttons[b].is_down && W_input->buttons[b].has_changed)
 #define released(b) (!W_input->buttons[b].is_down && W_input->buttons[b].has_changed)
 
+namespace input
+{
 struct ButtonState
 {
 	bool is_down;
@@ -33,3 +35,4 @@ struct Input
 {
 	ButtonState buttons[BUTTON_COUNT];
 };
+}  // namespace input

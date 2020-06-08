@@ -1,7 +1,6 @@
 # Base Windows
 
 ## TODO
-- namespaces?
  
 ### How to use:
 Input -> Create enum for button in input.h and call process_button() for corresponding VK code in input.cpp

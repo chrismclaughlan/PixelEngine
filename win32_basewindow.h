@@ -2,6 +2,8 @@
 #include <windows.h>
 #include "types.h"
 
+namespace win32
+{
 template <class DERIVED_TYPE>
 class BaseWindow
 {
@@ -71,3 +73,4 @@ protected:
 
     HWND m_hwnd;
 };
+}  // namespace win32
