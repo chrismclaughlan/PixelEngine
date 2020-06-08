@@ -76,6 +76,9 @@ public:
 	void DrawRectOutlineCentreP(int32, int32, int32, int32, uint32, float);
 	void DrawRectOutlineCentre(float, float, float, float, uint32, float);
 
+	// Circle
+	void DrawCircleP(int32, int32, int32, uint32);
+
 	// Triangle
 	//void DrawTriangleP(int32, int32, int32, int32, uint32);
 	//void DrawTriangle(float, float, float, float, uint32);

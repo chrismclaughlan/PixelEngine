@@ -36,5 +36,17 @@ public:
 
 		W_renderer->ClearScreen(colour);
 		W_renderer->DrawGridV2(100, 100);
+		W_renderer->DrawCircleP(100, 100, 50, 0xffffff);
+
+		if (W_input->mouse_x_pos > 0 && W_input->mouse_y_pos > 0)
+		{
+			render::RenderState* rs = W_renderer->getRenderState();
+			uint32 colour = 0xff0000;
+			//if (W_input->mouse_dragging)
+				//W_renderer->DrawCircleP(W_input->mouse_x_pos, -(W_input->mouse_y_pos - rs->height), 25, 0x00ff00);
+			if (W_input->mouse_click)
+				W_renderer->DrawCircleP(W_input->mouse_x_pos, -(W_input->mouse_y_pos - rs->height), 30, 0xff0000);
+			W_renderer->DrawCircleP(W_input->mouse_x_pos, -(W_input->mouse_y_pos - rs->height), 20, colour);
+		}
 	}
 };

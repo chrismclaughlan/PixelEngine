@@ -33,6 +33,9 @@ protected:
 	bool shouldClose();  // returns true if window should close
 	void handleKeyDown(WPARAM, LPARAM);
 	void handleKeyUp(WPARAM, LPARAM) {}
+	void handleMouseMove(WPARAM, LPARAM);
+	void handleMouseLeftButtonUp(WPARAM, LPARAM);
+	void handleMouseLeftButtonDown(WPARAM, LPARAM);
 
 public:
 	LRESULT HandleMessage(UINT, WPARAM, LPARAM);

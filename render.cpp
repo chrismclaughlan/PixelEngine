@@ -410,6 +410,23 @@ void Render::DrawRectOutlineCentre
 	Render::DrawRectOutlineP(x1, y1, x2, y2, colour, t);
 }
 
+void Render::DrawCircleP(int32 x, int32 y, int32 r, uint32 colour)
+{
+	Clamp(r, &x, state.width - r);
+	Clamp(r, &y, state.height - r);
+
+	static const double PI = 3.1415926535;
+	double i, angle, x1, y1;
+
+	for (i = 0; i < 360; i += 0.1)
+	{
+		angle = i;
+		x1 = r * cos(angle * PI / 180);
+		y1 = r * sin(angle * PI / 180);
+		DrawPointP(x + x1, y + y1, colour);
+	}
+}
+
 //// BROKEN when x > y
 //void Render::DrawTriangleP
 //(int32 x1, int32 y1, int32 x2, int32 y2, uint32 colour)

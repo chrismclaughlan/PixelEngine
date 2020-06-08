@@ -1,45 +1,60 @@
 #include <windows.h>
+#include <windowsX.h>  // mouse movement
 #include "win32_windows.h"
 #include "types.h"
 #include "input.h"
 
 namespace win32
 {
-LRESULT MainWindow::HandleMessage
-(UINT uMsg, WPARAM wParam, LPARAM lParam)
-{
-	switch (uMsg)
+	LRESULT MainWindow::HandleMessage
+	(UINT uMsg, WPARAM wParam, LPARAM lParam)
 	{
-	case WM_DESTROY:
-	{
-		handleDestory();
-		PostQuitMessage(0);
-		return 0;
-	}
-
-	case WM_CLOSE:
-	{
-		if (shouldClose())
+		switch (uMsg)
 		{
-			DestroyWindow(m_hwnd);
-		}
-		else
+		case WM_DESTROY:
+		{
+			handleDestory();
+			PostQuitMessage(0);
 			return 0;
-	} break;
+		}
 
-	case WM_SIZE:
-	{
-		RECT rect;
-		GetClientRect(m_hwnd, &rect);
-		renderer.sizeChangeWin32(&rect);
-	} break;
+		case WM_CLOSE:
+		{
+			if (shouldClose())
+			{
+				DestroyWindow(m_hwnd);
+			}
+			else
+				return 0;
+		} break;
 
-	case WM_KEYUP:  // nessessary
-	case WM_KEYDOWN:
-	{
-		handleKeyDown(wParam, lParam);
-	} break;
-	}
+		case WM_SIZE:
+		{
+			RECT rect;
+			GetClientRect(m_hwnd, &rect);
+			renderer.sizeChangeWin32(&rect);
+		} break;
+
+		case WM_KEYUP:  // nessessary
+		case WM_KEYDOWN:
+		{
+			handleKeyDown(wParam, lParam);
+		} break;
+		case WM_MOUSEMOVE:
+		{
+			handleMouseMove(wParam, lParam);
+		} break;
+		case WM_LBUTTONUP:  // nessessary
+		{
+			input.mouse_click = false;
+			handleMouseLeftButtonUp(wParam, lParam);
+		} break;
+		case WM_LBUTTONDOWN:
+		{
+			input.mouse_click = true;
+			handleMouseLeftButtonDown(wParam, lParam);
+		} break;
+		}
 
 	return DefWindowProc(m_hwnd, uMsg, wParam, lParam);
 }
@@ -68,6 +83,44 @@ void MainWindow::handleKeyDown(WPARAM wParam, LPARAM lParam)
 	default:
 		break;
 	}
+}
+
+void MainWindow::handleMouseMove(WPARAM wParam, LPARAM lParam)
+{
+	input.mouse_x_pos = GET_X_LPARAM(lParam);
+	input.mouse_y_pos = GET_Y_LPARAM(lParam);
+}
+
+void MainWindow::handleMouseLeftButtonUp(WPARAM wParam, LPARAM lParam)
+{
+	//int32 x = GET_X_LPARAM(lParam);
+	//int32 y = GET_Y_LPARAM(lParam);
+
+	//input.mouse_dragging = false;
+	input.mouse_click = false;
+
+	//ReleaseCapture();
+}
+
+void MainWindow::handleMouseLeftButtonDown(WPARAM wParam, LPARAM lParam)
+{
+	//SetCapture(m_hwnd);
+
+	//int32 x = GET_X_LPARAM(lParam);
+	//int32 y = GET_Y_LPARAM(lParam);
+
+	//POINT pt = { x, y };
+	//if (DragDetect(m_hwnd, pt))
+	//{
+	//	// Start dragging
+	//	input.mouse_dragging = true;
+	//}
+	//else
+	//{
+	//	input.mouse_dragging = false;
+	//}
+
+	input.mouse_click = true;
 }
 
 void MainWindow::setHDC()
