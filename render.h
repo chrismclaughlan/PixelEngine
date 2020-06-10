@@ -43,6 +43,9 @@ public:
 	Render(RenderState*, int32, int32);
 	//~Render();
 
+	int32 getWidth() { return state.width; }
+	int32 getHeight() { return state.height; }
+
 	RenderState* getRenderState() { return &state; }
 	void sizeChangeWin32(RECT*);
 
