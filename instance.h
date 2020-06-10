@@ -45,8 +45,8 @@ public:
 			render::RenderState* rs = W_renderer->getRenderState();
 			uint32 colour = 0xff0000;
 			if (W_input->mouse_click)
-				W_renderer->DrawCircleP(W_input->mouse_x_pos, -(W_input->mouse_y_pos - rs->height), 30, 0xff0000);
-			W_renderer->DrawCircleP(W_input->mouse_x_pos, -(W_input->mouse_y_pos - rs->height), 20, colour);
+				W_renderer->DrawCircleP(W_input->mouse_x_pos, W_input->mouse_y_pos, 30, 0xff0000);
+			W_renderer->DrawCircleP(W_input->mouse_x_pos, W_input->mouse_y_pos, 20, colour);
 		}
 	}
 };

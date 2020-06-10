@@ -88,7 +88,8 @@ void MainWindow::handleKeyDown(WPARAM wParam, LPARAM lParam)
 void MainWindow::handleMouseMove(WPARAM wParam, LPARAM lParam)
 {
 	input.mouse_x_pos = GET_X_LPARAM(lParam);
-	input.mouse_y_pos = GET_Y_LPARAM(lParam);
+	// invert y_pos
+	input.mouse_y_pos = -(GET_Y_LPARAM(lParam) - renderer.getHeight());
 }
 
 void MainWindow::handleMouseLeftButtonUp(WPARAM wParam, LPARAM lParam)
