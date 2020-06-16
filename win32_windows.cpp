@@ -25,12 +25,19 @@ LRESULT MainWindow::HandleMessage
 	}
 	case WM_CLOSE:
 	{
-		if (hide_cursor) ShowCursor(true);
+		ShowCursor(true);
 		if (shouldClose())
+		{
 			DestroyWindow(m_hwnd);
+		}
 		else
-			if (hide_cursor) ShowCursor(false);
+		{
+			if (hide_cursor)
+				ShowCursor(false);
+
 			return 0;
+		}
+
 	} break;
 
 	case WM_SIZE:
@@ -48,16 +55,8 @@ LRESULT MainWindow::HandleMessage
 	case WM_MOUSEMOVE:
 	{
 		handleMouseMove(wParam, lParam);
-		if (mouseOffRect())
-		{
-			ShowCursor(true);
-		}
-		else if(hide_cursor)
-		{
-			ShowCursor(false);
-		}
 	} break;
-	case WM_LBUTTONUP:  // nessessary
+	case WM_LBUTTONUP:
 	{
 		handleMouseLeftButtonUp(wParam, lParam);
 	} break;
@@ -110,17 +109,6 @@ void MainWindow::handleMouseLeftButtonUp(WPARAM wParam, LPARAM lParam)
 void MainWindow::handleMouseLeftButtonDown(WPARAM wParam, LPARAM lParam)
 {
 	input.mouse_click = true;
-}
-
-bool MainWindow::mouseOffRect()
-{
-	if (input.mouse_x_pos < 0 || input.mouse_x_pos > renderer.getWidth())
-		return true;
-		
-	if (input.mouse_y_pos < 0 || input.mouse_y_pos > renderer.getHeight())
-		return true;
-
-	return false;
 }
 
 void MainWindow::setHDC()

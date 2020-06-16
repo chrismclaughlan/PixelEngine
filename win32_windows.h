@@ -20,9 +20,9 @@ protected:
 	PCWSTR window_name = L"MainWindow";  // default name -> change
 	PCWSTR class_name = L"MainWindow class";
 	HDC hdc;
-	input::Input input;
-	render::Render renderer;
-	Performance performance;
+	input::Input input = {};
+	render::Render renderer = {};
+	Performance performance = {};
 	bool is_running = true;
 	bool hide_cursor = false;
 
@@ -37,8 +37,6 @@ protected:
 	void handleMouseMove(WPARAM, LPARAM);
 	void handleMouseLeftButtonUp(WPARAM, LPARAM);
 	void handleMouseLeftButtonDown(WPARAM, LPARAM);
-
-	bool mouseOffRect();
 
 public:
 	LRESULT HandleMessage(UINT, WPARAM, LPARAM);

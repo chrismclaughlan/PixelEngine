@@ -13,7 +13,7 @@ int32 WINAPI wWinMain
 {
 	GameWindow gameWindow;
 
-	if (!gameWindow.create(WINDOW_NAME, WS_OVERLAPPEDWINDOW, true))
+	if (!gameWindow.create(WINDOW_NAME, NO_WINDOW_RESIZING, false))
 	{
 		return 0;
 	}
