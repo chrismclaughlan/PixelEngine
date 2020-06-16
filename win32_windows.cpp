@@ -4,8 +4,6 @@
 #include "types.h"
 #include "input.h"
 
-#define HIDE_CURSOR true
-
 namespace win32
 {
 LRESULT MainWindow::HandleMessage
@@ -15,7 +13,7 @@ LRESULT MainWindow::HandleMessage
 	{
 	case WM_CREATE:
 	{
-		if (HIDE_CURSOR) ShowCursor(false);
+		if (hide_cursor) ShowCursor(false);
 		return 0;
 	} break;
 
@@ -27,9 +25,11 @@ LRESULT MainWindow::HandleMessage
 	}
 	case WM_CLOSE:
 	{
+		if (hide_cursor) ShowCursor(true);
 		if (shouldClose())
 			DestroyWindow(m_hwnd);
 		else
+			if (hide_cursor) ShowCursor(false);
 			return 0;
 	} break;
 
@@ -48,6 +48,14 @@ LRESULT MainWindow::HandleMessage
 	case WM_MOUSEMOVE:
 	{
 		handleMouseMove(wParam, lParam);
+		if (mouseOffRect())
+		{
+			ShowCursor(true);
+		}
+		else if(hide_cursor)
+		{
+			ShowCursor(false);
+		}
 	} break;
 	case WM_LBUTTONUP:  // nessessary
 	{
@@ -69,14 +77,10 @@ void MainWindow::handleDestory()
 
 bool MainWindow::shouldClose()
 {
-	bool should_close = false;
-
-	if (HIDE_CURSOR) ShowCursor(true);
 	if (MessageBox(m_hwnd, L"Really quit?", window_name, MB_OKCANCEL) == IDOK)
-		should_close = true;
+		return true;
 
-	if (HIDE_CURSOR) ShowCursor(false);
-	return should_close;
+	return false;
 }
 
 void MainWindow::handleKeyDown(WPARAM wParam, LPARAM lParam)
@@ -108,6 +112,17 @@ void MainWindow::handleMouseLeftButtonDown(WPARAM wParam, LPARAM lParam)
 	input.mouse_click = true;
 }
 
+bool MainWindow::mouseOffRect()
+{
+	if (input.mouse_x_pos < 0 || input.mouse_x_pos > renderer.getWidth())
+		return true;
+		
+	if (input.mouse_y_pos < 0 || input.mouse_y_pos > renderer.getHeight())
+		return true;
+
+	return false;
+}
+
 void MainWindow::setHDC()
 {
 	if (!hdc) hdc = GetDC(m_hwnd);
@@ -126,13 +141,19 @@ void MainWindow::initFPS()
 	}
 }
 
-// Business methods //
-
-void MainWindow::init()
+BOOL MainWindow::create
+(PCWSTR lpWindowName, DWORD dwStyle, bool hideCursor, DWORD dwExStyle, 
+	int x, int y, int nWidth, int nHeight, HWND hWndParent, HMENU hMenu)
 {
-	setHDC();
+	hide_cursor = hideCursor;
+	BOOL result = Create(lpWindowName, dwStyle, dwExStyle, x, y, nWidth, nHeight, hWndParent, hMenu);
+	// After Create()
 	initFPS();
+	setHDC();
+	return result;
 }
+
+// Business methods //
 
 void MainWindow::render()
 {

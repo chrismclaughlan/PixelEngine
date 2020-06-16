@@ -33,15 +33,13 @@
     <ClCompile Include="win32_windows.cpp">
       <Filter>Win32\source</Filter>
     </ClCompile>
-    <ClCompile Include="win32_main.cpp">
-      <Filter>Win32\source</Filter>
-    </ClCompile>
     <ClCompile Include="render.cpp">
       <Filter>Render\source</Filter>
     </ClCompile>
     <ClCompile Include="input.cpp">
       <Filter>Input\source</Filter>
     </ClCompile>
+    <ClCompile Include="win32_main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="win32_windows.h">
@@ -57,7 +55,7 @@
     <ClInclude Include="input.h">
       <Filter>Input\include</Filter>
     </ClInclude>
-    <ClInclude Include="instance.h" />
+    <ClInclude Include="game.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md" />

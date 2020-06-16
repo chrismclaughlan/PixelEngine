@@ -6,9 +6,9 @@ input.buttons[b].has_changed = new_is_down != input.buttons[b].is_down;\
 input.buttons[b].is_down = new_is_down;\
 } break;\
 
-#define is_down(b) (W_input->buttons[b].is_down)
-#define pressed(b) (W_input->buttons[b].is_down && W_input->buttons[b].has_changed)
-#define released(b) (!W_input->buttons[b].is_down && W_input->buttons[b].has_changed)
+#define is_down(b) (input.buttons[b].is_down)
+#define pressed(b) (input.buttons[b].is_down && input.buttons[b].has_changed)
+#define released(b) (!input.buttons[b].is_down && input.buttons[b].has_changed)
 
 namespace input
 {

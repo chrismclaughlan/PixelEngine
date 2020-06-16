@@ -24,6 +24,7 @@ protected:
 	render::Render renderer;
 	Performance performance;
 	bool is_running = true;
+	bool hide_cursor = false;
 
 	void initFPS();
 	void setHDC();
@@ -37,44 +38,17 @@ protected:
 	void handleMouseLeftButtonUp(WPARAM, LPARAM);
 	void handleMouseLeftButtonDown(WPARAM, LPARAM);
 
+	bool mouseOffRect();
+
 public:
 	LRESULT HandleMessage(UINT, WPARAM, LPARAM);
 	PCWSTR ClassName() const { return class_name; }
-	void setClassName(PCWSTR nclass_name) { class_name = nclass_name; }
+	void setClassName(PCWSTR name) { class_name = name; }
 
-	// Business methods //
-	void init();
-	void render();
-	void updateFPS();
-	bool isRunning();
-	void resetButtons();
-};
-
-template <class T>
-class PrimaryWindow : public MainWindow
-{
-private:
-	T* business_class;
-
-	void handleDestory()
-	{
-		MainWindow::handleDestory();
-		delete business_class;
-	}
-
-public:
-	PrimaryWindow(PCWSTR nwindow_name, PCWSTR nclass_name)
-	{
-		MainWindow::MainWindow();
-		window_name = nwindow_name;
-		class_name = nclass_name;
-		business_class = nullptr;
-	}
-
-
-	BOOL Create(
+	BOOL create(
 		PCWSTR lpWindowName,
 		DWORD dwStyle,
+		bool hideCursor = false,  // added param
 		DWORD dwExStyle = 0,
 		int x = CW_USEDEFAULT,
 		int y = CW_USEDEFAULT,
@@ -82,18 +56,12 @@ public:
 		int nHeight = CW_USEDEFAULT,
 		HWND hWndParent = 0,
 		HMENU hMenu = 0
-		)
-	{
-		BOOL result;
-		result = MainWindow::Create(lpWindowName, dwStyle, dwExStyle, x, y, nWidth, nHeight, hWndParent, hMenu);
-		MainWindow::init();
-		business_class = new T(&is_running , &performance, &renderer, &input);
-		return result;
-	}
+		);
 
-	void simulate()
-	{
-		business_class->simulate();
-	}
+	// Business methods //
+	void render();
+	void updateFPS();
+	bool isRunning();
+	void resetButtons();
 };
 }  // namespace win32
