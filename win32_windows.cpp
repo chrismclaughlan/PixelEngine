@@ -4,57 +4,60 @@
 #include "types.h"
 #include "input.h"
 
+#define HIDE_CURSOR true
+
 namespace win32
 {
-	LRESULT MainWindow::HandleMessage
-	(UINT uMsg, WPARAM wParam, LPARAM lParam)
+LRESULT MainWindow::HandleMessage
+(UINT uMsg, WPARAM wParam, LPARAM lParam)
+{
+	switch (uMsg)
 	{
-		switch (uMsg)
-		{
-		case WM_DESTROY:
-		{
-			handleDestory();
-			PostQuitMessage(0);
+	case WM_CREATE:
+	{
+		if (HIDE_CURSOR) ShowCursor(false);
+		return 0;
+	} break;
+
+	case WM_DESTROY:
+	{
+		handleDestory();
+		PostQuitMessage(0);
+		return 0;
+	}
+	case WM_CLOSE:
+	{
+		if (shouldClose())
+			DestroyWindow(m_hwnd);
+		else
 			return 0;
-		}
+	} break;
 
-		case WM_CLOSE:
-		{
-			if (shouldClose())
-			{
-				DestroyWindow(m_hwnd);
-			}
-			else
-				return 0;
-		} break;
+	case WM_SIZE:
+	{
+		RECT rect;
+		GetClientRect(m_hwnd, &rect);
+		renderer.sizeChangeWin32(&rect);
+	} break;
 
-		case WM_SIZE:
-		{
-			RECT rect;
-			GetClientRect(m_hwnd, &rect);
-			renderer.sizeChangeWin32(&rect);
-		} break;
-
-		case WM_KEYUP:  // nessessary
-		case WM_KEYDOWN:
-		{
-			handleKeyDown(wParam, lParam);
-		} break;
-		case WM_MOUSEMOVE:
-		{
-			handleMouseMove(wParam, lParam);
-		} break;
-		case WM_LBUTTONUP:  // nessessary
-		{
-			input.mouse_click = false;
-			handleMouseLeftButtonUp(wParam, lParam);
-		} break;
-		case WM_LBUTTONDOWN:
-		{
-			input.mouse_click = true;
-			handleMouseLeftButtonDown(wParam, lParam);
-		} break;
-		}
+	case WM_KEYUP:  // nessessary
+	case WM_KEYDOWN:
+	{
+		handleKeyDown(wParam, lParam);
+	} break;
+	case WM_MOUSEMOVE:
+	{
+		handleMouseMove(wParam, lParam);
+	} break;
+	case WM_LBUTTONUP:  // nessessary
+	{
+		handleMouseLeftButtonUp(wParam, lParam);
+	} break;
+	case WM_LBUTTONDOWN:
+	{
+		handleMouseLeftButtonDown(wParam, lParam);
+	} break;
+	}
 
 	return DefWindowProc(m_hwnd, uMsg, wParam, lParam);
 }
@@ -66,10 +69,14 @@ void MainWindow::handleDestory()
 
 bool MainWindow::shouldClose()
 {
-	if (MessageBox(m_hwnd, L"Really quit?", window_name, MB_OKCANCEL) == IDOK)
-		return true;
+	bool should_close = false;
 
-	return false;
+	if (HIDE_CURSOR) ShowCursor(true);
+	if (MessageBox(m_hwnd, L"Really quit?", window_name, MB_OKCANCEL) == IDOK)
+		should_close = true;
+
+	if (HIDE_CURSOR) ShowCursor(false);
+	return should_close;
 }
 
 void MainWindow::handleKeyDown(WPARAM wParam, LPARAM lParam)
@@ -88,39 +95,16 @@ void MainWindow::handleKeyDown(WPARAM wParam, LPARAM lParam)
 void MainWindow::handleMouseMove(WPARAM wParam, LPARAM lParam)
 {
 	input.mouse_x_pos = GET_X_LPARAM(lParam);
-	// invert y_pos
 	input.mouse_y_pos = -(GET_Y_LPARAM(lParam) - renderer.getHeight());
 }
 
 void MainWindow::handleMouseLeftButtonUp(WPARAM wParam, LPARAM lParam)
 {
-	//int32 x = GET_X_LPARAM(lParam);
-	//int32 y = GET_Y_LPARAM(lParam);
-
-	//input.mouse_dragging = false;
 	input.mouse_click = false;
-
-	//ReleaseCapture();
 }
 
 void MainWindow::handleMouseLeftButtonDown(WPARAM wParam, LPARAM lParam)
 {
-	//SetCapture(m_hwnd);
-
-	//int32 x = GET_X_LPARAM(lParam);
-	//int32 y = GET_Y_LPARAM(lParam);
-
-	//POINT pt = { x, y };
-	//if (DragDetect(m_hwnd, pt))
-	//{
-	//	// Start dragging
-	//	input.mouse_dragging = true;
-	//}
-	//else
-	//{
-	//	input.mouse_dragging = false;
-	//}
-
 	input.mouse_click = true;
 }
 
