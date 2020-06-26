@@ -8,20 +8,6 @@ namespace render
 const float DEFAULT_SCALE_X = 16;
 const float DEFAULT_SCALE_Y = 9;
 
-//struct Point
-//{
-//	int32 x;
-//	int32 y;
-//	//uint32 colour;
-//};
-//
-//struct PolygonV3
-//{
-//	//int32 x[3];
-//	//int32 y[3];
-//	Point points[3];
-//};
-
 struct RenderState
 {
 	int32 width;
@@ -50,40 +36,19 @@ public:
 	void sizeChangeWin32(RECT*);
 
 	inline void Clamp(int32, int32*, int32);
+	inline void Clamp(float, float*, float);
 	inline void ScaleX(float*);
 	inline void ScaleY(float*);
 
-	// Business methods //
+	float pxToScreenX(int32 a);  // inline
+	float pxToScreenY(int32 a);  // inline
+	int32 screenToPxX(float a);  // inline
+	int32 screenToPxY(float a);  // inline
 
-	void DrawGrid(float, float);
-	void DrawGridV2(float, float);
-
-	void ClearScreen(uint32);
-
-	// Point
-	inline void DrawPointP(int32, int32, uint32);
-	void DrawPoint(float, float, uint32);
-
-	// Line
-	void DrawLineP(int32, int32, int32, int32, uint32);
-	void DrawLine(float, float, float, float, uint32);
-	//inline static std::vector<Point> ReturnLine(Point, Point);
-	//static std::vector<Point> ReturnLine(int32, int32, int32, int32);
-	//void DrawPolygon(PolygonV3);
-
-	// Rectangle
-	void DrawRectP(int32, int32, int32, int32, uint32);
-	void DrawRect(float, float, float, float, uint32);
-	void DrawRectOutlineP(int32, int32, int32, int32, uint32, int32);
-	void DrawRectOutline(float, float, float, float, uint32, float);
-	void DrawRectOutlineCentreP(int32, int32, int32, int32, uint32, float);
-	void DrawRectOutlineCentre(float, float, float, float, uint32, float);
-
-	// Circle
-	void DrawCircleP(int32, int32, int32, uint32);
-
-	// Triangle
-	//void DrawTriangleP(int32, int32, int32, int32, uint32);
-	//void DrawTriangle(float, float, float, float, uint32);
+public:
+	void ClearScreen(uint32 colour);
+	void DrawPoint(float x, float y, uint32 colour);
+	void DrawRectP(int32 x1, int32 y1, int32 x2, int32 y2, uint32 colour);
+	void DrawRect(float x, float y, float w, float h, uint32 colour);
 };
 }  // namespace render

@@ -57,12 +57,6 @@ protected:
 	void handleMouseLeftButtonUp(WPARAM, LPARAM);
 	void handleMouseLeftButtonDown(WPARAM, LPARAM);
 
-protected:
-	float pxToScreenX(int32 a);
-	float pxToScreenY(int32 a);
-	int32 screenToPxX(float a);
-	int32 screenToPxY(float a);
-
 public:
 	LRESULT HandleMessage(UINT, WPARAM, LPARAM);
 	PCWSTR ClassName() const { return class_name; }
