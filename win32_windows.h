@@ -40,7 +40,7 @@ protected:
 	PCWSTR class_name = L"MainWindow class";
 	HDC hdc;
 	input::Input input = {};
-	render::Render renderer = {};
+	render::Render rend = {};
 	Performance performance = {};
 	bool is_running = true;
 	bool hide_cursor = false;

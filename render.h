@@ -35,8 +35,8 @@ public:
 	RenderState* getRenderState() { return &state; }
 	void sizeChangeWin32(RECT*);
 
-	inline void Clamp(int32, int32*, int32);
-	inline void Clamp(float, float*, float);
+	static void Clamp(int32, int32*, int32);  // inline
+	static void Clamp(float, float*, float);  // inline
 	inline void ScaleX(float*);
 	inline void ScaleY(float*);
 

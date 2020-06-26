@@ -40,6 +40,7 @@
       <Filter>Input\source</Filter>
     </ClCompile>
     <ClCompile Include="win32_main.cpp" />
+    <ClCompile Include="demo.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="win32_windows.h">
@@ -55,7 +56,7 @@
     <ClInclude Include="input.h">
       <Filter>Input\include</Filter>
     </ClInclude>
-    <ClInclude Include="game.h" />
+    <ClInclude Include="demo.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md" />

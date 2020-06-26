@@ -139,6 +139,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="demo.cpp" />
     <ClCompile Include="input.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
@@ -151,7 +152,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="input.h" />
-    <ClInclude Include="game.h" />
+    <ClInclude Include="demo.h" />
     <ClInclude Include="render.h" />
     <ClInclude Include="types.h" />
     <ClInclude Include="win32_basewindow.h" />

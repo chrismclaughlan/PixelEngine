@@ -61,13 +61,13 @@ void Render::sizeChangeWin32(RECT* rect)
 	calculate_scales();
 }
 
-inline void Render::Clamp(int32 min, int32* val, int32 max)
+void Render::Clamp(int32 min, int32* val, int32 max)
 {
 	if (*val < min) *val = min;
 	else if (*val > max) *val = max;
 }
 
-inline void Render::Clamp(float min, float* val, float max)
+void Render::Clamp(float min, float* val, float max)
 {
 	if (*val < min) *val = min;
 	else if (*val > max) *val = max;

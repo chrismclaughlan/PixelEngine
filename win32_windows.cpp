@@ -44,7 +44,7 @@ LRESULT MainWindow::HandleMessage
 	{
 		RECT rect;
 		GetClientRect(m_hwnd, &rect);
-		renderer.sizeChangeWin32(&rect);
+		rend.sizeChangeWin32(&rect);
 	} break;
 
 	case WM_KEYUP:  // nessessary
@@ -100,7 +100,7 @@ void MainWindow::handleKeyDown(WPARAM wParam, LPARAM lParam)
 void MainWindow::handleMouseMove(WPARAM wParam, LPARAM lParam)
 {
 	input.mouse_x_pos = GET_X_LPARAM(lParam);
-	input.mouse_y_pos = -(GET_Y_LPARAM(lParam) - renderer.getHeight());
+	input.mouse_y_pos = -(GET_Y_LPARAM(lParam) - rend.getHeight());
 }
 
 void MainWindow::handleMouseLeftButtonUp(WPARAM wParam, LPARAM lParam)
@@ -149,7 +149,7 @@ void MainWindow::initFPS()
 
 void MainWindow::render()
 {
-	render::RenderState* render_state = renderer.getRenderState();
+	render::RenderState* render_state = rend.getRenderState();
 	StretchDIBits(hdc, 0, 0, render_state->width, render_state->height, 0, 0,
 		render_state->width, render_state->height, render_state->memory,
 		&render_state->bitmapinfo, DIB_RGB_COLORS, SRCCOPY);
