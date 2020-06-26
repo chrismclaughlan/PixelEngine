@@ -11,22 +11,10 @@ inline const std::wstring CharToWString(const std::string str)
 	return wstr;
 }
 
-struct Coordinate
-{
-	float x;
-	float y;
-};
-
 enum Type
 {
 	Empty = 0x000000,
 	Sand = 0xc2b280,
-};
-
-struct Tile
-{
-	Coordinate coord;	// bottom left screen coord of 0.1f by 0.1f tile
-	Type type = Sand;	// details behaviour and contains colour of tile
 };
 
 class DemoWindow :public win32::MainWindow
@@ -47,22 +35,24 @@ public:
 			lpWindowName, dwStyle, hideCursor, dwExStyle, 
 			x, y, nWidth, nHeight, hWndParent, hMenu)
 	{
-		for (float j = -1.0; j < 1.0; j += 0.1)
+		for (int32 j = 0; j < 20; j++)
 		{
-			for (float i = -1.0; i < 1.0; i += 0.1)
+			for (int32 i = 0; i < 20; i++)
 			{
-				Coordinate coords = { i, j };
-				Tile tile = { coords, Empty };
-				tiles.push_back(tile);
+				grid[j][i] = Empty;
 			}
 		}
+	}
+	~DemoWindow()
+	{
+		MainWindow::~MainWindow();
 	}
 	void run();
 
 private:
-	std::vector<Tile> tiles;
-	bool containsTile(float x, float y);
+	uint32 grid[20][20];
 	
 private:
-	void resetTiles();
+	void clearParticles();
+	bool containsParticle(int32 x, int32 y);
 };
