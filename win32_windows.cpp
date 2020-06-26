@@ -129,17 +129,17 @@ void MainWindow::initFPS()
 	}
 }
 
-BOOL MainWindow::create
-(PCWSTR lpWindowName, DWORD dwStyle, bool hideCursor, DWORD dwExStyle, 
-	int x, int y, int nWidth, int nHeight, HWND hWndParent, HMENU hMenu)
-{
-	hide_cursor = hideCursor;
-	BOOL result = Create(lpWindowName, dwStyle, dwExStyle, x, y, nWidth, nHeight, hWndParent, hMenu);
-	// After Create()
-	initFPS();
-	setHDC();
-	return result;
-}
+//BOOL MainWindow::create
+//(PCWSTR lpWindowName, DWORD dwStyle, bool hideCursor, DWORD dwExStyle, 
+//	int x, int y, int nWidth, int nHeight, HWND hWndParent, HMENU hMenu)
+//{
+//	hide_cursor = hideCursor;
+//	BOOL result = Create(lpWindowName, dwStyle, dwExStyle, x, y, nWidth, nHeight, hWndParent, hMenu);
+//	// After Create()
+//	initFPS();
+//	setHDC();
+//	return result;
+//}
 
 // Business methods //
 

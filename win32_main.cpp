@@ -6,17 +6,12 @@
 
 #define NO_WINDOW_RESIZING (WS_OVERLAPPEDWINDOW ^ WS_THICKFRAME)
 
-const wchar_t WINDOW_NAME[] = L"Game Window";
+PCWSTR WINDOW_NAME = L"Game Window";
 
 int32 WINAPI wWinMain
 (HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine, int32 nCmdShow)
 {
-	GameWindow gameWindow;
-
-	if (!gameWindow.create(WINDOW_NAME, NO_WINDOW_RESIZING, false))
-	{
-		return 0;
-	}
+	GameWindow gameWindow(WINDOW_NAME, (DWORD)NO_WINDOW_RESIZING);
 
 	ShowWindow(gameWindow.Window(), nCmdShow);
 

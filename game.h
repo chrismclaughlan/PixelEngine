@@ -4,6 +4,22 @@
 class GameWindow :public win32::MainWindow
 {
 public:
+	GameWindow(
+		PCWSTR lpWindowName,
+		DWORD dwStyle,
+		bool hideCursor = false,  // added param
+		DWORD dwExStyle = 0,
+		int x = CW_USEDEFAULT,
+		int y = CW_USEDEFAULT,
+		int nWidth = CW_USEDEFAULT,
+		int nHeight = CW_USEDEFAULT,
+		HWND hWndParent = 0,
+		HMENU hMenu = 0
+		) : win32::MainWindow::MainWindow(
+			lpWindowName, dwStyle, hideCursor, dwExStyle, 
+			x, y, nWidth, nHeight, hWndParent, hMenu)
+	{}
+public:
 	void run()
 	{
 		// demo visuals
