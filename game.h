@@ -51,9 +51,15 @@ public:
 		if (input.mouse_click)
 		{
 			renderer.DrawCircleP(input.mouse_x_pos, input.mouse_y_pos, 30, 0xff0000);
-			std::string x = std::to_string(input.mouse_x_pos);
-			std::string y = std::to_string(input.mouse_y_pos);
-			std::string format = "x: " + x + " y: " + y;
+			std::string x1 = std::to_string(input.mouse_x_pos);
+			std::string y1 = std::to_string(input.mouse_y_pos);
+			std::string formatPx = "Px x: " + x1 + " y: " + y1;
+			float x = pxToScreenX(input.mouse_x_pos);
+			float y = pxToScreenY(input.mouse_y_pos);
+			std::string x2 = std::to_string(x);
+			std::string y2 = std::to_string(y);
+			std::string formatSc = " Sc x: " + x2 + " y: " + y2;
+			std::string format = formatPx + formatSc;
 			BOOL result = SetWindowTextW(m_hwnd, CharToWString(format).c_str());
 		}
 		else

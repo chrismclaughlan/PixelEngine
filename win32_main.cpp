@@ -11,7 +11,7 @@ PCWSTR WINDOW_NAME = L"Game Window";
 int32 WINAPI wWinMain
 (HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine, int32 nCmdShow)
 {
-	GameWindow gameWindow(WINDOW_NAME, (DWORD)NO_WINDOW_RESIZING);
+	GameWindow gameWindow(WINDOW_NAME, (DWORD)WS_OVERLAPPEDWINDOW);
 
 	ShowWindow(gameWindow.Window(), nCmdShow);
 

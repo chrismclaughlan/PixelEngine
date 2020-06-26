@@ -115,6 +115,30 @@ void MainWindow::handleMouseLeftButtonDown(WPARAM wParam, LPARAM lParam)
 	input.mouse_click = true;
 }
 
+// -1.0f <> 1.0f
+float MainWindow::pxToScreenX(int32 x)
+{
+	return ((2.0f * x) / renderer.getWidth()) - 1.0f;
+}
+
+// -1.0f <> 1.0f
+float MainWindow::pxToScreenY(int32 y)
+{
+	return ((2.0f * y) / renderer.getHeight()) - 1.0f;
+}
+
+// 0 <> screenWidth
+int32 MainWindow::screenToPxX(float x)
+{
+	return (x + 1.0f) * (renderer.getWidth() / 2.0f);
+}
+
+// 0 <> screenHeight
+int32 MainWindow::screenToPxY(float y)
+{
+	return (y + 1.0f) * (renderer.getHeight() / 2.0f);
+}
+
 void MainWindow::setHDC()
 {
 	if (!hdc) hdc = GetDC(m_hwnd);
