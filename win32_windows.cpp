@@ -76,6 +76,8 @@ void MainWindow::handleDestory()
 
 bool MainWindow::shouldClose()
 {
+	return true;  // temp
+
 	if (MessageBox(m_hwnd, L"Really quit?", window_name, MB_OKCANCEL) == IDOK)
 		return true;
 
@@ -103,11 +105,13 @@ void MainWindow::handleMouseMove(WPARAM wParam, LPARAM lParam)
 
 void MainWindow::handleMouseLeftButtonUp(WPARAM wParam, LPARAM lParam)
 {
+	ReleaseCapture();
 	input.mouse_click = false;
 }
 
 void MainWindow::handleMouseLeftButtonDown(WPARAM wParam, LPARAM lParam)
 {
+	SetCapture(m_hwnd);
 	input.mouse_click = true;
 }
 

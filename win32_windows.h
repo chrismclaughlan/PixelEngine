@@ -57,23 +57,12 @@ protected:
 	void handleMouseLeftButtonUp(WPARAM, LPARAM);
 	void handleMouseLeftButtonDown(WPARAM, LPARAM);
 
+protected:
+
 public:
 	LRESULT HandleMessage(UINT, WPARAM, LPARAM);
 	PCWSTR ClassName() const { return class_name; }
 	void setClassName(PCWSTR name) { class_name = name; }
-
-	//BOOL create(
-	//	PCWSTR lpWindowName,
-	//	DWORD dwStyle,
-	//	bool hideCursor = false,  // added param
-	//	DWORD dwExStyle = 0,
-	//	int x = CW_USEDEFAULT,
-	//	int y = CW_USEDEFAULT,
-	//	int nWidth = CW_USEDEFAULT,
-	//	int nHeight = CW_USEDEFAULT,
-	//	HWND hWndParent = 0,
-	//	HMENU hMenu = 0
-	//	);
 
 	// Business methods //
 	void render();

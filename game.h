@@ -1,5 +1,13 @@
 #pragma once
 #include "win32_windows.h"
+#include <string>
+
+inline const std::wstring CharToWString(const std::string str)
+{
+	//const std::string str(c);
+	const std::wstring wstr = std::wstring(str.begin(), str.end());
+	return wstr;
+}
 
 class GameWindow :public win32::MainWindow
 {
@@ -37,10 +45,20 @@ public:
 		renderer.ClearScreen(colour);
 		renderer.DrawGridV2(100, 100);
 		renderer.DrawCircleP(100, 100, 50, 0xffffff);
+		renderer.DrawCircleP(input.mouse_x_pos, input.mouse_y_pos, 20, 0xff0000);
 
 		// Draw circle where cursor is
 		if (input.mouse_click)
+		{
 			renderer.DrawCircleP(input.mouse_x_pos, input.mouse_y_pos, 30, 0xff0000);
-		renderer.DrawCircleP(input.mouse_x_pos, input.mouse_y_pos, 20, 0xff0000);
+			std::string x = std::to_string(input.mouse_x_pos);
+			std::string y = std::to_string(input.mouse_y_pos);
+			std::string format = "x: " + x + " y: " + y;
+			BOOL result = SetWindowTextW(m_hwnd, CharToWString(format).c_str());
+		}
+		else
+		{
+			BOOL result = SetWindowTextW(m_hwnd, CharToWString("goodbye").c_str());
+		}
 	}
 };
