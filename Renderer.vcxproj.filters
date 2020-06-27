@@ -57,6 +57,7 @@
       <Filter>Input\include</Filter>
     </ClInclude>
     <ClInclude Include="demo.h" />
+    <ClInclude Include="performance.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md" />

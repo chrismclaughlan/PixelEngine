@@ -56,6 +56,8 @@ protected:
 	void handleMouseMove(WPARAM, LPARAM);
 	void handleMouseLeftButtonUp(WPARAM, LPARAM);
 	void handleMouseLeftButtonDown(WPARAM, LPARAM);
+	void handleMouseRightButtonUp(WPARAM, LPARAM);
+	void handleMouseRightButtonDown(WPARAM, LPARAM);
 
 public:
 	LRESULT HandleMessage(UINT, WPARAM, LPARAM);

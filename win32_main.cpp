@@ -10,7 +10,7 @@ int32 WINAPI wWinMain
 (HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine, int32 nCmdShow)
 {
 	DemoWindow demoWindow(
-		L"Demo Window", NO_WINDOW_RESIZING, 100, false, 0,
+		L"Demo Window", NO_WINDOW_RESIZING, 200, false, 0,
 		CW_USEDEFAULT, CW_USEDEFAULT, 800, 800
 		);
 

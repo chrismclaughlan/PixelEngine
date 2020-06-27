@@ -64,6 +64,14 @@ LRESULT MainWindow::HandleMessage
 	{
 		handleMouseLeftButtonDown(wParam, lParam);
 	} break;
+	case WM_RBUTTONUP:
+	{
+		handleMouseRightButtonUp(wParam, lParam);
+	} break;
+	case WM_RBUTTONDOWN:
+	{
+		handleMouseRightButtonDown(wParam, lParam);
+	} break;
 	}
 
 	return DefWindowProc(m_hwnd, uMsg, wParam, lParam);
@@ -106,13 +114,25 @@ void MainWindow::handleMouseMove(WPARAM wParam, LPARAM lParam)
 void MainWindow::handleMouseLeftButtonUp(WPARAM wParam, LPARAM lParam)
 {
 	ReleaseCapture();
-	input.mouse_click = false;
+	input.left_click = false;
 }
 
 void MainWindow::handleMouseLeftButtonDown(WPARAM wParam, LPARAM lParam)
 {
 	SetCapture(m_hwnd);
-	input.mouse_click = true;
+	input.left_click = true;
+}
+
+void MainWindow::handleMouseRightButtonUp(WPARAM wParam, LPARAM lParam)
+{
+	ReleaseCapture();
+	input.right_click = false;
+}
+
+void MainWindow::handleMouseRightButtonDown(WPARAM wParam, LPARAM lParam)
+{
+	SetCapture(m_hwnd);
+	input.right_click = true;
 }
 
 void MainWindow::setHDC()

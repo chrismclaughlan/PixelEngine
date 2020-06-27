@@ -1,6 +1,7 @@
 #pragma once
 #include "win32_windows.h"
 #include "render.h"
+#include "performance.h"
 #include <string>
 #include <vector>
 
@@ -11,15 +12,13 @@ inline const std::wstring CharToWString(const std::string str)
 	return wstr;
 }
 
-//const uint8 Empty = 0x10000000;
-//const uint8 Sand = 0x01000000;
-
 namespace State
 {
 	enum Value : uint8
 	{
 		Empty	= 1 << 1,
 		Sand	= 1 << 2,
+		Water	= 1 << 3,
 	};
 }
 
@@ -62,9 +61,13 @@ public:
 private:
 	const int32 gridSize;
 	uint8* grid;
-
+	FPS fps;
 	
 private:
+	void checkLeft();
+	void checkRight();
+	void UpdateParticles();
 	void clearParticles();
-	bool containsParticle(int32 x, int32 y);
+	bool inline emptyParticle(int32 x, int32 y);
+	bool inline containsParticle(int32 x, int32 y, State::Value val);
 };

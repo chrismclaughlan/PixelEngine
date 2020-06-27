@@ -14,7 +14,7 @@ a = (a / (gridSize/2)) - 1;\
 
 void DemoWindow::run()
 {
-	/* ------------------ Input ------------------ */
+	/* ----------------------- Input ----------------------- */
 
 	// demo visuals
 	if (released(input::BUTTON_ESCAPE))
@@ -23,10 +23,11 @@ void DemoWindow::run()
 		rend.ClearScreen(0x000000);
 	}
 
-	/* ------------------ Simulate ------------------ */
+	/* ----------------------- Simulate ----------------------- */
 
-	// Draw circle where cursor is
-	if (input.mouse_click)
+	UpdateParticles();
+
+	if (input.left_click)
 	{
 		// Debug
 		//std::string x1 = std::to_string(input.mouse_x_pos);
@@ -44,79 +45,28 @@ void DemoWindow::run()
 		// Get mouse coords
 		float _x = rend.pxToScreenX(input.mouse_x_pos);
 		float _y = rend.pxToScreenY(input.mouse_y_pos);
-		// Debug
-		std::string _xstr = std::to_string(_x);
-		std::string _ystr = std::to_string(_y);
-		SetWindowTextW(m_hwnd, CharToWString(_xstr + " " + _ystr).c_str());
-
 		ConvertToTileCoord(_x);
 		ConvertToTileCoord(_y);
-		if (!containsParticle(_x, _y))
+		if (emptyParticle(_x, _y))
 		{
-			assert(_x >= 0 && _x < gridSize);
-			assert(_y >= 0 && _y < gridSize);
 			grid[(int32)_x + ((int32)_y * gridSize)] = State::Value::Sand;
 		}
 	}
-	else
+	else if (input.right_click)
 	{
-		std::string format = "goodbye";
-		SetWindowTextW(m_hwnd, CharToWString(format).c_str());
-	}
-
-	// Update tile positions
-	for (int32 j = 0; j < gridSize; j++)
-	{
-		for (int32 i = 0; i < gridSize; i++)
+		// Get mouse coords
+		float _x = rend.pxToScreenX(input.mouse_x_pos);
+		float _y = rend.pxToScreenY(input.mouse_y_pos);
+		ConvertToTileCoord(_x);
+		ConvertToTileCoord(_y);
+		if (emptyParticle(_x, _y))
 		{
-			if (grid[i + (j * gridSize)] & State::Value::Empty)
-			{
-				continue;
-			}
-			else
-			{
-				// Check below
-				if (j - 1 >= 0)
-				{
-					if (grid[i + ((j - 1) * gridSize)] & State::Value::Empty)
-					{
-						// Move here
-						grid[i + ((j - 1) * gridSize)] = grid[i + (j * gridSize)];
-						grid[i + (j * gridSize)] = State::Value::Empty;
-						continue;
-					}
-					if (i > 0)
-					{
-						// check bottom left
-						if (grid[(i - 1) + ((j - 1) * gridSize)] & State::Value::Empty)
-						{
-							//if (!(grid[(i - 1) + ((j - 1) * gridSize)] & updateMask))
-							//	continue;
-							// Move here
-							grid[(i - 1) + ((j - 1) * gridSize)] = grid[i + (j * gridSize)];
-							grid[i + (j * gridSize)] = State::Value::Empty;
-							continue;
-						}
-					}
-					if (i < gridSize - 1)
-					{
-						// check bottom right
-						if (grid[(i + 1) + ((j - 1) * gridSize)] & State::Value::Empty)
-						{
-							//if (!(grid[(i + 1) + ((j - 1) * gridSize)] & updateMask))
-							//	continue;
-							// Move here
-							grid[(i+1) + ((j-1) * gridSize)] = grid[i + (j * gridSize)];
-							grid[i + (j * gridSize)] = State::Value::Empty;
-							continue;
-						}
-					}
-				}
-			}
+			grid[(int32)_x + ((int32)_y * gridSize)] = State::Value::Water;
 		}
 	}
 
-	/* ------------------ Render ------------------ */
+	/* ----------------------- Render ----------------------- */
+
 	for (int32 j = 0; j < gridSize; j++)
 	{
 		for (int32 i = 0; i < gridSize; i++)
@@ -127,11 +77,112 @@ void DemoWindow::run()
 			ConvertToScreenCoord(_y);
 
 			uint32 colour = 0x00000000;
-			if (grid[i + (j * gridSize)] & State::Value::Sand)
+			if (containsParticle(i, j, State::Value::Sand))
 			{
 				colour = 0xc2b280;
 			}
+			else if (containsParticle(i, j, State::Value::Water))
+			{
+				colour = 0x0f5e9c;
+			}
 			rend.DrawRect(_x, _y, _x + 0.1, _y + 0.1, colour);
+		}
+	}
+
+
+	fps.Update();
+	std::string format = std::to_string(fps.getFps());
+	SetWindowTextW(m_hwnd, CharToWString("FPS: " + format).c_str());
+}
+
+void DemoWindow::UpdateParticles()
+{
+	// Flip update state
+	uint8 updateMask = performance.begin_time.QuadPart & (long)1 << 7;
+
+#define checkBottomLeft()\
+if (i > 0)\
+{\
+if (emptyParticle(i-1, j-1))\
+{\
+grid[(i - 1) + ((j - 1) * gridSize)] = grid[i + (j * gridSize)];\
+grid[i + (j * gridSize)] = State::Value::Empty;\
+continue;\
+}\
+}\
+
+#define checkBottomRight()\
+if (i < gridSize - 1)\
+{\
+if (emptyParticle(i+1, j-1))\
+{\
+grid[(i + 1) + ((j - 1) * gridSize)] = grid[i + (j * gridSize)];\
+grid[i + (j * gridSize)] = State::Value::Empty;\
+continue;\
+}\
+}\
+
+	// Update tile positions
+	for (int32 j = 0; j < gridSize; j++)
+	{
+		for (int32 i = 0; i < gridSize; i++)
+		{
+			if (emptyParticle(i, j))
+			{
+				continue;
+			}
+			else
+			{
+				// Check below
+				if (j - 1 >= 0)
+				{
+					if (emptyParticle(i, j-1))
+					{
+						// Move here
+						grid[i + ((j - 1) * gridSize)] = grid[i + (j * gridSize)];
+						grid[i + (j * gridSize)] = State::Value::Empty;
+						continue;
+					}
+
+					// Every other frame check opposite side for symmetry
+					if (updateMask)
+					{
+						checkBottomLeft();
+						checkBottomRight();
+					}
+					else
+					{
+						checkBottomRight();
+						checkBottomLeft();
+					}
+				}
+
+				if (containsParticle(i, j, State::Value::Water))
+				{
+					// Check Left
+					if ((i > 0) & (i < gridSize - 1))
+					{
+						if (emptyParticle(i - 1, j))
+						{
+							grid[(i - 1) + ((j)*gridSize)] = grid[i + (j * gridSize)];
+							grid[i + (j * gridSize)] = State::Value::Empty;
+							continue;
+						}
+						else
+						{
+							// Check Right
+							if (emptyParticle(i + 1, j))
+							{
+								grid[(i + 1) + (j * gridSize)] = grid[i + (j * gridSize)];
+								grid[i + (j * gridSize)] = State::Value::Empty;
+								continue;
+							}
+						}
+					}
+
+
+				}
+			}
 		}
 	}
 }
@@ -147,16 +198,19 @@ void DemoWindow::clearParticles()
 	}
 }
 
-bool DemoWindow::containsParticle(int32 x, int32 y)
+bool inline DemoWindow::emptyParticle(int32 x, int32 y)
 {
-	//ConvertToTileCoord(x);
-	//ConvertToTileCoord(y);
+	return containsParticle(x, y, State::Value::Empty);
+}
+
+bool inline DemoWindow::containsParticle(int32 x, int32 y, State::Value val)
+{
 	assert(x >= 0 && x < gridSize);
 	assert(y >= 0 && y < gridSize);
-	if (grid[x + (y * gridSize)] & State::Value::Empty)
+	if (grid[x + (y * gridSize)] & val)
 	{
-		return false;
+		return true;
 	}
 
-	return true;
+	return false;
 }

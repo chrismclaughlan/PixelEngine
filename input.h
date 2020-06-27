@@ -41,7 +41,8 @@ struct Input
 	ButtonState buttons[BUTTON_COUNT] = {};
 	int32 mouse_x_pos = -1;
 	int32 mouse_y_pos = -1;
-	bool mouse_click = false;
+	bool left_click = false;
+	bool right_click = false;
 	//bool mouse_dragging = false;
 };
 }  // namespace input
