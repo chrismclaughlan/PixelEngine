@@ -89,8 +89,8 @@ void DemoWindow::run()
 		}
 	}
 
-
 	fps.Update();
+	fps.LimitFps(30);
 	std::string format = std::to_string(fps.getFps());
 	SetWindowTextW(m_hwnd, CharToWString("FPS: " + format).c_str());
 }
@@ -141,6 +141,15 @@ continue;\
 						// Move here
 						grid[i + ((j - 1) * gridSize)] = grid[i + (j * gridSize)];
 						grid[i + (j * gridSize)] = State::Value::Empty;
+						continue;
+					}
+
+					if (containsParticle(i, j, State::Value::Sand) &
+						containsParticle(i, j - 1, State::Value::Water))
+					{
+						// Flip
+						grid[i + (j * gridSize)] = State::Value::Water;
+						grid[i + ((j - 1) * gridSize)] = State::Value::Sand;
 						continue;
 					}
 

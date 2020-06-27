@@ -1,6 +1,8 @@
 #pragma once
 #include <Windows.h>
 #include "types.h"
+#include <chrono>
+#include <thread>
 
 class FPS
 {
@@ -26,6 +28,16 @@ public:
 
 		QueryPerformanceFrequency(&frequency);
 		QueryPerformanceCounter(&startTime);
+	}
+
+	// Not entirely accurate
+	void LimitFps(int32 target)
+	{
+		while (getFps() > target)
+		{
+			std::this_thread::sleep_for(std::chrono::milliseconds(1000 / target));
+			QueryPerformanceCounter(&elapsedMicoseconds);
+		}
 	}
 
 	const float getFps()
