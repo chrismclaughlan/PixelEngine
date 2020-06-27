@@ -1,5 +1,5 @@
 #pragma once
-#include <Windows.h>
+#include "win32_windows.h"
 #include "types.h"
 #include <chrono>
 #include <thread>

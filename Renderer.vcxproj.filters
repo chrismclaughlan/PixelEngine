@@ -28,6 +28,18 @@
     <Filter Include="Input\source">
       <UniqueIdentifier>{7ac49b5e-c272-4e94-90b6-6cc51558abec}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resources">
+      <UniqueIdentifier>{9931726f-933d-4153-b8c9-9dcde4638e94}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Demo">
+      <UniqueIdentifier>{75a7136e-ac65-4eab-8d8f-a2e807e5dce0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Demo\include">
+      <UniqueIdentifier>{a0666dd8-e6cb-4e9f-b363-88f79973cf9e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Demo\source">
+      <UniqueIdentifier>{e6e33eaf-8f1e-48dd-91ce-d0d96488d16e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="win32_windows.cpp">
@@ -39,13 +51,14 @@
     <ClCompile Include="input.cpp">
       <Filter>Input\source</Filter>
     </ClCompile>
-    <ClCompile Include="win32_main.cpp" />
-    <ClCompile Include="demo.cpp" />
+    <ClCompile Include="win32_main.cpp">
+      <Filter>Win32\source</Filter>
+    </ClCompile>
+    <ClCompile Include="demo.cpp">
+      <Filter>Demo\source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="win32_windows.h">
-      <Filter>Win32\include</Filter>
-    </ClInclude>
     <ClInclude Include="win32_basewindow.h">
       <Filter>Win32\include</Filter>
     </ClInclude>
@@ -56,17 +69,33 @@
     <ClInclude Include="input.h">
       <Filter>Input\include</Filter>
     </ClInclude>
-    <ClInclude Include="demo.h" />
-    <ClInclude Include="performance.h" />
-    <ClInclude Include="resource.h" />
+    <ClInclude Include="resource.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="demo.h">
+      <Filter>Demo\include</Filter>
+    </ClInclude>
+    <ClInclude Include="win32_performance.h">
+      <Filter>Win32\include</Filter>
+    </ClInclude>
+    <ClInclude Include="win32_mainwindow.h">
+      <Filter>Win32\include</Filter>
+    </ClInclude>
+    <ClInclude Include="win32_windows.h">
+      <Filter>Win32\include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="resource.rc" />
+    <Image Include="AppIcon.ico">
+      <Filter>Resources</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="AppIcon.ico" />
+    <ResourceCompile Include="resource.rc">
+      <Filter>Resources</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>

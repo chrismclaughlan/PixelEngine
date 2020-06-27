@@ -153,11 +153,12 @@
   <ItemGroup>
     <ClInclude Include="input.h" />
     <ClInclude Include="demo.h" />
-    <ClInclude Include="performance.h" />
+    <ClInclude Include="win32_performance.h" />
     <ClInclude Include="render.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="types.h" />
     <ClInclude Include="win32_basewindow.h" />
+    <ClInclude Include="win32_mainwindow.h" />
     <ClInclude Include="win32_windows.h" />
   </ItemGroup>
   <ItemGroup>

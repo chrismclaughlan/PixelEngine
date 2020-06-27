@@ -1,6 +1,6 @@
-#include <windows.h>
-#include <windowsX.h>  // mouse movement
 #include "win32_windows.h"
+#include <windowsX.h>  // mouse movement
+#include "win32_mainwindow.h"
 #include "types.h"
 #include "input.h"
 

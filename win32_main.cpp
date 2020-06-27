@@ -1,5 +1,5 @@
-#include <windows.h>
 #include "win32_windows.h"
+#include "win32_mainwindow.h"
 #include "types.h"
 
 #include "demo.h"

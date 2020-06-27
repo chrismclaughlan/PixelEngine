@@ -1,64 +1,48 @@
 #pragma once
-#include <windows.h>
-#include "win32_basewindow.h"
-#include "render.h"
-#include "input.h"
+// Credit: https://github.com/planetchili/hw3d/blob/master/hw3d/ChiliWin.h
 
-namespace win32
-{
-class MainWindow :public BaseWindow<MainWindow>
-{
-protected:
-	MainWindow() = delete;
-	MainWindow(
-		PCWSTR lpWindowName,
-		DWORD dwStyle,
-		bool hideCursor = false,  // added param
-		DWORD dwExStyle = 0,
-		int x = CW_USEDEFAULT,
-		int y = CW_USEDEFAULT,
-		int nWidth = CW_USEDEFAULT,
-		int nHeight = CW_USEDEFAULT,
-		HWND hWndParent = 0,
-		HMENU hMenu = 0
-		) : BaseWindow(), hide_cursor(hideCursor)
-	{
-		Create(lpWindowName, dwStyle, dwExStyle, x, y, nWidth, nHeight, hWndParent, hMenu);
-		setHDC();
-	}
-protected:
-	PCWSTR window_name = L"MainWindow";  // default name -> change
-	PCWSTR class_name = L"MainWindow class";
-	HDC hdc;
-	input::Input input = {};
-	render::Render rend = {};
-	bool is_running = true;
-	bool hide_cursor = false;
+// target Windows 7 or later
+#define _WIN32_WINNT 0x0601
+#include <sdkddkver.h>
+// The following #defines disable a bunch of unused windows stuff. If you 
+// get weird errors when trying to do some windows stuff, try removing some
+// (or all) of these defines (it will increase build time though).
+#define WIN32_LEAN_AND_MEAN
+#define NOGDICAPMASKS
+#define NOSYSMETRICS
+#define NOMENUS
+#define NOICONS
+#define NOSYSCOMMANDS
+//#define NORASTEROPS  // SRCCOPY
+#define OEMRESOURCE
+#define NOATOM
+#define NOCLIPBOARD
+#define NOCOLOR
+#define NOCTLMGR
+#define NODRAWTEXT
+#define NOKERNEL
+#define NONLS  //
+#define NOMEMMGR
+#define NOMETAFILE
+#define NOOPENFILE
+#define NOSCROLL
+#define NOSERVICE
+#define NOSOUND
+#define NOTEXTMETRIC
+#define NOWH
+#define NOCOMM
+#define NOKANJI
+#define NOHELP
+#define NOPROFILER
+#define NODEFERWINDOWPOS
+#define NOMCX
+#define NORPC
+#define NOPROXYSTUB
+#define NOIMAGE
+#define NOTAPE
 
-	void setHDC();
+#define NOMINMAX
 
-protected:
-	void handleDestory();
-	bool shouldClose();  // returns true if window should close
-	void handleKeyDown(WPARAM, LPARAM);
-	void handleKeyUp(WPARAM, LPARAM) {}
-	void handleMouseMove(WPARAM, LPARAM);
-	void handleMouseLeftButtonUp(WPARAM, LPARAM);
-	void handleMouseLeftButtonDown(WPARAM, LPARAM);
-	void handleMouseRightButtonUp(WPARAM, LPARAM);
-	void handleMouseRightButtonDown(WPARAM, LPARAM);
+#define STRICT
 
-public:
-	LRESULT HandleMessage(UINT, WPARAM, LPARAM);
-	PCWSTR ClassName() const { return class_name; }
-	void setClassName(PCWSTR name) { class_name = name; }
-	
-	BOOL setWindowPos(int32 x, int32 y);
-	BOOL setWindowSize(int32 x, int32 y);
-
-	// Business methods //
-	void render();
-	bool isRunning();
-	void resetButtons();
-};
-}  // namespace win32
+#include <Windows.h>
