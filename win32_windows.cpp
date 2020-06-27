@@ -72,6 +72,14 @@ LRESULT MainWindow::HandleMessage
 	{
 		handleMouseRightButtonDown(wParam, lParam);
 	} break;
+	case WM_MBUTTONUP:
+	{
+		handleMiddleMouseButtonUp(wParam, lParam);
+	} break;
+	case WM_MBUTTONDOWN:
+	{
+		handleMiddleMouseButtonDown(wParam, lParam);
+	} break;
 	}
 
 	return DefWindowProc(m_hwnd, uMsg, wParam, lParam);
@@ -133,6 +141,16 @@ void MainWindow::handleMouseRightButtonDown(WPARAM wParam, LPARAM lParam)
 {
 	SetCapture(m_hwnd);
 	input.right_click = true;
+}
+
+void MainWindow::handleMiddleMouseButtonUp(WPARAM, LPARAM)
+{
+	input.middle_click = false;
+}
+
+void MainWindow::handleMiddleMouseButtonDown(WPARAM, LPARAM)
+{
+	input.middle_click = true;
 }
 
 void MainWindow::setHDC()

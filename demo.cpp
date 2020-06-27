@@ -6,7 +6,7 @@
 
 #define ConvertToTileCoord(a)\
 a = (a + 1.0) * (gridSize/2.0);\
-a = floor(a);\
+a = (int32)floor(a);\
 render::Render::Clamp(0.0, &a, (float)gridSize - 1.0);\
 
 #define ConvertToScreenCoord(a)\
@@ -14,89 +14,52 @@ a = (a / (gridSize/2)) - 1;\
 
 void DemoWindow::run()
 {
-	rend.ClearScreen(0x000000);
-
 	/* ----------------------- Input ----------------------- */
 
-	// demo visuals
 	if (released(input::BUTTON_ESCAPE))
-	{
 		clearParticles();
-		rend.ClearScreen(0x000000);
+
+	// Paint Brush
+	if (pressed(input::BUTTON_1))
+		paintBrush = State::Value::Sand;
+	else if (pressed(input::BUTTON_2))
+		paintBrush = State::Value::Water;
+
+	float paintBrushX = rend.pxToScreenX(input.mouse_x_pos);
+	float paintBrushY = rend.pxToScreenY(input.mouse_y_pos);
+	ConvertToTileCoord(paintBrushX);
+	ConvertToTileCoord(paintBrushY);
+
+	if (input.left_click)
+	{
+		//if (emptyParticle(x, y))
+		{
+
+			grid[(int32)paintBrushX + ((int32)paintBrushY * gridSize)] = paintBrush;
+		}
+	}
+	else if (input.middle_click)
+	{
+		paintBrush = getParticle(paintBrushX, paintBrushY);
 	}
 
 	/* ----------------------- Simulate ----------------------- */
 
 	UpdateParticles();
 
-	if (input.left_click)
-	{
-		// Debug
-		//std::string x1 = std::to_string(input.mouse_x_pos);
-		//std::string y1 = std::to_string(input.mouse_y_pos);
-		//std::string formatPx = "Px x: " + x1 + " y: " + y1;
-		//float x = rend.pxToScreenX(input.mouse_x_pos);
-		//float y = rend.pxToScreenY(input.mouse_y_pos);
-		//std::string x2 = std::to_string(x);
-		//std::string y2 = std::to_string(y);
-		//std::string formatSc = " Sc x: " + x2 + " y: " + y2;
-		//std::string format = formatPx + formatSc;
-		//SetWindowTextW(m_hwnd, CharToWString(format).c_str());
-		//rend.DrawPoint(x, y, 0xffffff);
-
-		// Get mouse coords
-		float _x = rend.pxToScreenX(input.mouse_x_pos);
-		float _y = rend.pxToScreenY(input.mouse_y_pos);
-		ConvertToTileCoord(_x);
-		ConvertToTileCoord(_y);
-		if (emptyParticle(_x, _y))
-		{
-			grid[(int32)_x + ((int32)_y * gridSize)] = State::Value::Sand;
-		}
-	}
-	else if (input.right_click)
-	{
-		// Get mouse coords
-		float _x = rend.pxToScreenX(input.mouse_x_pos);
-		float _y = rend.pxToScreenY(input.mouse_y_pos);
-		ConvertToTileCoord(_x);
-		ConvertToTileCoord(_y);
-		if (emptyParticle(_x, _y))
-		{
-			grid[(int32)_x + ((int32)_y * gridSize)] = State::Value::Water;
-		}
-	}
-
 	/* ----------------------- Render ----------------------- */
 
-	for (int32 j = 0; j < gridSize; j++)
-	{
-		for (int32 i = 0; i < gridSize; i++)
-		{
-			if (emptyParticle(i, j))
-				continue;
+	rend.ClearScreen(0x000000);
 
-			float _x = i;
-			float _y = j;
-			float size = 2.0 / gridSize;
+	DrawParticles();
+	DrawPaintBrush(paintBrushX, paintBrushY);
 
-			ConvertToScreenCoord(_x);
-			ConvertToScreenCoord(_y);
-
-			uint32 colour = 0x00000000;
-			if (containsParticle(i, j, State::Value::Sand))
-				colour = 0xc2b280;
-			else if (containsParticle(i, j, State::Value::Water))
-				colour = 0x0f5e9c;
-
-			rend.DrawRect(_x, _y, _x + size, _y + size, colour);
-		}
-	}
+	/* ----------------------- FPS ----------------------- */
 
 	performance.Update();
 	performance.LimitFps(fpsLimit);
 	std::string format = std::to_string(performance.getFps());
-	SetWindowTextW(m_hwnd, CharToWString("FPS: " + format).c_str());
+	SetWindowTextW(m_hwnd, CharToWString("Demo Window | FPS: " + format).c_str());
 }
 
 void DemoWindow::UpdateParticles()
@@ -148,10 +111,10 @@ continue;\
 						continue;
 					}
 
+					// If particle above water; flip
 					if (containsParticle(i, j, State::Value::Sand) &
 						containsParticle(i, j - 1, State::Value::Water))
 					{
-						// Flip
 						grid[i + (j * gridSize)] = State::Value::Water;
 						grid[i + ((j - 1) * gridSize)] = State::Value::Sand;
 						continue;
@@ -198,6 +161,46 @@ continue;\
 	}  // for .. j
 }
 
+void DemoWindow::DrawParticles()
+{
+	for (int32 j = 0; j < gridSize; j++)
+	{
+		for (int32 i = 0; i < gridSize; i++)
+		{
+			if (emptyParticle(i, j))
+				continue;
+
+			float x = i;
+			float y = j;
+			float size = 2.0 / gridSize;
+
+			ConvertToScreenCoord(x);
+			ConvertToScreenCoord(y);
+
+			uint32 colour = 0x00000000;
+			if (containsParticle(i, j, State::Value::Sand))
+				colour = 0xc2b280;
+			else if (containsParticle(i, j, State::Value::Water))
+				colour = 0x0f5e9c;
+
+			rend.DrawRect(x, y, x + size, y + size, colour);
+		}
+	}
+}
+
+void DemoWindow::DrawPaintBrush(float x, float y)
+{
+	uint32 colour = 0x00000000;
+	if (paintBrush & State::Value::Sand)
+		colour = 0xc2b280;
+	else if (paintBrush & State::Value::Water)
+		colour = 0x0f5e9c;
+	ConvertToScreenCoord(x);
+	ConvertToScreenCoord(y);
+	float size = 2.0 / gridSize;
+	rend.DrawRect(x, y, x + size, y + size, colour);
+}
+
 void DemoWindow::clearParticles()
 {
 	for (int32 j = 0; j < gridSize; j++)
@@ -224,4 +227,11 @@ bool inline DemoWindow::containsParticle(int32 x, int32 y, State::Value val)
 	}
 
 	return false;
+}
+
+State::Value DemoWindow::getParticle(int32 x, int32 y)
+{
+	assert(x >= 0 && x < gridSize);
+	assert(y >= 0 && y < gridSize);
+	return (State::Value)grid[x + (y * gridSize)];
 }

@@ -64,12 +64,16 @@ private:
 	uint8* grid;
 	Performance performance;
 	uint32 fpsLimit;
+	State::Value paintBrush = State::Value::Sand;
 	
 private:
 	void checkLeft();
 	void checkRight();
 	void UpdateParticles();
+	void DrawParticles();
+	void DrawPaintBrush(float x, float y);
 	void clearParticles();
 	bool inline emptyParticle(int32 x, int32 y);
 	bool inline containsParticle(int32 x, int32 y, State::Value val);
+	State::Value inline getParticle(int32 x, int32 y);
 };
