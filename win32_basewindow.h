@@ -50,15 +50,12 @@ public:
         )
     {
         WNDCLASS wc = { 0 };
+        HINSTANCE hInstance = GetModuleHandle(NULL);
         wc.lpfnWndProc = DERIVED_TYPE::WindowProc;
-        wc.hInstance = GetModuleHandle(NULL);
+        wc.hInstance = hInstance;
         wc.lpszClassName = ClassName();
-        //wc.hIcon = (HICON)LoadIconA(GetModuleHandle(NULL), "AppIcon.ico");
-        wc.hIcon = static_cast<HICON>(::LoadImage(GetModuleHandle(NULL),
-            MAKEINTRESOURCE(IDI_ICON1),
-            IMAGE_ICON,
-            32, 32,
-            LR_DEFAULTCOLOR));
+        wc.hIcon = static_cast<HICON>(::LoadImage(hInstance,
+            MAKEINTRESOURCE(APPICON), IMAGE_ICON, 32, 32, LR_DEFAULTCOLOR));
 
         RegisterClass(&wc);
 

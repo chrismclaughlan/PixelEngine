@@ -28,9 +28,6 @@
     <Filter Include="Input\source">
       <UniqueIdentifier>{7ac49b5e-c272-4e94-90b6-6cc51558abec}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{d9554107-fc2a-4f2f-a6b3-0db479b1de26}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="win32_windows.cpp">
@@ -61,21 +58,15 @@
     </ClInclude>
     <ClInclude Include="demo.h" />
     <ClInclude Include="performance.h" />
-    <ClInclude Include="resource.h">
-      <Filter>Resource Files</Filter>
-    </ClInclude>
+    <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="AppIcon.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
+    <ResourceCompile Include="resource.rc" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="resource.rc">
-      <Filter>Resource Files</Filter>
-    </ResourceCompile>
+    <Image Include="AppIcon.ico" />
   </ItemGroup>
 </Project>
