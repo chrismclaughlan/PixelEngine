@@ -18,8 +18,6 @@ namespace State
 {
 	enum Value : uint8
 	{
-		// First 7 bits represent type
-		// Last bit represents update state (even or odd)
 		Empty	= 1 << 1,
 		Sand	= 1 << 2,
 	};

@@ -14,9 +14,6 @@ a = (a / (gridSize/2)) - 1;\
 
 void DemoWindow::run()
 {
-	// Flip update state
-	uint8 updateMask = performance.begin_time.QuadPart & (long)1 << 7;
-
 	/* ------------------ Input ------------------ */
 
 	// demo visuals
@@ -58,19 +55,16 @@ void DemoWindow::run()
 		{
 			assert(_x >= 0 && _x < gridSize);
 			assert(_y >= 0 && _y < gridSize);
-			grid[(int32)_x + ((int32)_y * gridSize)] = State::Value::Sand | updateMask;
+			grid[(int32)_x + ((int32)_y * gridSize)] = State::Value::Sand;
 		}
 	}
 	else
 	{
-		std::string format = std::to_string(updateMask);
+		std::string format = "goodbye";
 		SetWindowTextW(m_hwnd, CharToWString(format).c_str());
 	}
 
 	// Update tile positions
-	uint8* tempGrid = new uint8[gridSize * gridSize];
-	std::copy(&grid[0], &grid[0] + (gridSize * gridSize), &tempGrid[0]);
-
 	for (int32 j = 0; j < gridSize; j++)
 	{
 		for (int32 i = 0; i < gridSize; i++)
@@ -87,62 +81,40 @@ void DemoWindow::run()
 					if (grid[i + ((j - 1) * gridSize)] & State::Value::Empty)
 					{
 						// Move here
-						tempGrid[i + ((j - 1) * gridSize)] = grid[i + (j * gridSize)];
-						tempGrid[i + (j * gridSize)] = State::Value::Empty | updateMask;
+						grid[i + ((j - 1) * gridSize)] = grid[i + (j * gridSize)];
+						grid[i + (j * gridSize)] = State::Value::Empty;
+						continue;
 					}
-					else
+					if (i > 0)
 					{
-						if (i > 0)
+						// check bottom left
+						if (grid[(i - 1) + ((j - 1) * gridSize)] & State::Value::Empty)
 						{
-							// check bottom left
-							if (grid[(i - 1) + ((j - 1) * gridSize)] & State::Value::Empty)
-							{
-								if (grid[(i - 1) + ((j - 1) * gridSize)] & updateMask)
-								{
-								}
-								else
-								{
-									continue;
-								}
-								// Move here
-								tempGrid[(i - 1) + ((j - 1) * gridSize)] = grid[i + (j * gridSize)];
-								tempGrid[i + (j * gridSize)] = State::Value::Empty | updateMask;
-								continue;
-							}
+							//if (!(grid[(i - 1) + ((j - 1) * gridSize)] & updateMask))
+							//	continue;
+							// Move here
+							grid[(i - 1) + ((j - 1) * gridSize)] = grid[i + (j * gridSize)];
+							grid[i + (j * gridSize)] = State::Value::Empty;
+							continue;
 						}
-						if (i < gridSize - 1)
+					}
+					if (i < gridSize - 1)
+					{
+						// check bottom right
+						if (grid[(i + 1) + ((j - 1) * gridSize)] & State::Value::Empty)
 						{
-							// check bottom right
-							if (grid[(i + 1) + ((j - 1) * gridSize)] & State::Value::Empty)
-							{
-								if (grid[(i - 1) + ((j - 1) * gridSize)] & updateMask)
-								{
-								}
-								else
-								{
-									continue;
-								}
-								// Move here
-								tempGrid[(i+1) + ((j-1) * gridSize)] = grid[i + (j * gridSize)];
-								tempGrid[i + (j * gridSize)] = State::Value::Empty | updateMask;
-								continue;
-							}
+							//if (!(grid[(i + 1) + ((j - 1) * gridSize)] & updateMask))
+							//	continue;
+							// Move here
+							grid[(i+1) + ((j-1) * gridSize)] = grid[i + (j * gridSize)];
+							grid[i + (j * gridSize)] = State::Value::Empty;
+							continue;
 						}
 					}
 				}
 			}
 		}
 	}
-
-	// Copy tempGrid into grid
-	for (int32 j = 0; j < gridSize; j++)
-	{
-		for (int32 i = 0; i < gridSize; i++)
-		{
-			grid[i + (j * gridSize)] = tempGrid[i + (j * gridSize)];
-		}
-	}
-	delete[] tempGrid;
 
 	/* ------------------ Render ------------------ */
 	for (int32 j = 0; j < gridSize; j++)
