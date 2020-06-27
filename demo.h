@@ -28,8 +28,9 @@ public:
 	DemoWindow(
 		PCWSTR lpWindowName,
 		DWORD dwStyle,
-		int32 gridSize,
-		bool hideCursor = false,  // added param
+		int32 gridSize,			// added param
+		uint32 _fpsLimit = 30,	// added param: fpsLimit > 0
+		bool hideCursor = false,
 		DWORD dwExStyle = 0,
 		int x = CW_USEDEFAULT,
 		int y = CW_USEDEFAULT,
@@ -37,7 +38,7 @@ public:
 		int nHeight = CW_USEDEFAULT,
 		HWND hWndParent = 0,
 		HMENU hMenu = 0
-		) : gridSize(gridSize), 
+		) : gridSize(gridSize), fpsLimit(_fpsLimit),
 		win32::MainWindow::MainWindow(
 			lpWindowName, dwStyle, hideCursor, dwExStyle, 
 			x, y, nWidth, nHeight, hWndParent, hMenu)
@@ -61,7 +62,8 @@ public:
 private:
 	const int32 gridSize;
 	uint8* grid;
-	FPS fps;
+	Performance performance;
+	uint32 fpsLimit;
 	
 private:
 	void checkLeft();

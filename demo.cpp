@@ -89,16 +89,16 @@ void DemoWindow::run()
 		}
 	}
 
-	fps.Update();
-	fps.LimitFps(30);
-	std::string format = std::to_string(fps.getFps());
+	performance.Update();
+	performance.LimitFps(fpsLimit);
+	std::string format = std::to_string(performance.getFps());
 	SetWindowTextW(m_hwnd, CharToWString("FPS: " + format).c_str());
 }
 
 void DemoWindow::UpdateParticles()
 {
 	// Flip update state
-	uint8 updateMask = performance.begin_time.QuadPart & (long)1 << 7;
+	uint8 frameMask = performance.getFrameMask();
 
 #define checkBottomLeft()\
 if (i > 0)\
@@ -154,7 +154,7 @@ continue;\
 					}
 
 					// Every other frame check opposite side for symmetry
-					if (updateMask)
+					if (frameMask)
 					{
 						checkBottomLeft();
 						checkBottomRight();
@@ -188,12 +188,10 @@ continue;\
 							}
 						}
 					}
-
-
 				}
 			}
-		}
-	}
+		}  // for .. i
+	}  // for .. j
 }
 
 void DemoWindow::clearParticles()

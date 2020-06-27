@@ -140,30 +140,49 @@ void MainWindow::setHDC()
 	if (!hdc) hdc = GetDC(m_hwnd);
 }
 
-void MainWindow::initFPS()
+BOOL MainWindow::setWindowPos(int32 x, int32 y)
 {
-	performance.delta_time = 0.016666f;
-	QueryPerformanceCounter(&performance.begin_time);
-
-	float performance_frequency;
+	if (m_hwnd != NULL)
 	{
-		LARGE_INTEGER perf;
-		QueryPerformanceFrequency(&perf);
-		performance_frequency = (float)perf.QuadPart;
+		RECT rect;
+		if (!GetWindowRect(m_hwnd, &rect))
+		{
+			return FALSE;
+		}
+		if (!MoveWindow(m_hwnd, x, y, rect.bottom - rect.top, rect.right - rect.left, TRUE))
+		{
+			return FALSE;
+		}
 	}
+	else
+	{
+		return FALSE;
+	}
+
+	return TRUE;
 }
 
-//BOOL MainWindow::create
-//(PCWSTR lpWindowName, DWORD dwStyle, bool hideCursor, DWORD dwExStyle, 
-//	int x, int y, int nWidth, int nHeight, HWND hWndParent, HMENU hMenu)
-//{
-//	hide_cursor = hideCursor;
-//	BOOL result = Create(lpWindowName, dwStyle, dwExStyle, x, y, nWidth, nHeight, hWndParent, hMenu);
-//	// After Create()
-//	initFPS();
-//	setHDC();
-//	return result;
-//}
+BOOL MainWindow::setWindowSize(int32 x, int32 y)
+{
+	if (m_hwnd != NULL)
+	{
+		RECT rect;
+		if (!GetWindowRect(m_hwnd, &rect))
+		{
+			return FALSE;
+		}
+		if (!MoveWindow(m_hwnd, rect.left, rect.top, x, y, TRUE))
+		{
+			return FALSE;
+		}
+	}
+	else
+	{
+		return FALSE;
+	}
+
+	return TRUE;
+}
 
 // Business methods //
 
@@ -173,14 +192,6 @@ void MainWindow::render()
 	StretchDIBits(hdc, 0, 0, render_state->width, render_state->height, 0, 0,
 		render_state->width, render_state->height, render_state->memory,
 		&render_state->bitmapinfo, DIB_RGB_COLORS, SRCCOPY);
-}
-
-void MainWindow::updateFPS()
-{
-	QueryPerformanceCounter(&performance.end_time);
-	performance.delta_time = ((float)(performance.end_time.QuadPart -
-		performance.begin_time.QuadPart)) / performance.frequency;
-	performance.begin_time = performance.end_time;
 }
 
 bool MainWindow::isRunning()

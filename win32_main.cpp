@@ -9,10 +9,10 @@
 int32 WINAPI wWinMain
 (HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine, int32 nCmdShow)
 {
-	DemoWindow demoWindow(
-		L"Demo Window", NO_WINDOW_RESIZING, 40, false, 0,
-		CW_USEDEFAULT, CW_USEDEFAULT, 800, 800
-		);
+	DemoWindow demoWindow(L"Demo Window", NO_WINDOW_RESIZING, 40, 60, false);
+
+	//demoWindow.setWindowPos(100, 100);
+	demoWindow.setWindowSize(400, 400);
 
 	ShowWindow(demoWindow.Window(), nCmdShow);
 
@@ -29,7 +29,6 @@ int32 WINAPI wWinMain
 
 		demoWindow.run();
 		demoWindow.render();
-		demoWindow.updateFPS();
 
 	}  // while is_running
 

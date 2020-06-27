@@ -6,14 +6,6 @@
 
 namespace win32
 {
-struct Performance
-{
-	float frequency;
-	float delta_time;
-	LARGE_INTEGER begin_time;
-	LARGE_INTEGER end_time;
-};
-
 class MainWindow :public BaseWindow<MainWindow>
 {
 protected:
@@ -32,7 +24,6 @@ protected:
 		) : BaseWindow(), hide_cursor(hideCursor)
 	{
 		Create(lpWindowName, dwStyle, dwExStyle, x, y, nWidth, nHeight, hWndParent, hMenu);
-		initFPS();
 		setHDC();
 	}
 protected:
@@ -41,11 +32,9 @@ protected:
 	HDC hdc;
 	input::Input input = {};
 	render::Render rend = {};
-	Performance performance = {};
 	bool is_running = true;
 	bool hide_cursor = false;
 
-	void initFPS();
 	void setHDC();
 
 protected:
@@ -63,10 +52,12 @@ public:
 	LRESULT HandleMessage(UINT, WPARAM, LPARAM);
 	PCWSTR ClassName() const { return class_name; }
 	void setClassName(PCWSTR name) { class_name = name; }
+	
+	BOOL setWindowPos(int32 x, int32 y);
+	BOOL setWindowSize(int32 x, int32 y);
 
 	// Business methods //
 	void render();
-	void updateFPS();
 	bool isRunning();
 	void resetButtons();
 };
