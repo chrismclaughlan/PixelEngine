@@ -14,6 +14,8 @@ a = (a / (gridSize/2)) - 1;\
 
 void DemoWindow::run()
 {
+	rend.ClearScreen(0x000000);
+
 	/* ----------------------- Input ----------------------- */
 
 	// demo visuals
@@ -71,21 +73,23 @@ void DemoWindow::run()
 	{
 		for (int32 i = 0; i < gridSize; i++)
 		{
+			if (emptyParticle(i, j))
+				continue;
+
 			float _x = i;
 			float _y = j;
+			float size = 2.0 / gridSize;
+
 			ConvertToScreenCoord(_x);
 			ConvertToScreenCoord(_y);
 
 			uint32 colour = 0x00000000;
 			if (containsParticle(i, j, State::Value::Sand))
-			{
 				colour = 0xc2b280;
-			}
 			else if (containsParticle(i, j, State::Value::Water))
-			{
 				colour = 0x0f5e9c;
-			}
-			rend.DrawRect(_x, _y, _x + 0.1, _y + 0.1, colour);
+
+			rend.DrawRect(_x, _y, _x + size, _y + size, colour);
 		}
 	}
 

@@ -9,10 +9,13 @@
 int32 WINAPI wWinMain
 (HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine, int32 nCmdShow)
 {
-	DemoWindow demoWindow(L"Demo Window", NO_WINDOW_RESIZING, 40, 60, false);
+	const int32 gridSize = 100;
+	const int32 fpsLimit = 60;
+	bool hideCursor = false;
+	DemoWindow demoWindow(L"Demo Window", NO_WINDOW_RESIZING, gridSize, fpsLimit, hideCursor);
 
 	//demoWindow.setWindowPos(100, 100);
-	demoWindow.setWindowSize(400, 400);
+	demoWindow.setWindowSize(800, 800);
 
 	ShowWindow(demoWindow.Window(), nCmdShow);
 
