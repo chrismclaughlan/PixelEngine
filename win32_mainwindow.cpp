@@ -6,6 +6,8 @@
 
 namespace win32
 {
+#define WHEEL_DELTA 120
+
 LRESULT MainWindow::HandleMessage
 (UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
@@ -80,6 +82,10 @@ LRESULT MainWindow::HandleMessage
 	{
 		handleMiddleMouseButtonDown(wParam, lParam);
 	} break;
+	case WM_MOUSEWHEEL:
+	{
+		handleWheelDelta(wParam, lParam);
+	} break;
 	}
 
 	return DefWindowProc(m_hwnd, uMsg, wParam, lParam);
@@ -151,6 +157,22 @@ void MainWindow::handleMiddleMouseButtonUp(WPARAM, LPARAM)
 void MainWindow::handleMiddleMouseButtonDown(WPARAM, LPARAM)
 {
 	input.middle_click = true;
+}
+
+void MainWindow::handleWheelDelta(WPARAM wParam, LPARAM lParam)
+{
+	input.wheelDeltaCarry += GET_WHEEL_DELTA_WPARAM(wParam);
+	// generate events for every 120 
+	while (input.wheelDeltaCarry >= WHEEL_DELTA)
+	{
+		input.wheelDeltaCarry -= WHEEL_DELTA;
+		input.wheelTurns++;
+	}
+	while (input.wheelDeltaCarry <= -WHEEL_DELTA)
+	{
+		input.wheelDeltaCarry += WHEEL_DELTA;
+		input.wheelTurns--;
+	}
 }
 
 void MainWindow::setHDC()

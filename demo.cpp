@@ -12,6 +12,8 @@ render::Render::Clamp(0.0, &a, (float)gridSize - 1.0);\
 #define ConvertToScreenCoord(a)\
 a = (a / (gridSize/2)) - 1;\
 
+#define MAX_PAINTBRUSH_SIZE 10
+
 void DemoWindow::run()
 {
 	/* ----------------------- Input ----------------------- */
@@ -20,10 +22,18 @@ void DemoWindow::run()
 		clearParticles();
 
 	// Paint Brush
+
+	//input.wheelTurns = 0;
+	if (input.wheelTurns < 1)
+		input.wheelTurns = 1;
+	else if (input.wheelTurns > MAX_PAINTBRUSH_SIZE)
+		input.wheelTurns = MAX_PAINTBRUSH_SIZE;
+	paintBrush.size = input.wheelTurns;
+
 	if (pressed(input::BUTTON_1))
-		paintBrush = State::Value::Sand;
+		paintBrush.paint = State::Value::Sand;
 	else if (pressed(input::BUTTON_2))
-		paintBrush = State::Value::Water;
+		paintBrush.paint = State::Value::Water;
 
 	float paintBrushX = rend.pxToScreenX(input.mouse_x_pos);
 	float paintBrushY = rend.pxToScreenY(input.mouse_y_pos);
@@ -32,15 +42,11 @@ void DemoWindow::run()
 
 	if (input.left_click)
 	{
-		//if (emptyParticle(x, y))
-		{
-
-			grid[(int32)paintBrushX + ((int32)paintBrushY * gridSize)] = paintBrush;
-		}
+		placeParticle((int32)paintBrushX, (int32)paintBrushY, paintBrush.size);
 	}
 	else if (input.middle_click)
 	{
-		paintBrush = getParticle(paintBrushX, paintBrushY);
+		paintBrush.paint = getParticle(paintBrushX, paintBrushY);
 	}
 
 	/* ----------------------- Simulate ----------------------- */
@@ -52,14 +58,32 @@ void DemoWindow::run()
 	rend.ClearScreen(0x000000);
 
 	DrawParticles();
-	DrawPaintBrush(paintBrushX, paintBrushY);
+	DrawPaintBrush(paintBrushX, paintBrushY, paintBrush.size);
 
 	/* ----------------------- FPS ----------------------- */
 
 	performance.Update();
-	performance.LimitFps(fpsLimit);
-	std::string format = std::to_string(performance.getFps());
+	if (fpsLimit > 0)
+		performance.LimitFps(fpsLimit);
+	//std::string format = std::to_string(performance.getFps());
+	std::string format = std::to_string(input.wheelTurns);
 	SetWindowTextW(m_hwnd, CharToWString("Demo Window | FPS: " + format).c_str());
+}
+
+void DemoWindow::placeParticle(int32 x, int32 y, int32 size)
+{
+	const int32 d = size - 1;
+	for (int32 j = y - d; j <= y + d; j++)
+	{
+		for (int32 i = x - d; i <= x + d; i++)
+		{
+			if ((i < 0) | (i >= gridSize))
+				continue;
+			if ((j < 0) | (j >= gridSize))
+				continue;
+			grid[i + (j * gridSize)] = paintBrush.paint;
+		}
+	}
 }
 
 void DemoWindow::UpdateParticles()
@@ -84,6 +108,28 @@ if (i < gridSize - 1)\
 if (emptyParticle(i+1, j-1))\
 {\
 grid[(i + 1) + ((j - 1) * gridSize)] = grid[i + (j * gridSize)];\
+grid[i + (j * gridSize)] = State::Value::Empty;\
+continue;\
+}\
+}\
+
+#define checkLeft()\
+if (i > 0)\
+{\
+if (emptyParticle(i - 1, j))\
+{\
+grid[(i - 1) + ((j)*gridSize)] = grid[i + (j * gridSize)];\
+grid[i + (j * gridSize)] = State::Value::Empty;\
+continue;\
+}\
+}\
+
+#define checkRight()\
+if ((i < gridSize - 1))\
+{\
+if (emptyParticle(i + 1, j))\
+{\
+grid[(i + 1) + (j * gridSize)] = grid[i + (j * gridSize)];\
 grid[i + (j * gridSize)] = State::Value::Empty;\
 continue;\
 }\
@@ -135,25 +181,15 @@ continue;\
 
 				if (containsParticle(i, j, State::Value::Water))
 				{
-					// Check Left
-					if ((i > 0) & (i < gridSize - 1))
+					if (frameMask)
 					{
-						if (emptyParticle(i - 1, j))
-						{
-							grid[(i - 1) + ((j)*gridSize)] = grid[i + (j * gridSize)];
-							grid[i + (j * gridSize)] = State::Value::Empty;
-							continue;
-						}
-						else
-						{
-							// Check Right
-							if (emptyParticle(i + 1, j))
-							{
-								grid[(i + 1) + (j * gridSize)] = grid[i + (j * gridSize)];
-								grid[i + (j * gridSize)] = State::Value::Empty;
-								continue;
-							}
-						}
+						checkLeft();
+						checkRight();
+					}
+					else
+					{
+						checkRight();
+						checkLeft();
 					}
 				}
 			}
@@ -172,7 +208,7 @@ void DemoWindow::DrawParticles()
 
 			float x = i;
 			float y = j;
-			float size = 2.0 / gridSize;
+			float size = (float)2.0 / gridSize;
 
 			ConvertToScreenCoord(x);
 			ConvertToScreenCoord(y);
@@ -188,17 +224,24 @@ void DemoWindow::DrawParticles()
 	}
 }
 
-void DemoWindow::DrawPaintBrush(float x, float y)
+void DemoWindow::DrawPaintBrush(float x, float y, int32 size)
 {
 	uint32 colour = 0x00000000;
-	if (paintBrush & State::Value::Sand)
+	if (paintBrush.paint & State::Value::Sand)
 		colour = 0xc2b280;
-	else if (paintBrush & State::Value::Water)
+	else if (paintBrush.paint & State::Value::Water)
 		colour = 0x0f5e9c;
+
+	float particleSize = (float)2.0 / gridSize;
+
 	ConvertToScreenCoord(x);
 	ConvertToScreenCoord(y);
-	float size = 2.0 / gridSize;
-	rend.DrawRect(x, y, x + size, y + size, colour);
+	rend.DrawRect(
+		x - ((size - 1) * particleSize),
+		y - ((size - 1) * particleSize),
+		x + particleSize + ((size - 1) * particleSize),
+		y + particleSize + ((size - 1) * particleSize),
+		colour);
 }
 
 void DemoWindow::clearParticles()

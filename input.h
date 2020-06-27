@@ -55,6 +55,8 @@ struct Input
 	bool left_click = false;
 	bool right_click = false;
 	bool middle_click = false;
+	int32 wheelDeltaCarry = 0;
+	int32 wheelTurns = 0;
 	//bool mouse_dragging = false;
 };
 }  // namespace input

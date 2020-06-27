@@ -42,9 +42,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="win32_windows.cpp">
-      <Filter>Win32\source</Filter>
-    </ClCompile>
     <ClCompile Include="render.cpp">
       <Filter>Render\source</Filter>
     </ClCompile>
@@ -56,6 +53,9 @@
     </ClCompile>
     <ClCompile Include="demo.cpp">
       <Filter>Demo\source</Filter>
+    </ClCompile>
+    <ClCompile Include="win32_mainwindow.cpp">
+      <Filter>Win32\source</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -22,6 +22,13 @@ namespace State
 	};
 }
 
+struct PaintBrush
+{
+	State::Value paint = State::Value::Sand;
+	int32 size = 1;
+	//const int32* x = input.  ??
+};
+
 class DemoWindow :public win32::MainWindow
 {
 public:
@@ -64,14 +71,13 @@ private:
 	uint8* grid;
 	Performance performance;
 	uint32 fpsLimit;
-	State::Value paintBrush = State::Value::Sand;
+	PaintBrush paintBrush;
 	
 private:
-	void checkLeft();
-	void checkRight();
+	void placeParticle(int32 x, int32 y, int32 size);
 	void UpdateParticles();
 	void DrawParticles();
-	void DrawPaintBrush(float x, float y);
+	void DrawPaintBrush(float x, float y, int32 size);
 	void clearParticles();
 	bool inline emptyParticle(int32 x, int32 y);
 	bool inline containsParticle(int32 x, int32 y, State::Value val);

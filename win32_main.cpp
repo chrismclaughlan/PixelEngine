@@ -10,7 +10,7 @@ int32 WINAPI wWinMain
 (HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine, int32 nCmdShow)
 {
 	const int32 gridSize = 100;
-	const int32 fpsLimit = 60;
+	const int32 fpsLimit = 0;
 	bool hideCursor = false;
 	DemoWindow demoWindow(L"Demo Window", NO_WINDOW_RESIZING, gridSize, fpsLimit, hideCursor);
 

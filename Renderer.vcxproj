@@ -148,7 +148,7 @@
     </ClCompile>
     <ClCompile Include="render.cpp" />
     <ClCompile Include="win32_main.cpp" />
-    <ClCompile Include="win32_windows.cpp" />
+    <ClCompile Include="win32_mainwindow.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="input.h" />
