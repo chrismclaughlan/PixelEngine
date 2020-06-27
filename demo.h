@@ -11,11 +11,19 @@ inline const std::wstring CharToWString(const std::string str)
 	return wstr;
 }
 
-enum Type
+//const uint8 Empty = 0x10000000;
+//const uint8 Sand = 0x01000000;
+
+namespace State
 {
-	Empty = 0x000000,
-	Sand = 0xc2b280,
-};
+	enum Value : uint8
+	{
+		// First 7 bits represent type
+		// Last bit represents update state (even or odd)
+		Empty	= 1 << 1,
+		Sand	= 1 << 2,
+	};
+}
 
 class DemoWindow :public win32::MainWindow
 {
@@ -23,6 +31,7 @@ public:
 	DemoWindow(
 		PCWSTR lpWindowName,
 		DWORD dwStyle,
+		int32 gridSize,
 		bool hideCursor = false,  // added param
 		DWORD dwExStyle = 0,
 		int x = CW_USEDEFAULT,
@@ -31,26 +40,31 @@ public:
 		int nHeight = CW_USEDEFAULT,
 		HWND hWndParent = 0,
 		HMENU hMenu = 0
-		) : win32::MainWindow::MainWindow(
+		) : gridSize(gridSize), 
+		win32::MainWindow::MainWindow(
 			lpWindowName, dwStyle, hideCursor, dwExStyle, 
 			x, y, nWidth, nHeight, hWndParent, hMenu)
 	{
-		for (int32 j = 0; j < 20; j++)
+		grid = new uint8[gridSize*gridSize];
+		for (int32 j = 0; j < gridSize; j++)
 		{
-			for (int32 i = 0; i < 20; i++)
+			for (int32 i = 0; i < gridSize; i++)
 			{
-				grid[j][i] = Empty;
+				grid[i + (j * gridSize)] = State::Value::Empty;
 			}
 		}
 	}
 	~DemoWindow()
 	{
 		MainWindow::~MainWindow();
+		delete[] grid;
 	}
 	void run();
 
 private:
-	uint32 grid[20][20];
+	const int32 gridSize;
+	uint8* grid;
+
 	
 private:
 	void clearParticles();
