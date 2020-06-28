@@ -34,6 +34,10 @@ void DemoWindow::run()
 		paintBrush.paint = State::Value::Sand;
 	else if (pressed(input::BUTTON_2))
 		paintBrush.paint = State::Value::Water;
+	else if (pressed(input::BUTTON_3))
+		paintBrush.paint = State::Value::Concrete;
+	else if (pressed(input::BUTTON_0))
+		paintBrush.paint = State::Value::Empty;
 
 	float paintBrushX = rend.pxToScreenX(input.mouse_x_pos);
 	float paintBrushY = rend.pxToScreenY(input.mouse_y_pos);
@@ -140,7 +144,7 @@ continue;\
 	{
 		for (int32 i = 0; i < gridSize; i++)
 		{
-			if (emptyParticle(i, j))
+			if (emptyParticle(i, j) | containsParticle(i, j, State::Value::Concrete))
 			{
 				continue;
 			}
@@ -214,10 +218,13 @@ void DemoWindow::DrawParticles()
 			ConvertToScreenCoord(y);
 
 			uint32 colour = 0x00000000;
-			if (containsParticle(i, j, State::Value::Sand))
+			State::Value value = getParticle(i, j);
+			if (value & State::Value::Sand)
 				colour = 0xc2b280;
-			else if (containsParticle(i, j, State::Value::Water))
+			else if (value & State::Value::Water)
 				colour = 0x0f5e9c;
+			else if (value & State::Value::Concrete)
+				colour = 0xaaaaaa;
 
 			rend.DrawRect(x, y, x + size, y + size, colour);
 		}
@@ -231,6 +238,8 @@ void DemoWindow::DrawPaintBrush(float x, float y, int32 size)
 		colour = 0xc2b280;
 	else if (paintBrush.paint & State::Value::Water)
 		colour = 0x0f5e9c;
+	else if (paintBrush.paint & State::Value::Concrete)
+		colour = 0xaaaaaa;
 
 	float particleSize = (float)2.0 / gridSize;
 

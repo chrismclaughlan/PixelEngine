@@ -16,9 +16,12 @@ namespace State
 {
 	enum Value : uint8
 	{
-		Empty	= 1 << 1,
-		Sand	= 1 << 2,
-		Water	= 1 << 3,
+		Empty		= 1 << 1,
+		Sand		= 1 << 2,
+		Water		= 1 << 3,
+		Concrete	= 1 << 4,
+		// block to delete what touches it (for waterfall impl.)
+		// dirt (destructable) (only fall if no support)
 	};
 }
 
