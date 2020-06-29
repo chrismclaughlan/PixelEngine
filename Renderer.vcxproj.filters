@@ -42,9 +42,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="input.cpp">
-      <Filter>Input\source</Filter>
-    </ClCompile>
     <ClCompile Include="win32_main.cpp">
       <Filter>Win32\source</Filter>
     </ClCompile>
@@ -68,13 +65,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="win32_basewindow.h">
-      <Filter>Win32\include</Filter>
-    </ClInclude>
     <ClInclude Include="types.h" />
-    <ClInclude Include="input.h">
-      <Filter>Input\include</Filter>
-    </ClInclude>
     <ClInclude Include="resource.h">
       <Filter>Resources</Filter>
     </ClInclude>

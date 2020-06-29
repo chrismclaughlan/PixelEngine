@@ -3,30 +3,6 @@
 #include <cmath>
 #include "graphics.h"
 
-//void Render::sizeChangeWin32(RECT* rect)
-//{
-//	state.width = rect->right - rect->left;
-//	state.height = rect->bottom - rect->top;
-//
-//	int32 buffer_size = state.width * state.height * sizeof(uint32);
-//	if (state.memory)
-//	{
-//		VirtualFree(state.memory, 0, MEM_RELEASE);
-//	}
-//	state.memory = VirtualAlloc(0, buffer_size, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
-//
-//	state.bitmapinfo.bmiHeader.biSize = sizeof(state.bitmapinfo);
-//	state.bitmapinfo.bmiHeader.biWidth = state.width;
-//	state.bitmapinfo.bmiHeader.biHeight = state.height;
-//	state.bitmapinfo.bmiHeader.biPlanes = 1;
-//	state.bitmapinfo.bmiHeader.biBitCount = 32;
-//	state.bitmapinfo.bmiHeader.biCompression = BI_RGB;
-//
-//	float nscale_x = state.width;
-//	float nscale_y = state.height;
-//	calculate_scales();
-//}
-
 void Graphics::Clamp(int32 min, int32* val, int32 max)
 {
 	if (*val < min) *val = min;
