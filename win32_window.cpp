@@ -4,7 +4,10 @@
 #include "Keyboard.h"
 #include <assert.h>
 
-#define WINDOW_STYLE (WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU)
+//#define WINDOW_STYLE (WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU)
+//#define WINDOW_STYLE (WS_OVERLAPPEDWINDOW ^ WS_THICKFRAME)
+#define WINDOW_STYLE (WS_OVERLAPPEDWINDOW)
+
 #define GetXY()\
 const int32 x = GET_X_LPARAM(lParam); \
 const int32 y = height - GET_Y_LPARAM(lParam); \
@@ -28,7 +31,7 @@ Window::WindowClass::WindowClass() noexcept : hInstance(GetModuleHandle(NULL))
 	wc.hCursor = NULL;
 	wc.hbrBackground = NULL;
 	wc.lpszMenuName = NULL;
-	wc.lpszClassName = GetClassName();
+	wc.lpszClassName = GetName();
 	wc.hIconSm = hiconsm;
 	RegisterClassEx(&wc);
 }
@@ -38,7 +41,7 @@ Window::WindowClass::~WindowClass()
 	UnregisterClass(wClassName, GetHInstance());
 }
 
-const wchar_t* Window::WindowClass::GetClassName() noexcept
+const wchar_t* Window::WindowClass::GetName() noexcept
 {
 	return wClassName;
 }
@@ -67,7 +70,7 @@ Window::Window(const wchar_t* name, int32 width, int32 height)
 	}
 
 	hwnd = CreateWindow(
-		WindowClass::GetClassName(), name,
+		WindowClass::GetName(), name,
 		WINDOW_STYLE,
 		CW_USEDEFAULT, CW_USEDEFAULT,
 		rect.right - rect.left,
@@ -101,20 +104,91 @@ Window::~Window()
 	DestroyWindow(hwnd);
 }
 
-void Window::SetTitle(const std::string name)
+void Window::setTitle(const std::string name)
 {
 	const std::wstring title = ToWString(name);
 	SetWindowTextW(hwnd, title.c_str());
 }
 
-Win32Graphics& Window::Gfx()
+bool Window::setSize(const int32 newWidth, const int32 newHeight)
+{
+	if (hwnd == NULL)
+	{
+		return false;
+	}
+
+	RECT rect;
+	if (!GetWindowRect(hwnd, &rect))
+	{
+		return false;
+	}
+
+	int32 xPos = rect.left;
+	int32 yPos = rect.top;
+
+	// Calculate window size
+	rect.right = newWidth + rect.left;
+	rect.bottom = newHeight + rect.top;
+	if (AdjustWindowRect(&rect, WINDOW_STYLE, FALSE) == NULL)
+	{
+		// throw ...
+		return false;
+	}
+
+	if (!MoveWindow(hwnd, xPos, yPos, rect.right - rect.left, rect.bottom - rect.top, TRUE))
+	{
+		return false;
+	}
+
+	width = newWidth;
+	height = newHeight;
+
+	return true;
+}
+
+bool Window::setPos(const int32 x, const int32 y)
+{
+	if (hwnd != NULL)
+	{
+		RECT rect;
+		if (!GetWindowRect(hwnd, &rect))
+		{
+			return false;
+		}
+		if (!MoveWindow(hwnd, x, y, rect.right - rect.left, rect.bottom - rect.top, TRUE))
+		{
+			return false;
+		}
+	}
+	else
+	{
+		return false;
+	}
+
+	return true;
+}
+
+Win32Graphics& Window::gfx()
 {
 	return *pGraphics;
 }
 
+bool Window::shouldClose()
+{
+	if (MessageBox(hwnd, L"Really quit?", WindowClass::GetName(), MB_OKCANCEL) == IDOK)
+	{
+		PostQuitMessage(0);
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
 // Returns true if quitting window
 // Passes exitCode through pointer
-bool Window::ProcessMessages(int32* exitCode) noexcept
+bool Window::processMessages(int32* exitCode) noexcept
 {
 	MSG msg = {};
 	while (PeekMessage(&msg, NULL, NULL, NULL, PM_REMOVE))
@@ -166,37 +240,45 @@ LRESULT Window::HandleMessage
 
 	switch (msg)
 	{
+	//case WM_CREATE:
+	//{
+	//	ShowCursor(false);
+	//	return 0;
+	//} break;
 	case WM_CLOSE:
 	{
-		PostQuitMessage(0);
-	} return 0;
+		if (!shouldClose())
+		{
+			return 0;
+		}
+	} break;
 	case WM_KILLFOCUS:
 	{
-		keyboard.ClearState();
+		keyboard.clearState();
 	} break;
 	case WM_SIZE:
 	{
 		RECT rect;
 		GetClientRect(hwnd, &rect);
-		Gfx().ChangeSize(&rect);
+		gfx().ChangeSize(&rect);
 	} break;
 	/* -------------------- KEYBOARD -------------------- */
 	case WM_SYSKEYDOWN:
 	case WM_KEYDOWN:
 	{
-		if (!PREV_KEY_DOWN() || keyboard.AutorepeatIsEnabled())
+		if (!PREV_KEY_DOWN() || keyboard.autorepeatIsEnabled())
 		{
-			keyboard.OnKeyPressed(static_cast<uint8>(wParam));
+			keyboard.keyPressed(static_cast<int8>(wParam));
 		}
 	} break;
 	case WM_SYSKEYUP:
 	case WM_KEYUP:
 	{
-		keyboard.OnKeyReleased(static_cast<uint8>(wParam));
+		keyboard.keyReleased(static_cast<int8>(wParam));
 	} break;
 	case WM_CHAR:
 	{
-		keyboard.OnChar(static_cast<uint8>(wParam));
+		keyboard.onChar(static_cast<int8>(wParam));
 	} break;
 	/* -------------------- MOUSE -------------------- */
 	case WM_MOUSEMOVE:
@@ -206,59 +288,59 @@ LRESULT Window::HandleMessage
 		{
 			if (wParam & (MK_LBUTTON | MK_RBUTTON))  // Dragging
 			{
-				mouse.MouseMove(x, y);
+				mouse.move(x, y);
 			}
 			else
 			{
 				ReleaseCapture();
-				mouse.MouseLeave();
+				mouse.leave();
 			}
 		}
 		else  // Inside of window
 		{
-			mouse.MouseMove(x, y);
-			if (!mouse.IsInWindow())  // If mouse wasn't in window before
+			mouse.move(x, y);
+			if (!mouse.isInWindow())  // If mouse wasn't in window before
 			{
 				SetCapture(hwnd);
-				mouse.MouseEnter();
+				mouse.enter();
 			}
 		}
 	} break;
 	case WM_LBUTTONUP:
 	{
 		GetXY();
-		mouse.LeftReleased(x, y);
+		mouse.leftRelease(x, y);
 	} break;
 	case WM_LBUTTONDOWN:
 	{
 		GetXY();
-		mouse.LeftPressed(x, y);
+		mouse.leftPress(x, y);
 	} break;
 	case WM_RBUTTONUP:
 	{
 		GetXY();
-		mouse.RightReleased(x, y);
+		mouse.rightRelease(x, y);
 	} break;
 	case WM_RBUTTONDOWN:
 	{
 		GetXY();
-		mouse.RightPressed(x, y);
+		mouse.rightPress(x, y);
 	} break;
 	case WM_MBUTTONUP:
 	{
 		GetXY();
-		mouse.MiddleReleased(x, y);
+		mouse.middleRelease(x, y);
 	} break;
 	case WM_MBUTTONDOWN:
 	{
 		GetXY();
-		mouse.MiddlePressed(x, y);
+		mouse.middlePress(x, y);
 	} break;
 	case WM_MOUSEWHEEL:
 	{
 		GetXY();
 		const int32 delta = GET_WHEEL_DELTA_WPARAM(wParam);
-		mouse.WheelDelta(x, y, delta);
+		mouse.onWheelDelta(x, y, delta);
 	} break;
 	}
 

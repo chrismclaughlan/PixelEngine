@@ -51,9 +51,6 @@
     <ClCompile Include="demo.cpp">
       <Filter>Demo\source</Filter>
     </ClCompile>
-    <ClCompile Include="win32_mainwindow.cpp">
-      <Filter>Win32\source</Filter>
-    </ClCompile>
     <ClCompile Include="win32_window.cpp">
       <Filter>Win32\source</Filter>
     </ClCompile>
@@ -87,12 +84,6 @@
     <ClInclude Include="win32_performance.h">
       <Filter>Win32\include</Filter>
     </ClInclude>
-    <ClInclude Include="win32_mainwindow.h">
-      <Filter>Win32\include</Filter>
-    </ClInclude>
-    <ClInclude Include="win32_windows.h">
-      <Filter>Win32\include</Filter>
-    </ClInclude>
     <ClInclude Include="win32_window.h">
       <Filter>Win32\include</Filter>
     </ClInclude>
@@ -110,6 +101,9 @@
     </ClInclude>
     <ClInclude Include="Mouse.h">
       <Filter>Input\include</Filter>
+    </ClInclude>
+    <ClInclude Include="hwindows.h">
+      <Filter>Win32\include</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

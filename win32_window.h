@@ -1,5 +1,5 @@
 #pragma once
-#include "win32_windows.h"
+#include "hwindows.h"
 #include "types.h"
 #include "win32_graphics.h"
 #include "Keyboard.h"
@@ -18,14 +18,14 @@ private:
 	class WindowClass
 	{
 	public:
-		static const wchar_t* GetClassName() noexcept;
+		static const wchar_t* GetName() noexcept;
 		static HINSTANCE GetHInstance() noexcept;
 	private:
 		WindowClass() noexcept;
 		~WindowClass();
 		WindowClass(const WindowClass&) = delete;
 		WindowClass& operator=(const WindowClass&) = delete;
-		static constexpr const wchar_t* wClassName = L"WindowClass";
+		static constexpr const wchar_t* wClassName = L"Demo Window";
 		static WindowClass wClass;
 		HINSTANCE hInstance;
 	};
@@ -34,18 +34,22 @@ public:
 	~Window();
 	Window(const Window&) = delete;
 	Window& operator=(const Window&) = delete;
-	void SetTitle(const std::string name);
-	static bool ProcessMessages(int32* exitCode) noexcept;
-	Win32Graphics& Gfx();
 private:
 	static LRESULT CALLBACK HandleMsgSetup(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noexcept;
 	LRESULT HandleMessage(UINT msg, WPARAM wParam, LPARAM lParam) noexcept;
-public:
-	Keyboard keyboard;
-	Mouse mouse;
 private:
+	HWND hwnd;
 	int32 width;
 	int32 height;
-	HWND hwnd;
 	std::unique_ptr<Win32Graphics> pGraphics;
+public:
+	void setTitle(const std::string name);
+	bool setSize(const int32 x, const int32 y);
+	bool setPos(const int32 x, const int32 y);
+	bool shouldClose();
+	static bool processMessages(int32* exitCode) noexcept;
+	Win32Graphics& gfx();
+public:
+	Mouse mouse;
+	Keyboard keyboard;
 };
