@@ -139,10 +139,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="app.cpp" />
     <ClCompile Include="demo.cpp" />
     <ClCompile Include="graphics.cpp" />
-    <ClCompile Include="Keyboard.cpp" />
-    <ClCompile Include="Mouse.cpp" />
+    <ClCompile Include="keyboard.cpp" />
+    <ClCompile Include="mouse.cpp" />
     <ClCompile Include="win32_graphics.cpp" />
     <ClCompile Include="win32_main.cpp" />
     <ClCompile Include="win32_window.cpp" />
@@ -150,8 +151,8 @@
   <ItemGroup>
     <ClInclude Include="app.h" />
     <ClInclude Include="demo.h" />
-    <ClInclude Include="Keyboard.h" />
-    <ClInclude Include="Mouse.h" />
+    <ClInclude Include="keyboard.h" />
+    <ClInclude Include="mouse.h" />
     <ClInclude Include="win32_graphics.h" />
     <ClInclude Include="win32_performance.h" />
     <ClInclude Include="graphics.h" />

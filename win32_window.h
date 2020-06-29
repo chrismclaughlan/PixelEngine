@@ -2,8 +2,8 @@
 #include "hwindows.h"
 #include "types.h"
 #include "win32_graphics.h"
-#include "Keyboard.h"
-#include "Mouse.h"
+#include "keyboard.h"
+#include "mouse.h"
 #include <memory>
 #include <string>
 
@@ -25,7 +25,7 @@ private:
 		~WindowClass();
 		WindowClass(const WindowClass&) = delete;
 		WindowClass& operator=(const WindowClass&) = delete;
-		static constexpr const wchar_t* wClassName = L"Demo Window";
+		static constexpr const wchar_t* wClassName = L"WindowClass";
 		static WindowClass wClass;
 		HINSTANCE hInstance;
 	};
@@ -38,12 +38,13 @@ private:
 	static LRESULT CALLBACK HandleMsgSetup(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noexcept;
 	LRESULT HandleMessage(UINT msg, WPARAM wParam, LPARAM lParam) noexcept;
 private:
+	const wchar_t* wName;
 	HWND hwnd;
-	int32 width;
-	int32 height;
+	int32 wWidth;
+	int32 wHeight;
 	std::unique_ptr<Win32Graphics> pGraphics;
 public:
-	void setTitle(const std::string name);
+	void setTitle(const std::string text);
 	bool setSize(const int32 x, const int32 y);
 	bool setPos(const int32 x, const int32 y);
 	bool shouldClose();

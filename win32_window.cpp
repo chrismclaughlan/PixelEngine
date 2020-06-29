@@ -10,7 +10,7 @@
 
 #define GetXY()\
 const int32 x = GET_X_LPARAM(lParam); \
-const int32 y = height - GET_Y_LPARAM(lParam); \
+const int32 y = wHeight - GET_Y_LPARAM(lParam); \
 
 Window::WindowClass Window::WindowClass::wClass;  // TODO what is this
 
@@ -54,7 +54,7 @@ HINSTANCE Window::WindowClass::GetHInstance() noexcept
 /* --------------------------------------------------------- */
 
 Window::Window(const wchar_t* name, int32 width, int32 height)
-	: width(width), height(height)
+	: wName(name), wWidth(width), wHeight(height)
 {
 	// Calculate window size
 	RECT rect;
@@ -104,9 +104,9 @@ Window::~Window()
 	DestroyWindow(hwnd);
 }
 
-void Window::setTitle(const std::string name)
+void Window::setTitle(const std::string text)
 {
-	const std::wstring title = ToWString(name);
+	const std::wstring title = wName + ToWString(": " + text);
 	SetWindowTextW(hwnd, title.c_str());
 }
 
@@ -140,8 +140,8 @@ bool Window::setSize(const int32 newWidth, const int32 newHeight)
 		return false;
 	}
 
-	width = newWidth;
-	height = newHeight;
+	wWidth = newWidth;
+	wHeight = newHeight;
 
 	return true;
 }
@@ -175,7 +175,7 @@ Win32Graphics& Window::gfx()
 
 bool Window::shouldClose()
 {
-	if (MessageBox(hwnd, L"Really quit?", WindowClass::GetName(), MB_OKCANCEL) == IDOK)
+	if (MessageBox(hwnd, L"Really quit?", wName, MB_OKCANCEL) == IDOK)
 	{
 		PostQuitMessage(0);
 		return true;
@@ -284,7 +284,7 @@ LRESULT Window::HandleMessage
 	case WM_MOUSEMOVE:
 	{
 		GetXY();
-		if (x < 0 || y < 0 || x >= width || y >= height)  // Outside of window
+		if (x < 0 || y < 0 || x >= wWidth || y >= wHeight)  // Outside of window
 		{
 			if (wParam & (MK_LBUTTON | MK_RBUTTON))  // Dragging
 			{

@@ -22,15 +22,6 @@
     <Filter Include="Resources">
       <UniqueIdentifier>{9931726f-933d-4153-b8c9-9dcde4638e94}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Demo">
-      <UniqueIdentifier>{75a7136e-ac65-4eab-8d8f-a2e807e5dce0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Demo\include">
-      <UniqueIdentifier>{a0666dd8-e6cb-4e9f-b363-88f79973cf9e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Demo\source">
-      <UniqueIdentifier>{e6e33eaf-8f1e-48dd-91ce-d0d96488d16e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Graphics">
       <UniqueIdentifier>{7ffa6a9b-f830-4ef1-947a-3b4b32ebb8b7}</UniqueIdentifier>
     </Filter>
@@ -40,13 +31,22 @@
     <Filter Include="Graphics\source">
       <UniqueIdentifier>{46ab8b6e-ad90-4063-9047-0d5c3fa0144c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="App">
+      <UniqueIdentifier>{75a7136e-ac65-4eab-8d8f-a2e807e5dce0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="App\include">
+      <UniqueIdentifier>{a0666dd8-e6cb-4e9f-b363-88f79973cf9e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="App\source">
+      <UniqueIdentifier>{e6e33eaf-8f1e-48dd-91ce-d0d96488d16e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="win32_main.cpp">
       <Filter>Win32\source</Filter>
     </ClCompile>
     <ClCompile Include="demo.cpp">
-      <Filter>Demo\source</Filter>
+      <Filter>App\source</Filter>
     </ClCompile>
     <ClCompile Include="win32_window.cpp">
       <Filter>Win32\source</Filter>
@@ -57,10 +57,13 @@
     <ClCompile Include="win32_graphics.cpp">
       <Filter>Win32\source</Filter>
     </ClCompile>
-    <ClCompile Include="Keyboard.cpp">
+    <ClCompile Include="app.cpp">
+      <Filter>App\source</Filter>
+    </ClCompile>
+    <ClCompile Include="keyboard.cpp">
       <Filter>Input\source</Filter>
     </ClCompile>
-    <ClCompile Include="Mouse.cpp">
+    <ClCompile Include="mouse.cpp">
       <Filter>Input\source</Filter>
     </ClCompile>
   </ItemGroup>
@@ -70,7 +73,7 @@
       <Filter>Resources</Filter>
     </ClInclude>
     <ClInclude Include="demo.h">
-      <Filter>Demo\include</Filter>
+      <Filter>App\include</Filter>
     </ClInclude>
     <ClInclude Include="win32_performance.h">
       <Filter>Win32\include</Filter>
@@ -78,23 +81,23 @@
     <ClInclude Include="win32_window.h">
       <Filter>Win32\include</Filter>
     </ClInclude>
-    <ClInclude Include="app.h">
-      <Filter>Demo\source</Filter>
-    </ClInclude>
     <ClInclude Include="win32_graphics.h">
       <Filter>Win32\include</Filter>
     </ClInclude>
     <ClInclude Include="graphics.h">
       <Filter>Graphics\include</Filter>
     </ClInclude>
-    <ClInclude Include="Keyboard.h">
-      <Filter>Input\include</Filter>
-    </ClInclude>
-    <ClInclude Include="Mouse.h">
-      <Filter>Input\include</Filter>
-    </ClInclude>
     <ClInclude Include="hwindows.h">
       <Filter>Win32\include</Filter>
+    </ClInclude>
+    <ClInclude Include="app.h">
+      <Filter>App\include</Filter>
+    </ClInclude>
+    <ClInclude Include="keyboard.h">
+      <Filter>Input\include</Filter>
+    </ClInclude>
+    <ClInclude Include="mouse.h">
+      <Filter>Input\include</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
