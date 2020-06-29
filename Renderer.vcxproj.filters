@@ -40,6 +40,15 @@
     <Filter Include="App\source">
       <UniqueIdentifier>{e6e33eaf-8f1e-48dd-91ce-d0d96488d16e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Exception">
+      <UniqueIdentifier>{a7c07452-7288-461f-a0a6-3533e78f9362}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Exception\include">
+      <UniqueIdentifier>{0686f0ee-e471-4fda-8447-31b69620edec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Exception\source">
+      <UniqueIdentifier>{32f80114-de12-4b68-8eab-5980ccec30c5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="win32_main.cpp">
@@ -65,6 +74,10 @@
     </ClCompile>
     <ClCompile Include="mouse.cpp">
       <Filter>Input\source</Filter>
+    </ClCompile>
+    <ClCompile Include="guicon.cpp" />
+    <ClCompile Include="exception.cpp">
+      <Filter>Exception\source</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -98,6 +111,10 @@
     </ClInclude>
     <ClInclude Include="mouse.h">
       <Filter>Input\include</Filter>
+    </ClInclude>
+    <ClInclude Include="guicon.h" />
+    <ClInclude Include="exception.h">
+      <Filter>Exception\include</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

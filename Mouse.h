@@ -36,7 +36,6 @@ public:
 		bool isRightPressed() const noexcept { return rightPressed; }
 		int32 getX() const noexcept { return x; }
 		int32 getY() const noexcept { return y; }
-		// return pair<x, y>
 	};
 
 public:

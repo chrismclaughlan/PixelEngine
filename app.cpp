@@ -1,4 +1,7 @@
 #include "app.h"
+#include <iostream>
+#include <assert.h>
+#include "exception.h"
 
 void App::HandleInput()
 {
@@ -21,15 +24,18 @@ void App::HandleInput()
 		{
 		case Mouse::Event::Type::LPressed:
 		{
+			THROW_EXCEPTION("lPressed");
 		} break;
 		case Mouse::Event::Type::RPressed:
 		{
 		} break;
 		case Mouse::Event::Type::WheelDown:
 		{
+			assert(false);
 		} break;
 		case Mouse::Event::Type::Move:
 		{
+			std::cout << event.getX() << " " << event.getY() << "\n";
 		} break;
 		}
 	}
@@ -47,8 +53,8 @@ void App::DoFrame()
 	win.gfx().ClearScreen(0xff0000);
 
 	// debug
-	text = std::to_string(win.mouse.getPosX()) + " " + std::to_string(win.mouse.getPosY());
-	win.setTitle(text);
+	//text = std::to_string(win.mouse.getPosX()) + " " + std::to_string(win.mouse.getPosY());
+	//win.setTitle(text);
 
 	win.gfx().Render();  // last
 }

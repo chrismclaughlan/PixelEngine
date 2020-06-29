@@ -65,7 +65,6 @@ Window::Window(const wchar_t* name, int32 width, int32 height)
 	if (AdjustWindowRect(&rect, WINDOW_STYLE, FALSE) == NULL)
 	{
 		// throw ...
-		OutputDebugString((LPCWSTR)GetLastError());
 		assert(false);
 	}
 
@@ -82,7 +81,6 @@ Window::Window(const wchar_t* name, int32 width, int32 height)
 	if (hwnd == NULL)
 	{
 		// throw ...
-		OutputDebugString((LPCWSTR)GetLastError());
 		assert(false);
 	}
 
@@ -90,7 +88,6 @@ Window::Window(const wchar_t* name, int32 width, int32 height)
 	if (hdc == NULL)
 	{
 		// throw ...
-		OutputDebugString((LPCWSTR)GetLastError());
 		assert(false);
 	}
 
