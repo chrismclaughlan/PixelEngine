@@ -143,7 +143,6 @@
     <ClCompile Include="demo.cpp" />
     <ClCompile Include="exception.cpp" />
     <ClCompile Include="graphics.cpp" />
-    <ClCompile Include="guicon.cpp" />
     <ClCompile Include="keyboard.cpp" />
     <ClCompile Include="mouse.cpp" />
     <ClCompile Include="win32_graphics.cpp" />
@@ -154,7 +153,6 @@
     <ClInclude Include="app.h" />
     <ClInclude Include="demo.h" />
     <ClInclude Include="exception.h" />
-    <ClInclude Include="guicon.h" />
     <ClInclude Include="keyboard.h" />
     <ClInclude Include="mouse.h" />
     <ClInclude Include="win32_graphics.h" />

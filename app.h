@@ -7,6 +7,7 @@ class App
 private:
 	Window win;
 	std::string text;  //test
+	std::string acceptedCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890_ ";
 private:
 	void HandleInput();
 	void DoFrame();

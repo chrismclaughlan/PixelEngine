@@ -3,6 +3,8 @@
 #include <assert.h>
 #include "exception.h"
 
+#define DISPLAY_DEBUG_CONSOLE
+
 void App::HandleInput()
 {
 	while (!win.keyboard.keyIsEmpty())
@@ -35,16 +37,29 @@ void App::HandleInput()
 		} break;
 		case Mouse::Event::Type::Move:
 		{
+#ifdef DISPLAY_DEBUG_CONSOLE
 			std::cout << event.getX() << " " << event.getY() << "\n";
+#endif
 		} break;
 		}
 	}
 
 	while (!win.keyboard.charIsEmpty())
 	{
-		const int8 e = win.keyboard.readChar();
-		text += std::string(1, e);
-		win.setTitle(text);  // test
+		const uint8 e = win.keyboard.readChar();
+		if (e == VK_BACK && !text.empty())
+		{
+			text.pop_back();
+		}
+		else if (acceptedCharacters.find(e) != std::string::npos)
+		{
+			// If char in acceptedCharacters
+			text += std::string(1, e);
+		}
+#ifdef DISPLAY_DEBUG_CONSOLE
+
+		std::cout << text << "\n";
+#endif
 	}
 }
 

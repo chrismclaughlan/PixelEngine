@@ -14,7 +14,7 @@ Keyboard::Event Keyboard::readKey() noexcept
 	}
 }
 
-bool Keyboard::keyIsPressed(int8 keycode) const noexcept
+bool Keyboard::keyIsPressed(uint8 keycode) const noexcept
 {
 	return keyStates[keycode];
 }
@@ -24,11 +24,11 @@ bool Keyboard::keyIsEmpty() const noexcept
 	return keyBuffer.empty();
 }
 
-char Keyboard::readChar() noexcept
+uint8 Keyboard::readChar() noexcept
 {
 	if (charBuffer.size() > 0u)
 	{
-		int8 charCode = charBuffer.front();
+		uint8 charCode = charBuffer.front();
 		charBuffer.pop();
 		return charCode;
 	}
@@ -50,7 +50,7 @@ void Keyboard::flushKey() noexcept
 
 void Keyboard::flushChar() noexcept
 {
-	charBuffer = std::queue<char>();
+	charBuffer = std::queue<uint8>();
 }
 
 void Keyboard::flush() noexcept
@@ -74,21 +74,21 @@ bool Keyboard::autorepeatIsEnabled() const noexcept
 	return autorepeatEnabled;
 }
 
-void Keyboard::keyPressed(int8 keycode) noexcept
+void Keyboard::keyPressed(uint8 keycode) noexcept
 {
 	keyStates[keycode] = true;
 	keyBuffer.push(Keyboard::Event(Keyboard::Event::Type::Press, keycode));
 	trimBuffer(keyBuffer);
 }
 
-void Keyboard::keyReleased(int8 keycode) noexcept
+void Keyboard::keyReleased(uint8 keycode) noexcept
 {
 	keyStates[keycode] = false;
 	keyBuffer.push(Keyboard::Event(Keyboard::Event::Type::Release, keycode));
 	trimBuffer(keyBuffer);
 }
 
-void Keyboard::onChar(int8 character) noexcept
+void Keyboard::onChar(uint8 character) noexcept
 {
 	charBuffer.push(character);
 	trimBuffer(charBuffer);
