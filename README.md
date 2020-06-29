@@ -1,7 +1,7 @@
 # Base Windows
 
 ## TODO
-- change input system (allow for single clicks)
+- implement networking
 - implement new particles + particle generator
 - create terraria clone
 	- create expandable map
