@@ -1,7 +1,7 @@
-#include "win32_window.h"
-#include <windowsX.h>  // mouse movement
+#include "win32_window.h"  // first
 #include "resource.h"
 #include "Keyboard.h"
+#include <windowsX.h>  // mouse movement
 #include <assert.h>
 
 //#define WINDOW_STYLE (WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU)
@@ -165,7 +165,7 @@ bool Window::setPos(const int32 x, const int32 y)
 	return true;
 }
 
-Win32Graphics& Window::gfx()
+Win32Graphics& Window::Gfx()
 {
 	return *pGraphics;
 }
@@ -255,9 +255,11 @@ LRESULT Window::HandleMessage
 	} break;
 	case WM_SIZE:
 	{
-		RECT rect;
-		GetClientRect(hwnd, &rect);
-		gfx().ChangeSize(&rect);
+		const int32 newWidth = GET_X_LPARAM(lParam);
+		const int32 newHeight = GET_Y_LPARAM(lParam);
+		wWidth = newWidth;
+		wHeight = newHeight;
+		Gfx().ChangeSize(newWidth, newHeight);
 	} break;
 	/* -------------------- KEYBOARD -------------------- */
 	case WM_SYSKEYDOWN:

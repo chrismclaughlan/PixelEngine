@@ -114,6 +114,7 @@
     <ClInclude Include="exception.h">
       <Filter>Exception\include</Filter>
     </ClInclude>
+    <ClInclude Include="defines.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md" />

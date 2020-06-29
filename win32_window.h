@@ -1,5 +1,5 @@
 #pragma once
-#include "hwindows.h"
+#include "hwindows.h"  // first
 #include "types.h"
 #include "win32_graphics.h"
 #include "keyboard.h"
@@ -49,7 +49,7 @@ public:
 	bool setPos(const int32 x, const int32 y);
 	bool shouldClose();
 	static bool processMessages(int32* exitCode) noexcept;
-	Win32Graphics& gfx();
+	Win32Graphics& Gfx();
 public:
 	Mouse mouse;
 	Keyboard keyboard;

@@ -1,5 +1,5 @@
 #pragma once
-#include "hwindows.h"
+#include "hwindows.h"  // first
 #include "types.h"
 #include <chrono>
 #include <thread>
@@ -12,13 +12,14 @@ public:
 	LARGE_INTEGER startTime;
 	LARGE_INTEGER endTime = {};
 	LARGE_INTEGER elapsedMicoseconds= {};
+	LARGE_INTEGER elapsedMicosecondsCarry= {};
 public:
 	Performance()
 	{
 		QueryPerformanceFrequency(&frequency);
 		QueryPerformanceCounter(&startTime);
 	}
-
+public:
 	void Update()
 	{
 		assert(frequency.QuadPart > 0);
@@ -47,9 +48,32 @@ public:
 	const float getFps()
 	{
 		if (elapsedMicoseconds.QuadPart > 0)
+		{
 			return (float)(1000000.0 / elapsedMicoseconds.QuadPart);
+		}
 		else
-			return 0;
+		{
+			return 0.0;
+		}
+	}
+
+	const bool hasTimePassed(float seconds)
+	{
+		if (elapsedMicoseconds.QuadPart > 0)
+		{
+			// check if second has passed
+			if (elapsedMicosecondsCarry.QuadPart > 1000000.0 * seconds)
+			{
+				elapsedMicosecondsCarry.QuadPart = 0;
+				return true;
+			}
+			else
+			{
+				elapsedMicosecondsCarry.QuadPart += elapsedMicoseconds.QuadPart;
+			}
+		}
+
+		return false;
 	}
 
 	const uint8 getFrameMask()

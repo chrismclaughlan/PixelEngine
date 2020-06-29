@@ -8,9 +8,6 @@ float ratio = 1080 / nscale_y;\
 scale_x = nscale_x * ratio;\
 scale_y = nscale_y * ratio;\
 
-const float DEFAULT_SCALE_X = 16;
-const float DEFAULT_SCALE_Y = 9;
-
 class Graphics
 {
 public:
@@ -28,6 +25,7 @@ public:
 
 	static void Clamp(int32, int32*, int32);  // inline
 	static void Clamp(float, float*, float);  // inline
+	static void Clamp(double, double*, double);  // inline
 	inline void ScaleX(float*);
 	inline void ScaleY(float*);
 

@@ -15,6 +15,12 @@ void Graphics::Clamp(float min, float* val, float max)
 	else if (*val > max) *val = max;
 }
 
+void Graphics::Clamp(double min, double* val, double max)
+{
+	if (*val < min) *val = min;
+	else if (*val > max) *val = max;
+}
+
 #include <stdio.h>
 
 inline void Graphics::ScaleX(float* val)

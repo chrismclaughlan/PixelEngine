@@ -34,10 +34,12 @@ void Win32Graphics::Render()
 		memory, &bitmapinfo, DIB_RGB_COLORS, SRCCOPY);
 }
 
-void Win32Graphics::ChangeSize(RECT* rect)
+void Win32Graphics::ChangeSize(int32 newWidth, int32 newHeight)
 {
-	width = rect->right - rect->left;
-	height = rect->bottom - rect->top;
+	//width = rect->right - rect->left;
+	//height = rect->bottom - rect->top;
+	width = newWidth;
+	height = newHeight;
 
 	int32 buffer_size = width * height * sizeof(uint32);
 	if (memory)
@@ -46,12 +48,8 @@ void Win32Graphics::ChangeSize(RECT* rect)
 	}
 	memory = VirtualAlloc(0, buffer_size, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
 
-	bitmapinfo.bmiHeader.biSize = sizeof(bitmapinfo);
 	bitmapinfo.bmiHeader.biWidth = width;
 	bitmapinfo.bmiHeader.biHeight = height;
-	bitmapinfo.bmiHeader.biPlanes = 1;
-	bitmapinfo.bmiHeader.biBitCount = 32;
-	bitmapinfo.bmiHeader.biCompression = BI_RGB;
 
 	float nscale_x = width;
 	float nscale_y = height;
