@@ -1,7 +1,7 @@
 #pragma once
 #include "win32_windows.h"
 #include "win32_basewindow.h"
-#include "render.h"
+#include "graphics.h"
 #include "input.h"
 
 namespace win32
@@ -31,7 +31,7 @@ protected:
 	PCWSTR class_name = L"MainWindow class";
 	HDC hdc;
 	input::Input input = {};
-	render::Render rend = {};
+	Graphics rend = {};
 	bool is_running = true;
 	bool hide_cursor = false;
 

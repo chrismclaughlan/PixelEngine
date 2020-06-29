@@ -1,13 +1,13 @@
 #include "win32_mainwindow.h"
 #include "demo.h"
-#include "render.h"
+#include "graphics.h"
 #include <math.h>
 #include <assert.h>
 
 #define ConvertToTileCoord(a)\
 a = (a + 1.0) * (gridSize/2.0);\
 a = (int32)floor(a);\
-render::Render::Clamp(0.0, &a, (float)gridSize - 1.0);\
+Graphics::Clamp(0.0, &a, (float)gridSize - 1.0);\
 
 #define ConvertToScreenCoord(a)\
 a = (a / (gridSize/2)) - 1;\

@@ -1,7 +1,7 @@
 #pragma once
 #include "win32_performance.h"
 #include "win32_mainwindow.h"
-#include "render.h"
+#include "graphics.h"
 #include <string>
 #include <vector>
 

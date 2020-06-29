@@ -1,39 +1,30 @@
 #pragma once
-#include "win32_windows.h"  // TODO
 #include <vector>
 #include "types.h"
 
-namespace render
-{
+// TODO clean namespace
+#define calculate_scales()\
+float ratio = 1080 / nscale_y;\
+scale_x = nscale_x * ratio;\
+scale_y = nscale_y * ratio;\
+
 const float DEFAULT_SCALE_X = 16;
 const float DEFAULT_SCALE_Y = 9;
 
-struct RenderState
+class Graphics
 {
+public:
 	int32 width;
 	int32 height;
-	void* memory;
-	BITMAPINFO bitmapinfo;
-};
 
-class Render
-{
-private:
-	RenderState state;
+protected:
+	void* memory;
 	float scale_x;
 	float scale_y;
 
 public:
-	Render();
-	Render(int32, int32);
-	Render(RenderState*, int32, int32);
-	//~Render();
-
-	int32 getWidth() { return state.width; }
-	int32 getHeight() { return state.height; }
-
-	RenderState* getRenderState() { return &state; }
-	void sizeChangeWin32(RECT*);
+	int32 getWidth() { return width; }
+	int32 getHeight() { return height; }
 
 	static void Clamp(int32, int32*, int32);  // inline
 	static void Clamp(float, float*, float);  // inline
@@ -51,4 +42,3 @@ public:
 	void DrawRectP(int32 x1, int32 y1, int32 x2, int32 y2, uint32 colour);
 	void DrawRect(float x, float y, float w, float h, uint32 colour);
 };
-}  // namespace render

@@ -44,9 +44,9 @@ LRESULT MainWindow::HandleMessage
 
 	case WM_SIZE:
 	{
-		RECT rect;
-		GetClientRect(m_hwnd, &rect);
-		rend.sizeChangeWin32(&rect);
+		//RECT rect;
+		//GetClientRect(m_hwnd, &rect);
+		//rend.sizeChangeWin32(&rect);
 	} break;
 
 	case WM_KEYUP:  // nessessary
@@ -225,14 +225,14 @@ BOOL MainWindow::setWindowSize(int32 x, int32 y)
 }
 
 // Business methods //
-
-void MainWindow::render()
-{
-	render::RenderState* render_state = rend.getRenderState();
-	StretchDIBits(hdc, 0, 0, render_state->width, render_state->height, 0, 0,
-		render_state->width, render_state->height, render_state->memory,
-		&render_state->bitmapinfo, DIB_RGB_COLORS, SRCCOPY);
-}
+//
+//void MainWindow::render()
+//{
+//	render::RenderState* render_state = rend.getRenderState();
+//	StretchDIBits(hdc, 0, 0, render_state->width, render_state->height, 0, 0,
+//		render_state->width, render_state->height, render_state->memory,
+//		&render_state->bitmapinfo, DIB_RGB_COLORS, SRCCOPY);
+//}
 
 bool MainWindow::isRunning()
 {

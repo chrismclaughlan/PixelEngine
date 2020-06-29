@@ -10,15 +10,6 @@
     <Filter Include="Win32\source">
       <UniqueIdentifier>{08b745d8-7794-45d5-91df-7202742709b2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Render">
-      <UniqueIdentifier>{7ffa6a9b-f830-4ef1-947a-3b4b32ebb8b7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Render\include">
-      <UniqueIdentifier>{f30ff6dc-50bb-4ddd-87ca-cbad87c1c664}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Render\source">
-      <UniqueIdentifier>{46ab8b6e-ad90-4063-9047-0d5c3fa0144c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Input">
       <UniqueIdentifier>{f312f130-fbed-4fd1-9728-8dfb956af9ec}</UniqueIdentifier>
     </Filter>
@@ -40,11 +31,17 @@
     <Filter Include="Demo\source">
       <UniqueIdentifier>{e6e33eaf-8f1e-48dd-91ce-d0d96488d16e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Graphics">
+      <UniqueIdentifier>{7ffa6a9b-f830-4ef1-947a-3b4b32ebb8b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\include">
+      <UniqueIdentifier>{f30ff6dc-50bb-4ddd-87ca-cbad87c1c664}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics\source">
+      <UniqueIdentifier>{46ab8b6e-ad90-4063-9047-0d5c3fa0144c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="render.cpp">
-      <Filter>Render\source</Filter>
-    </ClCompile>
     <ClCompile Include="input.cpp">
       <Filter>Input\source</Filter>
     </ClCompile>
@@ -57,13 +54,25 @@
     <ClCompile Include="win32_mainwindow.cpp">
       <Filter>Win32\source</Filter>
     </ClCompile>
+    <ClCompile Include="win32_window.cpp">
+      <Filter>Win32\source</Filter>
+    </ClCompile>
+    <ClCompile Include="graphics.cpp">
+      <Filter>Graphics\source</Filter>
+    </ClCompile>
+    <ClCompile Include="win32_graphics.cpp">
+      <Filter>Win32\source</Filter>
+    </ClCompile>
+    <ClCompile Include="Keyboard.cpp">
+      <Filter>Input\source</Filter>
+    </ClCompile>
+    <ClCompile Include="Mouse.cpp">
+      <Filter>Input\source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="win32_basewindow.h">
       <Filter>Win32\include</Filter>
-    </ClInclude>
-    <ClInclude Include="render.h">
-      <Filter>Render\include</Filter>
     </ClInclude>
     <ClInclude Include="types.h" />
     <ClInclude Include="input.h">
@@ -83,6 +92,24 @@
     </ClInclude>
     <ClInclude Include="win32_windows.h">
       <Filter>Win32\include</Filter>
+    </ClInclude>
+    <ClInclude Include="win32_window.h">
+      <Filter>Win32\include</Filter>
+    </ClInclude>
+    <ClInclude Include="app.h">
+      <Filter>Demo\source</Filter>
+    </ClInclude>
+    <ClInclude Include="win32_graphics.h">
+      <Filter>Win32\include</Filter>
+    </ClInclude>
+    <ClInclude Include="graphics.h">
+      <Filter>Graphics\include</Filter>
+    </ClInclude>
+    <ClInclude Include="Keyboard.h">
+      <Filter>Input\include</Filter>
+    </ClInclude>
+    <ClInclude Include="Mouse.h">
+      <Filter>Input\include</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
