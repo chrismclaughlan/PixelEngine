@@ -25,15 +25,6 @@
     <Filter Include="Graphics\source">
       <UniqueIdentifier>{46ab8b6e-ad90-4063-9047-0d5c3fa0144c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="App">
-      <UniqueIdentifier>{75a7136e-ac65-4eab-8d8f-a2e807e5dce0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="App\include">
-      <UniqueIdentifier>{a0666dd8-e6cb-4e9f-b363-88f79973cf9e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="App\source">
-      <UniqueIdentifier>{e6e33eaf-8f1e-48dd-91ce-d0d96488d16e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Exception">
       <UniqueIdentifier>{a7c07452-7288-461f-a0a6-3533e78f9362}</UniqueIdentifier>
     </Filter>
@@ -63,14 +54,8 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="demo.cpp">
-      <Filter>App\source</Filter>
-    </ClCompile>
     <ClCompile Include="graphics.cpp">
       <Filter>Graphics\source</Filter>
-    </ClCompile>
-    <ClCompile Include="app.cpp">
-      <Filter>App\source</Filter>
     </ClCompile>
     <ClCompile Include="keyboard.cpp">
       <Filter>Input\source</Filter>
@@ -87,23 +72,13 @@
     <ClCompile Include="win32_graphics.cpp">
       <Filter>Win32\Components\source</Filter>
     </ClCompile>
-    <ClCompile Include="win32_main.cpp">
-      <Filter>Win32</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="types.h" />
     <ClInclude Include="resource.h">
       <Filter>Resources</Filter>
     </ClInclude>
-    <ClInclude Include="demo.h">
-      <Filter>App\include</Filter>
-    </ClInclude>
     <ClInclude Include="graphics.h">
       <Filter>Graphics\include</Filter>
-    </ClInclude>
-    <ClInclude Include="app.h">
-      <Filter>App\include</Filter>
     </ClInclude>
     <ClInclude Include="keyboard.h">
       <Filter>Input\include</Filter>
@@ -127,6 +102,8 @@
     <ClInclude Include="hwindows.h">
       <Filter>Win32</Filter>
     </ClInclude>
+    <ClInclude Include="win.h" />
+    <ClInclude Include="types.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md" />

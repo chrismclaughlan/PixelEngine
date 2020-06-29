@@ -27,4 +27,6 @@ int WINAPI wWinMain
         Sleep(5000);
 #endif
     }
+
+    return -1;
 }
