@@ -81,21 +81,26 @@ void App::HandleInput()
 			//placeParticle(event.getX(), event.getY(), paintBrush.size);
 			paintBrush.isPainting = false;
 		} break;
+		case Mouse::Event::Type::RPressed:
+		{
+			// single click
+			placeParticle(paintBrush.x, paintBrush.y, paintBrush.size);
+		} break;
 		case Mouse::Event::Type::MPressed:
 		{
 			paintBrush.paint = getParticle(paintBrush.x, paintBrush.y);
 		} break;
 		case Mouse::Event::Type::WheelDown:
 		{
-			paintBrush.size -= 1;
-			if (paintBrush.size < 1)
-				paintBrush.size = 1;
-		} break;
-		case Mouse::Event::Type::WheelUp:
-		{
 			paintBrush.size += 1;
 			if (paintBrush.size > MAX_PAINTBRUSH_SIZE)
 				paintBrush.size = MAX_PAINTBRUSH_SIZE;
+		} break;
+		case Mouse::Event::Type::WheelUp:
+		{
+			paintBrush.size -= 1;
+			if (paintBrush.size < 1)
+				paintBrush.size = 1;
 		} break;
 		}
 	}
