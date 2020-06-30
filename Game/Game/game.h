@@ -1,7 +1,10 @@
 #pragma once
 #include "Engine\hwindows.h"  // first
 #include "Engine\win32_window.h"
+#include "Engine\win32_network.h"
 #include "Engine\win32_performance.h"
+
+#include <iostream>
 
 #define ConvertToTileCoord(a)\
 a = (a + 1.0) * (gridSize/2.0);\
@@ -40,19 +43,17 @@ class Game
 protected:
 	Window win;
 	Performance performance;
-	virtual void HandleInput();
-	virtual void DoFrame();
+	virtual void HandleInput() = 0;
+	virtual void DoFrame() = 0;
+	bool networkEnabled;
 
 public:
-	Game() : win(L"Game", 800, 800), gridSize(20), fpsLimit(0)
-	{
-		createGrid();
-	}
-	Game(int32 gridSize) : win(L"Game", 800, 800), gridSize(gridSize), fpsLimit(0)
-	{
-		createGrid();
-	}
-	Game(int32 gridSize, const char* name, int32 width, int32 height) : win(name, width, height), gridSize(gridSize), fpsLimit(0)
+	Game(bool enableNetwork, const char* name, int32 width, int32 height)
+		: 
+		networkEnabled(enableNetwork), 
+		win(name, width, height), 
+		gridSize(20), 
+		fpsLimit(0)
 	{
 		createGrid();
 	}
@@ -61,7 +62,7 @@ public:
 		delete[] grid;
 	}
 
-	virtual int32 run();
+	virtual int32 run() = 0;
 protected:
 	void createGrid();
 	void clearParticles();
@@ -69,10 +70,6 @@ protected:
 	bool inline emptyParticle(int32 x, int32 y);
 	bool inline containsParticle(int32 x, int32 y, State::Value val);
 	State::Value inline getParticle(int32 x, int32 y);
-
-	virtual void placeParticle(int32 x, int32 y, int32 size);
-	virtual void UpdateParticles();
-	virtual void DrawPaintBrush();
 protected:
 	//std::string text;
 	//std::string acceptedCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890_ ";

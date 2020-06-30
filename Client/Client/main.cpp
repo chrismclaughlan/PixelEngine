@@ -18,7 +18,7 @@ int WINAPI wWinMain
 
     try
     {
-        return GameClient(100).run();
+        return GameClient(true).run();
     }
     catch (AppException& e)
     {

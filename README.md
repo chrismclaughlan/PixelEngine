@@ -1,7 +1,7 @@
 # Base Windows
 
 ## TODO
-- Engine -> Game -> Client + Server
+- Exceptions for debug and different for release
 
 
 

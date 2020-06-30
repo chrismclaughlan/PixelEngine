@@ -4,6 +4,8 @@
 #include <windowsX.h>  // mouse movement
 #include <assert.h>
 
+#include "exception.h"
+
 //#define WINDOW_STYLE (WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU)
 //#define WINDOW_STYLE (WS_OVERLAPPEDWINDOW ^ WS_THICKFRAME)
 #define WINDOW_STYLE (WS_OVERLAPPEDWINDOW)
@@ -56,13 +58,9 @@ HINSTANCE Window::WindowClass::GetHInstance() noexcept
 Window::Window(const char* name, int32 width, int32 height)
 	: wWidth(width), wHeight(height)
 {
-	std::string strName = std::string(name);
-	wName = ToWString(strName).c_str();
-}
+	std::string str = std::string(name);
+	wName = std::wstring(str.begin(), str.end());
 
-Window::Window(const wchar_t* name, int32 width, int32 height)
-	: wName(name), wWidth(width), wHeight(height)
-{
 	// Calculate window size
 	RECT rect;
 	rect.left = 100;
@@ -76,7 +74,7 @@ Window::Window(const wchar_t* name, int32 width, int32 height)
 	}
 
 	hwnd = CreateWindow(
-		WindowClass::GetName(), name,
+		WindowClass::GetName(), wName.c_str(),
 		WINDOW_STYLE,
 		CW_USEDEFAULT, CW_USEDEFAULT,
 		rect.right - rect.left,
@@ -103,6 +101,7 @@ Window::Window(const wchar_t* name, int32 width, int32 height)
 
 	ShowWindow(hwnd, SW_SHOWDEFAULT);
 }
+
 Window::~Window()
 {
 	DestroyWindow(hwnd);
@@ -179,7 +178,7 @@ Win32Graphics& Window::Gfx()
 
 bool Window::shouldClose()
 {
-	if (MessageBox(hwnd, L"Really quit?", wName, MB_OKCANCEL) == IDOK)
+	if (MessageBox(hwnd, L"Really quit?", wName.c_str(), MB_OKCANCEL) == IDOK)
 	{
 		PostQuitMessage(0);
 		return true;

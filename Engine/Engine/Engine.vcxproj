@@ -23,7 +23,10 @@
     <ClCompile Include="graphics.cpp" />
     <ClCompile Include="Keyboard.cpp" />
     <ClCompile Include="Mouse.cpp" />
+    <ClCompile Include="win32_nclient.cpp" />
     <ClCompile Include="win32_graphics.cpp" />
+    <ClCompile Include="win32_network.cpp" />
+    <ClCompile Include="win32_nserver.cpp" />
     <ClCompile Include="win32_window.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -35,8 +38,10 @@
     <ClInclude Include="Mouse.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="types.h" />
-    <ClInclude Include="win.h" />
     <ClInclude Include="win32_graphics.h" />
+    <ClInclude Include="win32_nclient.h" />
+    <ClInclude Include="win32_network.h" />
+    <ClInclude Include="win32_nserver.h" />
     <ClInclude Include="win32_performance.h" />
     <ClInclude Include="win32_window.h" />
   </ItemGroup>

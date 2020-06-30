@@ -10,10 +10,16 @@
     <Filter Include="Game">
       <UniqueIdentifier>{18569b1f-5844-4871-af44-bfccd612eee0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Network">
+      <UniqueIdentifier>{f68fcd0d-eace-4886-a09b-67f3a22b9768}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game_client.h">
       <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="common.h">
+      <Filter>Network</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

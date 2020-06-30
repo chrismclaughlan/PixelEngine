@@ -1,6 +1,7 @@
 #include "Engine\hwindows.h"  // first
 #include "Engine\exception.h"
 #include "Engine\defines.h"
+#include "game_server.h"
 
 #if DISPLAY_DEBUG_CONSOLE
 FILE* fConsole;
@@ -15,8 +16,17 @@ int WINAPI wWinMain
     freopen_s(&fConsole, "CON", "w", stdout);
 #endif
 
-    std::cout << "Server test";
-    Sleep(2000);
+    try
+    {
+        return GameServer(9999).run();
+    }
+    catch (AppException& e)
+    {
+#if DISPLAY_DEBUG_CONSOLE
+        e.logError();
+        Sleep(5000);
+#endif
+    }
 
     return -1;
 }
