@@ -1,7 +1,7 @@
-#include "hwindows.h"  // first
-#include "app.h"
-#include "exception.h"
-#include "defines.h"
+#include "Engine\hwindows.h"  // first
+#include "Engine\exception.h"
+#include "Engine\defines.h"
+#include "game_client.h"
 
 #if DISPLAY_DEBUG_CONSOLE
 FILE* fConsole;
@@ -18,7 +18,7 @@ int WINAPI wWinMain
 
     try
     {
-        return App(100).run();
+        return GameClient(100).run();
     }
     catch (AppException& e)
     {

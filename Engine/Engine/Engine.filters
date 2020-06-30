@@ -54,17 +54,17 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="exception.cpp">
+      <Filter>Exception\source</Filter>
+    </ClCompile>
     <ClCompile Include="graphics.cpp">
       <Filter>Graphics\source</Filter>
     </ClCompile>
-    <ClCompile Include="keyboard.cpp">
+    <ClCompile Include="Keyboard.cpp">
       <Filter>Input\source</Filter>
     </ClCompile>
-    <ClCompile Include="mouse.cpp">
+    <ClCompile Include="Mouse.cpp">
       <Filter>Input\source</Filter>
-    </ClCompile>
-    <ClCompile Include="exception.cpp">
-      <Filter>Exception\source</Filter>
     </ClCompile>
     <ClCompile Include="win32_window.cpp">
       <Filter>Win32\Window\source</Filter>
@@ -74,22 +74,26 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="resource.h">
-      <Filter>Resources</Filter>
+    <ClInclude Include="exception.h">
+      <Filter>Exception\include</Filter>
     </ClInclude>
     <ClInclude Include="graphics.h">
       <Filter>Graphics\include</Filter>
     </ClInclude>
-    <ClInclude Include="keyboard.h">
-      <Filter>Input\include</Filter>
-    </ClInclude>
-    <ClInclude Include="mouse.h">
-      <Filter>Input\include</Filter>
-    </ClInclude>
-    <ClInclude Include="exception.h">
-      <Filter>Exception\include</Filter>
-    </ClInclude>
     <ClInclude Include="defines.h" />
+    <ClInclude Include="hwindows.h">
+      <Filter>Win32</Filter>
+    </ClInclude>
+    <ClInclude Include="Keyboard.h">
+      <Filter>Input\include</Filter>
+    </ClInclude>
+    <ClInclude Include="Mouse.h">
+      <Filter>Input\include</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="types.h" />
     <ClInclude Include="win32_window.h">
       <Filter>Win32\Window\include</Filter>
     </ClInclude>
@@ -99,14 +103,9 @@
     <ClInclude Include="win32_performance.h">
       <Filter>Win32\Components\include</Filter>
     </ClInclude>
-    <ClInclude Include="hwindows.h">
+    <ClInclude Include="win.h">
       <Filter>Win32</Filter>
     </ClInclude>
-    <ClInclude Include="win.h" />
-    <ClInclude Include="types.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="AppIcon.ico">

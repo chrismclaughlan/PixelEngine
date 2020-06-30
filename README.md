@@ -1,6 +1,10 @@
 # Base Windows
 
 ## TODO
+- Engine -> Game -> Client + Server
+
+
+
 - implement networking
 - implement new particles + particle generator
 - create terraria clone

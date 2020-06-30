@@ -53,6 +53,13 @@ HINSTANCE Window::WindowClass::GetHInstance() noexcept
 
 /* --------------------------------------------------------- */
 
+Window::Window(const char* name, int32 width, int32 height)
+	: wWidth(width), wHeight(height)
+{
+	std::string strName = std::string(name);
+	wName = ToWString(strName).c_str();
+}
+
 Window::Window(const wchar_t* name, int32 width, int32 height)
 	: wName(name), wWidth(width), wHeight(height)
 {

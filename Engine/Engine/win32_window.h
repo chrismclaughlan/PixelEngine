@@ -30,6 +30,7 @@ private:
 		HINSTANCE hInstance;
 	};
 public:
+	Window(const char* name, int32 width, int32 height);
 	Window(const wchar_t* name, int32 width, int32 height);
 	~Window();
 	Window(const Window&) = delete;
