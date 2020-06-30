@@ -28,6 +28,14 @@ NServer::NServer(uint16 port)
 	{
 		THROW_EXCEPTION("bind() socket error");  // TODO implement WSAGetLastError()
 	}
+
+	uint64 Blocking = 0;
+	uint64 nonBlocking = 1;
+	res = ioctlsocket(sock, FIONBIO, &nonBlocking);
+	if (res == SOCKET_ERROR)
+	{
+		THROW_EXCEPTION("ioctlsocket() error");  // TODO implement WSAGetLastError()
+	}
 }
 
 NServer::~NServer()

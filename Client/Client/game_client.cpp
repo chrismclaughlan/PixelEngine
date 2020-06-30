@@ -70,7 +70,7 @@ void GameClient::HandleInput()
 		} break;
 		case VK_RETURN:
 		{
-			std::cout << "VK_RETURN\n";
+			net->ping();
 		} break;
 		}
 	}

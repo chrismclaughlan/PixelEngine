@@ -75,7 +75,10 @@ void GameServer::DoFrame()
 	/* ---------- Simulate ---------- */
 	NETWORK::Packet packet;
 	packet = net.receive();
-	std::cout << packet.buffer << std::endl;
+	if (packet.numBytes > 0)
+	{
+		std::cout << packet.buffer << std::endl;
+	}
 
 	/* ---------- Render ---------- */
 	win.Gfx().ClearScreen(0x000000);

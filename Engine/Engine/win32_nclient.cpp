@@ -19,6 +19,14 @@ NClient::NClient()
 	{
 		THROW_EXCEPTION("socket() invalid");  // TODO implement WSAGetLastError()
 	}
+
+	uint64 Blocking = 0;
+	uint64 nonBlocking = 1;
+	res = ioctlsocket(sock, FIONBIO, &nonBlocking);
+	if (res == SOCKET_ERROR)
+	{
+		THROW_EXCEPTION("ioctlsocket() error");  // TODO implement WSAGetLastError()
+	}
 }
 
 NClient::~NClient()
@@ -42,7 +50,7 @@ void NClient::connect(const char* sIP, const uint16 sPort)
 	}
 
 	// Check connection
-	//ping();
+	ping();
 }
 
 bool NClient::isOnline()
