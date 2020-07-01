@@ -22,11 +22,12 @@ void Network::deliver(NETWORK::Packet& packet)
 		(struct sockaddr*) & incomingAddr, (int32)sizeof(incomingAddr));
 	if (res == SOCKET_ERROR)
 	{
+		std::cout << WSAGetLastError();
 		THROW_EXCEPTION("sendto() failed");
 	}
 }
 
-void Network::receive(NETWORK::Packet& packet)
+bool Network::receive(NETWORK::Packet& packet)
 {
 	int32 server_addr_size = sizeof(incomingAddr);
 	packet.numBytes = recvfrom(sock, packet.buffer, sizeof(packet.buffer) - 1, 0,
@@ -37,29 +38,25 @@ void Network::receive(NETWORK::Packet& packet)
 		int32 WSALastError = WSAGetLastError();
 		if (WSALastError == WSAEWOULDBLOCK)
 		{
-			return;
+			return false;
 		}
 		else
 		{
+			std::cout << WSAGetLastError();
 			THROW_EXCEPTION("recvfrom returned SOCKET_ERROR");
 		}
 	}
 
 	//packet.buffer[NETWORK::maxBufferSize - 1] = 0;
 
-#if DISPLAY_DEBUG_CONSOLE
-	char buff[16];
-	inet_ntop(incomingAddr.sin_family, &incomingAddr.sin_addr, buff, sizeof(buff));
-	printf("Received packet from %s:%d\n", buff, ntohs(incomingAddr.sin_port));
-	printf("Data: %s\n", packet.buffer);
-#endif
+//#if DISPLAY_DEBUG_CONSOLE
+	//char buff[16];
+	//inet_ntop(incomingAddr.sin_family, &incomingAddr.sin_addr, buff, sizeof(buff));
+	//printf("Received packet from %s:%d\n", buff, ntohs(incomingAddr.sin_port));
+	//printf("Data: %s\n", packet.buffer);
+//#endif
 
-	//if (packet == NETWORK::pingString)
-	if (packet.contains(NETWORK::pingString))
-	{
-		// return ping
-		deliver(packet);
-	}
+	return true;
 }
 
 // Returns time in ms for response: -1 for failure

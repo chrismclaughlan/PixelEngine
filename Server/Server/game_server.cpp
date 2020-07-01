@@ -1,6 +1,7 @@
 #include "game_server.h"
 #include "Engine\exception.h"
 #include "Engine\types.h"
+#include "Game\network_protocols.h"
 
 #include <iostream>
 
@@ -15,17 +16,123 @@ int32 GameServer::run()
 		}
 		HandleInput();
 		DoFrame();
-
-		if (networkEnabled)
-		{
-			if (!net.isOnline())
-			{
-				break;
-			}
-		}
+		HandleNetwork();
 	}
 
 	return 0;
+}
+
+void GameServer::HandleNetwork()
+{
+	if (!net.isOnline())
+	{
+		THROW_EXCEPTION("offline");  // TODO network exceptions
+	}
+
+	//NETWORK::Packet localPacket(data, sizeof(data));
+	NETWORK::Packet foreignPacket;
+
+	// retreive data
+	if (net.receive(foreignPacket))
+	{
+		decodePacket(foreignPacket);
+	}
+
+	const char testGameData[] =
+	{
+		NETWORK::PacketData::Header::Data,
+		5, 5,
+		'a', 'b', 'c', 'd', 'e',
+		'f', 'g', 'h', 'i', 'j',
+		'k', 'l', 'm', 'n', 'o',
+		'p', 'q', 'r', 's', 't',
+		'1', '2', '3', '4', '5',
+	};
+	NETWORK::Packet testPacket(testGameData, sizeof(testGameData));
+
+	// send data
+	//net.deliver(testPacket);
+
+
+
+
+
+	//test
+	//const char testDataPing[] =
+	//{
+	//	NETWORK::PacketData::Header::Ping,
+	//};
+	//const char testGameData[] =
+	//{
+	//	NETWORK::PacketData::Header::Data,
+	//	5, 5,
+	//	'a', 'b', 'c', 'd', 'e',
+	//	'f', 'g', 'h', 'i', 'j',
+	//	'k', 'l', 'm', 'n', 'o',
+	//	'p', 'q', 'r', 's', 't',
+	//	'1', '2', '3', '4', '5',
+	//};
+	//NETWORK::Packet testPacket(testGameData, sizeof(testGameData) - 5);
+}
+void GameServer::decodePacket(NETWORK::Packet& packet)
+{
+	int32 i = 0;
+	switch (packet.buffer[i++])
+	{
+		case NETWORK::PacketData::Header::Invalid:
+		{
+			//std::cout << " -> Invalid\n";
+		} break;
+		case NETWORK::PacketData::Header::Join:
+		{
+			net.coutIncomingAddr();
+			std::cout << " -> Join\n";
+		} break;
+		case NETWORK::PacketData::Header::Leave:
+		{
+			net.coutIncomingAddr();
+			std::cout << " -> Leave\n";
+		} break;
+		case NETWORK::PacketData::Header::Ping:
+		{
+			net.coutIncomingAddr();
+			std::cout << " -> Ping -> ";
+			for (int i = 1; i < packet.numBytes; i++)
+			{
+				std::cout << packet.buffer[i];
+			}
+			std::cout << "\n";
+			// return ping
+			net.deliver(packet);
+		} break;
+		case NETWORK::PacketData::Header::Data:
+		{
+			net.coutIncomingAddr();
+			std::cout << " -> Data -> Size " << packet.numBytes << "\n";
+			// test
+			int32 gridSizeX = packet.buffer[i++];
+			int32 gridSizeY = packet.buffer[i++];
+
+			for (int32 y = 0; y < gridSizeY; y++)
+			{
+				for (int32 x = 0; x < gridSizeX; x++)
+				{
+					int32 index = (x + (y * gridSizeX)) + i;
+					if (index >= packet.numBytes)
+					{
+						THROW_EXCEPTION("Packet cut short");
+						break;
+					}
+					else
+					{
+						std::cout << packet.buffer[index];
+					}
+				}
+				std::cout << "\n";
+			}
+			break;
+		}
+	}
 }
 
 void GameServer::HandleInput()
@@ -73,12 +180,6 @@ void GameServer::HandleInput()
 void GameServer::DoFrame()
 {
 	/* ---------- Simulate ---------- */
-	NETWORK::Packet packet;
-	net.receive(packet);
-	if (packet.numBytes > 0)
-	{
-		// handle packet...
-	}
 
 	/* ---------- Render ---------- */
 	win.Gfx().ClearScreen(0x000000);

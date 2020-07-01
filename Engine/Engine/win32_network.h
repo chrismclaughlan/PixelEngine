@@ -4,6 +4,7 @@
 #include <assert.h>
 
 #include <string>
+#include <iostream>
 
 // inet_pton
 #include <ws2tcpip.h>
@@ -43,7 +44,7 @@ namespace NETWORK
 			assert(numBytes < maxBufferSize);
 		}
 
-		Packet(int32 _numBytes, int8* _buffer)
+		Packet(const int8* _buffer, const int32 _numBytes)
 			: numBytes(_numBytes)
 		{
 			//strncpy_s(buffer, _numBytes, _buffer, _TRUNCATE);
@@ -80,8 +81,15 @@ protected:
 	sockaddr_in incomingAddr;
 public:
 	virtual void deliver(NETWORK::Packet& packet);
-	virtual void receive(NETWORK::Packet& packet);
+	virtual bool receive(NETWORK::Packet& packet);
 	virtual double ping();
 
 	virtual bool isOnline() = 0;
+
+	void coutIncomingAddr() const noexcept
+	{
+		char buff[16];
+		inet_ntop(incomingAddr.sin_family, &incomingAddr.sin_addr, buff, sizeof(buff));
+		std::cout << "Received packet from " << buff << ":" << ntohs(incomingAddr.sin_port);
+	}
 };

@@ -2,6 +2,7 @@
 #include "Engine\win32_nclient.h"
 #include "Engine\types.h"
 #include "Game\game.h"
+#include "Game\network_protocols.h"
 
 #include <winsock2.h>
 
@@ -40,6 +41,9 @@ private:
 			delete net;
 		}
 	}
+
+	void HandleNetwork();
+	void decodePacket(NETWORK::Packet& packet);
 
 	void HandleInput();
 	void DoFrame();

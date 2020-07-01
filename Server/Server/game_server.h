@@ -17,6 +17,9 @@ public:
 	}
 	int32 run();
 private:
+	void HandleNetwork();
+	void decodePacket(NETWORK::Packet& packet);
+
 	void HandleInput();
 	void DoFrame();
 };
