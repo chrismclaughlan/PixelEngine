@@ -40,14 +40,6 @@ private:
 			delete net;
 		}
 	}
-	void netSend(const char* msg)
-	{
-		const int32 size = std::strlen(msg);
-		NETWORK::Packet packet;
-		strcpy_s(packet.buffer, size + 1, msg);
-		packet.numBytes = size + 1;
-		net->deliver(packet);
-	}
 
 	void HandleInput();
 	void DoFrame();

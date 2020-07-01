@@ -124,21 +124,36 @@ void GameClient::HandleInput()
 		}
 	}
 
+#define deliverText()\
+if (networkEnabled)\
+{\
+NETWORK::Packet packet(text); \
+net->deliver(packet);\
+}\
+
 		while (!win.keyboard.charIsEmpty())
 		{
 			const uint8 e = win.keyboard.readChar();
-			if (e == VK_BACK && !text.empty())
+			
+			switch (e)
 			{
-				text.pop_back();
-				if (networkEnabled)
-					netSend(text.c_str());
-			}
-			else if (acceptedCharacters.find(e) != std::string::npos)
+			case VK_BACK:
 			{
-				// If char in acceptedCharacters
-				text += std::string(1, e);
-				if (networkEnabled)
-					netSend(text.c_str());
+				if (!text.empty())
+				{
+					text.pop_back();
+					deliverText();
+				}
+			} break;// continue to default ...
+			default:
+			{
+				if (acceptedCharacters.find(e) != std::string::npos)
+				{
+					// If char in acceptedCharacters
+					text += std::string(1, e);
+					deliverText();
+				}
+			} break;
 			}
 	#ifdef DISPLAY_DEBUG_CONSOLE
 	

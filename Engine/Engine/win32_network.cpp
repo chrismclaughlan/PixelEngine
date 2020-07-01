@@ -12,9 +12,9 @@
 
 void Network::deliver(NETWORK::Packet& packet)
 {
-	if (packet.numBytes > NETWORK::maxBufferSize)
+	if (packet.numBytes >= NETWORK::maxBufferSize)
 	{
-		THROW_EXCEPTION("packet larger than max buffer size");
+		packet.numBytes = NETWORK::maxBufferSize - 1;
 	}
 
 	int32 res, flags = 0;
