@@ -25,8 +25,14 @@
     <ClCompile Include="win32_nclient.cpp">
       <Filter>Win32\Network\NClient</Filter>
     </ClCompile>
+    <ClCompile Include="win32_performance.cpp">
+      <Filter>Win32\Performance</Filter>
+    </ClCompile>
+    <ClCompile Include="win32_stopwatch.cpp">
+      <Filter>Win32\Performance</Filter>
+    </ClCompile>
     <ClCompile Include="win32_nserver.cpp">
-      <Filter>Win32\Network\NClient</Filter>
+      <Filter>Win32\Network\NServer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -62,11 +68,17 @@
     <ClInclude Include="win32_network.h">
       <Filter>Win32\Network</Filter>
     </ClInclude>
-    <ClInclude Include="win32_nserver.h">
-      <Filter>Win32\Network\NClient</Filter>
-    </ClInclude>
     <ClInclude Include="win32_nclient.h">
       <Filter>Win32\Network\NClient</Filter>
+    </ClInclude>
+    <ClInclude Include="win32_stopwatch.h">
+      <Filter>Win32\Performance</Filter>
+    </ClInclude>
+    <ClInclude Include="time.h">
+      <Filter>Win32\Performance</Filter>
+    </ClInclude>
+    <ClInclude Include="win32_nserver.h">
+      <Filter>Win32\Network\NServer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

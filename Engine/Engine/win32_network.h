@@ -22,7 +22,7 @@ namespace NETWORK
 
 		Packet() : numBytes(0)
 		{
-			memset(buffer, '0', maxBufferSize);
+			memset(buffer, 0, maxBufferSize);
 		}
 		
 		Packet(const int8* _buffer)
@@ -46,7 +46,7 @@ namespace NETWORK
 			return *this;
 		}
 
-		inline bool operator==(const Packet& a)
+		bool operator==(const Packet& a) const
 		{
 			return (strcmp(buffer, a.buffer) == 0) ? true : false;
 		}
@@ -66,7 +66,7 @@ protected:
 	sockaddr_in incomingAddr;
 public:
 	virtual void deliver(NETWORK::Packet& packet);
-	virtual NETWORK::Packet& receive();
+	virtual void receive(NETWORK::Packet& packet);
 	virtual double ping();
 
 	virtual bool isOnline() = 0;

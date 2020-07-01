@@ -2,6 +2,7 @@
 #include "exception.h"
 #include "types.h"
 #include "defines.h"
+#include "win32_stopwatch.h"
 
 #include <iostream>
 
@@ -25,27 +26,26 @@ void Network::deliver(NETWORK::Packet& packet)
 	}
 }
 
-NETWORK::Packet& Network::receive()
+void Network::receive(NETWORK::Packet& packet)
 {
-	int8 buffer[NETWORK::maxBufferSize];
 	int32 server_addr_size = sizeof(incomingAddr);
-	int32 numBytes = recvfrom(sock, buffer, NETWORK::maxBufferSize, 0,
+	packet.numBytes = recvfrom(sock, packet.buffer, sizeof(packet.buffer) - 1, 0,
 		(struct sockaddr*) & incomingAddr, &server_addr_size);
-
-	NETWORK::Packet packet(numBytes, buffer);
 
 	if (packet.numBytes == SOCKET_ERROR)
 	{
 		int32 WSALastError = WSAGetLastError();
 		if (WSALastError == WSAEWOULDBLOCK)
 		{
-			return packet;
+			return;
 		}
 		else
 		{
 			THROW_EXCEPTION("recvfrom returned SOCKET_ERROR");
 		}
 	}
+
+	//packet.buffer[NETWORK::maxBufferSize - 1] = 0;
 
 #if DISPLAY_DEBUG_CONSOLE
 	char buff[16];
@@ -60,27 +60,28 @@ NETWORK::Packet& Network::receive()
 		// return ping
 		deliver(packet);
 	}
-
-	return packet;
 }
 
 // Returns time in ms for response: -1 for failure
+// TODO multithreading?
 double Network::ping()
 {
-	std::cout << "Ping sent\n";
+	double time = -1;
+	Stopwatch stopwatch;
 
 	NETWORK::Packet ping(NETWORK::pingString);
-	//strcpy_s(ping.buffer, NETWORK::maxBufferSize, NETWORK::pingString);
-	//ping.numBytes = std::strlen(ping.buffer);
 	deliver(ping);
+	stopwatch.start();
+	std::cout << "Ping sent\n";
 
 	// wait for response
 	NETWORK::Packet response;
-	response = receive();
+	receive(response);
 	if (response == ping)
 	{
-		std::cout << "Ping received\n";
+		time = stopwatch.stop(TIME::MILISECONDS_MULTIPLYER);
+		fprintf(stdout, "Ping received after: %fms\n", time);
 	}
 
-	return 0.1;  // TODO
+	return time;
 }

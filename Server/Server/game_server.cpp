@@ -74,10 +74,10 @@ void GameServer::DoFrame()
 {
 	/* ---------- Simulate ---------- */
 	NETWORK::Packet packet;
-	packet = net.receive();
+	net.receive(packet);
 	if (packet.numBytes > 0)
 	{
-		std::cout << packet.buffer << std::endl;
+		// handle packet...
 	}
 
 	/* ---------- Render ---------- */
