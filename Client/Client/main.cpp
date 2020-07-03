@@ -3,29 +3,22 @@
 #include "Engine\defines.h"
 #include "game_client.h"
 
-#if DISPLAY_DEBUG_CONSOLE
-FILE* fConsole;
-#endif
-
 int WINAPI wWinMain
 (HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine, int32 nCmdShow)
 {
-#if DISPLAY_DEBUG_CONSOLE
-    AllocConsole();
-    AttachConsole(GetCurrentProcessId());
-    freopen_s(&fConsole, "CON", "w", stdout);
-#endif
 
     try
     {
         return GameClient(true).run();
     }
-    catch (AppException& e)
+    catch (const Exception& e)
     {
-#if DISPLAY_DEBUG_CONSOLE
-        e.logError();
-        Sleep(5000);
+#ifdef _DEBUG
+		e.logError();
+#else
+		e.printError();
 #endif
+        Sleep(5000);
     }
 
     return -1;

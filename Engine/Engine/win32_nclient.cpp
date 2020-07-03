@@ -9,28 +9,29 @@ NClient::NClient()
 	int32 res;
 	WSADATA wsaData;
 	res = WSAStartup(MAKEWORD(2, 2), &wsaData);
-	if (res != NO_ERROR)
+	if (NO_ERROR != res)
 	{
-		THROW_EXCEPTION("WSAStartup() failed");  // TODO implement WSAGetLastError()
+		THROW_NETWORK_EXCEPTION_CODE("Error initialising server: WSAStartup failed");
 	}
 
 	sock = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
-	if (sock == INVALID_SOCKET)
+	if (INVALID_SOCKET == sock)
 	{
-		THROW_EXCEPTION("socket() invalid");  // TODO implement WSAGetLastError()
+		THROW_NETWORK_EXCEPTION_CODE("Error initialising server: socket() returned INVALID_SOCKET");
 	}
 
 	uint64 Blocking = 0;
 	uint64 nonBlocking = 1;
 	res = ioctlsocket(sock, FIONBIO, &nonBlocking);
-	if (res == SOCKET_ERROR)
+	if (SOCKET_ERROR == res)
 	{
-		THROW_EXCEPTION("ioctlsocket() error");  // TODO implement WSAGetLastError()
+		THROW_NETWORK_EXCEPTION_CODE("Error initialising server: ioctlsocket() returned SOCKET_ERROR");
 	}
 }
 
 NClient::~NClient()
 {
+	closesocket(sock);
 	WSACleanup();
 }
 
@@ -42,18 +43,15 @@ void NClient::connect(const char* sIP, const uint16 sPort)
 	int32 result = inet_pton(AF_INET, sIP, &incomingAddr.sin_addr.s_addr);
 	if (result != 1)
 	{
-		THROW_EXCEPTION("Not a valid IPv4 or IPv6 address");
+		THROW_NETWORK_EXCEPTION("Error connecting to server: Not a valid IPv4 or IPv6 address");
 	}
 	else if (result != 1)
 	{
-		THROW_EXCEPTION("Error converting server IP address");  // TODO implement WSAGetLastError()
+		THROW_NETWORK_EXCEPTION("Error connecting to server");  // TODO implement WSAGetLastError()
 	}
-
-	// Check connection
-	ping();
 }
 
 bool NClient::isOnline()
 {
-	return true;
+	return true;  // todo ping?
 }

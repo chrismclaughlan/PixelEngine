@@ -38,6 +38,7 @@
     <ClInclude Include="hwindows.h" />
     <ClInclude Include="Keyboard.h" />
     <ClInclude Include="Mouse.h" />
+    <ClInclude Include="network.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="time.h" />
     <ClInclude Include="win32_stopwatch.h" />

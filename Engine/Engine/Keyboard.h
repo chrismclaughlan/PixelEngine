@@ -5,6 +5,8 @@
 
 class Keyboard
 {
+	// TODO error handling
+
 	friend class Window;
 
 public:

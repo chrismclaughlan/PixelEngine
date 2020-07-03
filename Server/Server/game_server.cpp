@@ -5,28 +5,28 @@
 
 #include <iostream>
 
+#define THROW_CLIENT_EXCEPTION(msg)\
+THROW_EXCEPTION("Game Server Error", msg);
+#define THROW_CLIENT_EXCEPTION_CODE(msg, code)\
+THROW_EXCEPTION_CODE("Game Server Error", msg, code);
+
 int32 GameServer::run()
 {
-	int32 exitCode;
-	while (true)  // connect to main server first?
+	while (Window::processMessages())
 	{
-		if (Window::processMessages(&exitCode))
-		{
-			return exitCode;
-		}
 		HandleInput();
 		DoFrame();
 		HandleNetwork();
 	}
 
-	return 0;
+	return Window::getExitCode();
 }
 
 void GameServer::HandleNetwork()
 {
-	if (!net.isOnline())
+	if (FALSE == net.isOnline())
 	{
-		THROW_EXCEPTION("offline");  // TODO network exceptions
+		THROW_CLIENT_EXCEPTION("Error: isOnline() returned false");  // TODO network exceptions
 	}
 
 	//NETWORK::Packet localPacket(data, sizeof(data));
@@ -120,7 +120,7 @@ void GameServer::decodePacket(NETWORK::Packet& packet)
 					int32 index = (x + (y * gridSizeX)) + i;
 					if (index >= packet.numBytes)
 					{
-						THROW_EXCEPTION("Packet cut short");
+						THROW_CLIENT_EXCEPTION("Error decoding packet: Packet cut short");
 						break;
 					}
 					else
@@ -130,8 +130,9 @@ void GameServer::decodePacket(NETWORK::Packet& packet)
 				}
 				std::cout << "\n";
 			}
-			break;
-		}
+		} break;
+		default:
+			THROW_CLIENT_EXCEPTION("Error decoding packet: Type not recognised");
 	}
 }
 
@@ -150,13 +151,13 @@ void GameServer::HandleInput()
 		}
 	}
 
-	while (!win.mouse.isEmpty())
-	{
-		const auto event = win.mouse.read();
-		switch (event.getType())
-		{
-		}
-	}
+	//while (!win.mouse.isEmpty())
+	//{
+	//	const auto event = win.mouse.read();
+	//	switch (event.getType())
+	//	{
+	//	}
+	//}
 
 	//	while (!win.keyboard.charIsEmpty())
 	//	{
@@ -180,6 +181,7 @@ void GameServer::HandleInput()
 void GameServer::DoFrame()
 {
 	/* ---------- Simulate ---------- */
+	//THROW_EXCEPTION("test");
 
 	/* ---------- Render ---------- */
 	win.Gfx().ClearScreen(0x000000);
@@ -191,7 +193,7 @@ void GameServer::DoFrame()
 	{
 		performance.LimitFps(fpsLimit);
 	}
-#if DISPLAY_DEBUG_CONSOLE && DISPLAY_FPS
+#ifdef DISPLAY_FPS
 	if (performance.hasTimePassed(1.0))
 	{
 		std::cout << "FPS: " << performance.getFps() << "\n";

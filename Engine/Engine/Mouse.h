@@ -4,6 +4,8 @@
 
 class Mouse
 {
+	// TODO error handling
+
 	friend class Window;
 
 public:

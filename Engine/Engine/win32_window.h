@@ -7,6 +7,8 @@
 #include <memory>
 #include <string>
 
+#include "exception.h"
+
 inline const std::wstring ToWString(const std::string str)
 {
 	return std::wstring(str.begin(), str.end());
@@ -17,6 +19,7 @@ inline const std::wstring ToWString(const char* chr)
 	const std::string str = std::string(chr);
 	return std::wstring(str.begin(), str.end());
 }
+
 
 class Window
 {
@@ -40,7 +43,9 @@ public:
 	~Window();
 	Window(const Window&) = delete;
 	Window& operator=(const Window&) = delete;
+	static const int32 getExitCode() noexcept;
 private:
+	static int32 exitCode;
 	static LRESULT CALLBACK HandleMsgSetup(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noexcept;
 	LRESULT HandleMessage(UINT msg, WPARAM wParam, LPARAM lParam) noexcept;
 private:
@@ -54,9 +59,11 @@ public:
 	bool setSize(const int32 x, const int32 y);
 	bool setPos(const int32 x, const int32 y);
 	bool shouldClose();
-	static bool processMessages(int32* exitCode) noexcept;
+	static bool processMessages();
 	Win32Graphics& Gfx();
 public:
 	Mouse mouse;
 	Keyboard keyboard;
+private:
+	FILE* fConsole;
 };

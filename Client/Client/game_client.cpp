@@ -6,46 +6,48 @@
 #include <iostream>
 #include <stdlib.h>     /* strtod */
 
+#define THROW_CLIENT_EXCEPTION(msg)\
+THROW_EXCEPTION("Game Client Error", msg);
+#define THROW_CLIENT_EXCEPTION_CODE(msg, code)\
+THROW_EXCEPTION_CODE("Game Client Error", msg, code);
+
 int32 GameClient::run()
 {
-	int32 exitCode;
-
 	//try
 	//{
-	if (networkEnabled)
+	try
 	{
-		net->connect("127.0.0.1", 9999);
-	}
-	//}
-	//catch (...)
-	//{
-	//	return -1;
-	//}
-
-	while (true)  // connect to main server first?
-	{
-		if (Window::processMessages(&exitCode))
+		if (networkEnabled)
 		{
-			return exitCode;
+			net->connect("127.0.0.1", 9999);
 		}
+	}
+	catch (const Exception& e)
+	{
+		networkEnabled = false;
+		netDisconnect();
+	}
+
+	while (Window::processMessages())
+	{
 		HandleInput();
 		DoFrame();
 		HandleNetwork();
 	}
 
-	return 0;
+	return Window::getExitCode();
 }
 
 void GameClient::HandleNetwork()
 {
-	if (!networkEnabled)
+	if (FALSE == networkEnabled)
 	{
 		return;
 	}
 
-	if (!net->isOnline())
+	if (FALSE == net->isOnline())
 	{
-		THROW_EXCEPTION("offline");  // TODO network exceptions
+		THROW_CLIENT_EXCEPTION("Error: isOnline() returned false");  // TODO network exceptions
 	}
 
 	//NETWORK::PacketData packetData;
@@ -139,7 +141,7 @@ void GameClient::decodePacket(NETWORK::Packet& packet)
 					int32 index = (x + (y * gridSizeX)) + i;
 					if (index >= packet.numBytes)
 					{
-						THROW_EXCEPTION("Packet cut short");
+						THROW_CLIENT_EXCEPTION("Error decoding packet: Packet cut short");
 						break;
 					}
 					else
@@ -148,9 +150,10 @@ void GameClient::decodePacket(NETWORK::Packet& packet)
 					}
 				}
 				std::cout << "\n";
-			}
-			break;
+			} break;
 		}
+		default:
+			THROW_CLIENT_EXCEPTION("Error decoding packet: Type not recognised");
 	}
 
 	//Sleep(1000);  // test

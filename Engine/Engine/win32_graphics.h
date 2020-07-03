@@ -4,6 +4,7 @@
 
 class Win32Graphics : public Graphics
 {
+	// TODO exception handling
 private:
 	HDC hdc;
 	BITMAPINFO bitmapinfo;

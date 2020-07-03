@@ -40,6 +40,7 @@ struct PaintBrush
 
 class Game
 {
+	// TODO error handling
 protected:
 	Window win;
 	Performance performance;

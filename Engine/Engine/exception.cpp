@@ -1,46 +1,34 @@
 #include "exception.h"
 
-#define fprintfErrorLog(file)\
-fprintf(file, "[ERROR] %s\n[LINE] %d\n[FILE] %s\n", what(), getLine(), getFile());\
-
-void AppException::logError()
+void Exception::printError() const
 {
-#ifndef _DEBUG
-    fprintf(stdout, "[ERROR] %s\n", what());
-#else
-
-    // Reassign "stderr" to "freopen.out":
-    errno_t err = freopen_s(&fLog, errorLogFile, "w", stderr);
-
-    if (err != 0)
-    {
-        // Print error to console
-        fprintfErrorLog(stdout);
-        fprintf(stdout, "Error logging error in %s\n", errorLogFile);
-    }
-    else
-    {
-        // Log error in file
-        fprintfErrorLog(fLog);
-        fclose(fLog);
-        std::string s = "type " + std::string(errorLogFile);
-        system(s.c_str());
-
-        fprintf(stdout, "Successfully logged error in %s\n", errorLogFile);
-        fflush(stdout);
-    }
-#endif
+	fprintf(stdout, what());
+	//if (getLine() > 0 && getFile() != nullptr)
+	//{
+	//	fprintf(stdout, "[%s] %s\n[LINE] %d\n[FILE] %s\n", getType(), getErrorString(), getLine(), getFile());
+	//}
+	//else
+	//{
+	//	fprintf(stdout, "[%s] %s\n]", getType(), getErrorString());
+	//}
 }
 
-const char* AppException::what() const
+void Exception::logError() const
 {
-    return info;
-}
-const char* AppException::getFile() const
-{
-    return file;
-}
-const int32 AppException::getLine() const
-{
-    return line;
+	errno_t err = freopen_s((FILE**)&fErrorLog, nErrorLogFile, "w", stderr);
+
+	if (NULL != err || fErrorLog == NULL)
+	{
+		fprintf(stdout, "Could not log error in %s\n", nErrorLogFile);
+		return;
+	}
+
+	// Log error in file
+	fprintf(fErrorLog, what());
+	fclose(fErrorLog);
+
+	std::string s = "type " + std::string(nErrorLogFile);
+	system(s.c_str());
+
+	fprintf(stdout, "Successfully logged error in %s\n", nErrorLogFile);
 }

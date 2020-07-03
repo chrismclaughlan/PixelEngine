@@ -12,29 +12,29 @@ NServer::NServer(uint16 port)
 	int32 res;
 	WSADATA wsaData;
 	res = WSAStartup(MAKEWORD(2, 2), &wsaData);
-	if (res != NO_ERROR)
+	if (NO_ERROR != res)
 	{
-		THROW_EXCEPTION("WSAStartup() failed");  // TODO implement WSAGetLastError()
+		THROW_NETWORK_EXCEPTION_CODE("Error initialising server: WSAStartup failed");
 	}
 
 	sock = socket(AF_INET, SOCK_DGRAM, 0);
-	if (sock == INVALID_SOCKET)
+	if (INVALID_SOCKET == sock)
 	{
-		THROW_EXCEPTION("socket() invalid");  // TODO implement WSAGetLastError()
+		THROW_NETWORK_EXCEPTION_CODE("Error initialising server: socket() returned INVALID_SOCKET");
 	}
 
 	res = bind(sock, (struct sockaddr*) & localAddr, sizeof(localAddr));
-	if (res == SOCKET_ERROR)
+	if (SOCKET_ERROR == res)
 	{
-		THROW_EXCEPTION("bind() socket error");  // TODO implement WSAGetLastError()
+		THROW_NETWORK_EXCEPTION_CODE("Error initialising server: bind() returned SOCKET_ERROR");
 	}
 
 	uint64 Blocking = 0;
 	uint64 nonBlocking = 1;
 	res = ioctlsocket(sock, FIONBIO, &nonBlocking);
-	if (res == SOCKET_ERROR)
+	if (SOCKET_ERROR == res)
 	{
-		THROW_EXCEPTION("ioctlsocket() error");  // TODO implement WSAGetLastError()
+		THROW_NETWORK_EXCEPTION_CODE("Error initialising server: ioctlsocket() returned SOCKET_ERROR");
 	}
 }
 
@@ -51,5 +51,5 @@ void NServer::listen()
 
 bool NServer::isOnline()
 {
-	return true;
+	return true;  // todo ping?
 }

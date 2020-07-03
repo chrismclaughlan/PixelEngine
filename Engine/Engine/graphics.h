@@ -10,6 +10,7 @@ scale_y = nscale_y * ratio;\
 
 class Graphics
 {
+	// TODO error handling
 public:
 	int32 width;
 	int32 height;

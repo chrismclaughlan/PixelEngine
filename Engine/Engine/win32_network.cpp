@@ -2,7 +2,6 @@
 #include "exception.h"
 #include "types.h"
 #include "defines.h"
-#include "win32_stopwatch.h"
 
 #include <iostream>
 
@@ -20,10 +19,10 @@ void Network::deliver(NETWORK::Packet& packet)
 	int32 res, flags = 0;
 	res = sendto(sock, packet.buffer, packet.numBytes, flags,
 		(struct sockaddr*) & incomingAddr, (int32)sizeof(incomingAddr));
-	if (res == SOCKET_ERROR)
+
+	if (SOCKET_ERROR == res)
 	{
-		std::cout << WSAGetLastError();
-		THROW_EXCEPTION("sendto() failed");
+		THROW_NETWORK_EXCEPTION_CODE("Error delivering packet: sendto() returned SOCKET_ERROR");
 	}
 }
 
@@ -42,8 +41,7 @@ bool Network::receive(NETWORK::Packet& packet)
 		}
 		else
 		{
-			std::cout << WSAGetLastError();
-			THROW_EXCEPTION("recvfrom returned SOCKET_ERROR");
+			THROW_NETWORK_EXCEPTION_CODE("Error receiving packet: recvfrom returned SOCKET_ERROR");
 		}
 	}
 
@@ -57,28 +55,4 @@ bool Network::receive(NETWORK::Packet& packet)
 //#endif
 
 	return true;
-}
-
-// Returns time in ms for response: -1 for failure
-// TODO multithreading?
-double Network::ping()
-{
-	double time = -1;
-	Stopwatch stopwatch;
-
-	NETWORK::Packet ping(NETWORK::pingString);
-	deliver(ping);
-	stopwatch.start();
-	std::cout << "Ping sent\n";
-
-	// wait for response
-	NETWORK::Packet response;
-	receive(response);
-	if (response == ping)
-	{
-		time = stopwatch.stop(TIME::MILISECONDS_MULTIPLYER);
-		fprintf(stdout, "Ping received after: %fms\n", time);
-	}
-
-	return time;
 }

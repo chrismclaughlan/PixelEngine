@@ -4,7 +4,12 @@
 #include <windowsX.h>  // mouse movement
 #include <assert.h>
 
-#include "exception.h"
+#include "defines.h"
+
+#define THROW_WINDOW_EXCEPTION(msg)\
+THROW_EXCEPTION("Window Error", msg);
+#define THROW_WINDOW_EXCEPTION_CODE(msg)\
+THROW_EXCEPTION_CODE("Window Error", msg, GetLastError());
 
 //#define WINDOW_STYLE (WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU)
 //#define WINDOW_STYLE (WS_OVERLAPPEDWINDOW ^ WS_THICKFRAME)
@@ -14,7 +19,13 @@
 const int32 x = GET_X_LPARAM(lParam); \
 const int32 y = wHeight - GET_Y_LPARAM(lParam); \
 
-Window::WindowClass Window::WindowClass::wClass;  // TODO what is this
+Window::WindowClass Window::WindowClass::wClass;
+int32 Window::exitCode;
+
+const int32 Window::getExitCode() noexcept
+{
+	return Window::exitCode;
+}
 
 Window::WindowClass::WindowClass() noexcept : hInstance(GetModuleHandle(NULL))
 {
@@ -58,6 +69,12 @@ HINSTANCE Window::WindowClass::GetHInstance() noexcept
 Window::Window(const char* name, int32 width, int32 height)
 	: wWidth(width), wHeight(height)
 {
+#ifdef DISPLAY_DEBUG_CONSOLE
+	AllocConsole();
+	AttachConsole(GetCurrentProcessId());
+	freopen_s(&fConsole, "CON", "w", stdout);
+#endif
+
 	std::string str = std::string(name);
 	wName = std::wstring(str.begin(), str.end());
 
@@ -67,10 +84,10 @@ Window::Window(const char* name, int32 width, int32 height)
 	rect.right = width + rect.left;
 	rect.top = 100;
 	rect.bottom = height + rect.top;
-	if (AdjustWindowRect(&rect, WINDOW_STYLE, FALSE) == NULL)
+
+	if (NULL == AdjustWindowRect(&rect, WINDOW_STYLE, FALSE))
 	{
-		// throw ...
-		assert(false);
+		THROW_WINDOW_EXCEPTION_CODE("Error initialising window: AdjustWindowRect() returned NULL");
 	}
 
 	hwnd = CreateWindow(
@@ -83,21 +100,19 @@ Window::Window(const char* name, int32 width, int32 height)
 		WindowClass::GetHInstance(), this
 		);
 
-	if (hwnd == NULL)
+	if (NULL == hwnd)
 	{
-		// throw ...
-		assert(false);
+		THROW_WINDOW_EXCEPTION_CODE("Error initialising window: hwnd returned NULL");
 	}
 
 	HDC hdc = GetDC(hwnd);
-	if (hdc == NULL)
+	if (NULL == hdc)
 	{
-		// throw ...
-		assert(false);
+		THROW_WINDOW_EXCEPTION("Error initialising window: GetDC() returned NULL");
 	}
 
 	// Before ShowWindow()
-	pGraphics = std::make_unique<Win32Graphics>(hwnd, hdc);  // (hwnd);
+	pGraphics = std::make_unique<Win32Graphics>(hwnd, hdc);
 
 	ShowWindow(hwnd, SW_SHOWDEFAULT);
 }
@@ -115,15 +130,15 @@ void Window::setTitle(const std::string text)
 
 bool Window::setSize(const int32 newWidth, const int32 newHeight)
 {
-	if (hwnd == NULL)
+	if (NULL == hwnd)
 	{
-		return false;
+		THROW_WINDOW_EXCEPTION("Error setting window size: hwnd is NULL");
 	}
 
 	RECT rect;
-	if (!GetWindowRect(hwnd, &rect))
+	if (NULL == GetWindowRect(hwnd, &rect))
 	{
-		return false;
+		THROW_WINDOW_EXCEPTION_CODE("Error setting window size: GetWindowRect() returned NULL");
 	}
 
 	int32 xPos = rect.left;
@@ -132,15 +147,14 @@ bool Window::setSize(const int32 newWidth, const int32 newHeight)
 	// Calculate window size
 	rect.right = newWidth + rect.left;
 	rect.bottom = newHeight + rect.top;
-	if (AdjustWindowRect(&rect, WINDOW_STYLE, FALSE) == NULL)
+	if (NULL == AdjustWindowRect(&rect, WINDOW_STYLE, FALSE))
 	{
-		// throw ...
-		return false;
+		THROW_WINDOW_EXCEPTION_CODE("Error setting window size: AdjustWindowRect() returned NULL");
 	}
 
-	if (!MoveWindow(hwnd, xPos, yPos, rect.right - rect.left, rect.bottom - rect.top, TRUE))
+	if (NULL == MoveWindow(hwnd, xPos, yPos, rect.right - rect.left, rect.bottom - rect.top, TRUE))
 	{
-		return false;
+		THROW_WINDOW_EXCEPTION_CODE("Error setting window size: MoveWindow() returned NULL");
 	}
 
 	wWidth = newWidth;
@@ -151,21 +165,20 @@ bool Window::setSize(const int32 newWidth, const int32 newHeight)
 
 bool Window::setPos(const int32 x, const int32 y)
 {
-	if (hwnd != NULL)
+	if (NULL == hwnd)
 	{
-		RECT rect;
-		if (!GetWindowRect(hwnd, &rect))
-		{
-			return false;
-		}
-		if (!MoveWindow(hwnd, x, y, rect.right - rect.left, rect.bottom - rect.top, TRUE))
-		{
-			return false;
-		}
+		THROW_WINDOW_EXCEPTION("Error setting window size: hwnd is NULL");
 	}
-	else
+
+	RECT rect;
+	if (NULL == GetWindowRect(hwnd, &rect))
 	{
-		return false;
+		THROW_WINDOW_EXCEPTION_CODE("Error setting window size: GetWindowRect() returned NULL");
+	}
+
+	if (NULL == MoveWindow(hwnd, x, y, rect.right - rect.left, rect.bottom - rect.top, TRUE))
+	{
+		THROW_WINDOW_EXCEPTION_CODE("Error setting window size: MoveWindow() returned NULL");
 	}
 
 	return true;
@@ -189,24 +202,24 @@ bool Window::shouldClose()
 	}
 }
 
-// Returns true if quitting window
+// Returns false if quitting window
 // Passes exitCode through pointer
-bool Window::processMessages(int32* exitCode) noexcept
+bool Window::processMessages()
 {
 	MSG msg = {};
 	while (PeekMessage(&msg, NULL, NULL, NULL, PM_REMOVE))
 	{
 		if (msg.message == WM_QUIT)
 		{
-			exitCode = (int32*)msg.wParam;
-			return true;
+			exitCode = (int32)msg.wParam;
+			return false;
 		}
 
 		TranslateMessage(&msg);
 		DispatchMessage(&msg);
 	}
 
-	return false;
+	return true;
 }
 
 LRESULT CALLBACK Window::HandleMsgSetup
